@@ -24,7 +24,12 @@ export const userStartAddNew = ( user ) => {
                 console.log( user );
                 dispatch( userAddNew( user ) );
             }else{
-                Swal.fire('Error', body.msg, 'error');
+                //Swal.fire('Error', body.msg, 'error');
+               
+                Swal.fire('Error', body.errors?.cedula?.msg ||
+                 body.errors?.correo?.msg 
+                 || body.errors?.password?.msg 
+                 || body.msg , 'error');
 
             }
 

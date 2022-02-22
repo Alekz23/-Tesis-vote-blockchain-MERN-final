@@ -63,7 +63,28 @@ export const VoteScreen = () => {
       }
 
     }
-    console.log(nuevo, 'nueva lista')
+
+    let votoBlanco={
+      id:"231442",
+      nombre: "Voto Blanco",
+      img: "https://res.cloudinary.com/universidad-tecnica-del-norte/image/upload/v1645414706/vote/arton27355_fh7pev.jpg",
+      descripcion: " ",
+      candidates: []
+    }
+
+    let votoNulo={
+      id:"23146",
+      nombre: "Voto Nulo",
+      img: "https://res.cloudinary.com/universidad-tecnica-del-norte/image/upload/v1645414706/vote/1-72_t6qtfg.jpg",
+      descripcion: " ",
+      candidates: []
+    }
+    if(nuevo.length>0){
+      nuevo.push(votoBlanco)
+      nuevo.push(votoNulo)
+
+    }
+    console.log(nuevo, 'nueva lista con voto blanco')
   }
 
 
@@ -175,7 +196,7 @@ export const VoteScreen = () => {
 
                       <td>{candidatos.map((candidate) => {
                         // return <td> {candidate.lista._id.search(lista.id) ? candidate.nombre :'no hay candidatos'} </td>
-                        return <p> {lista.id.search(candidate.lista._id) ? '' : `${candidate.nombre}: ${candidate.cargo} `} </p>
+                        return <p key={candidate.id}> {lista.id?.search(candidate.lista?._id) ? '' : `${candidate.nombre}: ${candidate.cargo} `} </p>
 
                       })}</td>
 

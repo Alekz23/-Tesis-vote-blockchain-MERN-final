@@ -104,7 +104,6 @@ export const EleccionScreen = () => {
         <table className="table ">
           <thead>
             <tr>
-              <th>ID</th>
               <th>Nombre</th>
               <th>Descripcion</th>
               <th>Fecha Inicio</th>
@@ -117,7 +116,6 @@ export const EleccionScreen = () => {
               elections.map((eleccion) => {
                 return (
                   <tr key={eleccion.id}>
-                    <td>{eleccion.id}</td>
                     <td>{eleccion.nombre}</td>
                     <td>{eleccion.descripcion}</td>
                     <td>{moment(eleccion.start).format('YYYY-MM-DD HH:mm:ss')}</td>

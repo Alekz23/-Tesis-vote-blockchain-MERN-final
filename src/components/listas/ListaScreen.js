@@ -10,22 +10,25 @@ import { electionStartLoading } from '../../actions/elections';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CargoScreen } from '../cargos/CargoScreen';
 
 
-
+let tamaño=0;
 
 export const ListaScreen = () => {
 
   let listasBlockchain = [];
   const [lists] = useSelector(state => [state.lista.lista]);
-  const [proposal, setproposal] = useState([]);
+  //const [proposal, setproposal] = useState([]);
 
   //console.log(elections, "si llega estos datos");
 
   //testeando elecciones 
   const [elections] = useSelector(state => [state.eleccion.election]);
   const [idEleccion, setIdEleccion] = useState("");
-  const [openList, setOpenList] = useState(false);
+  //const [openList, setOpenList] = useState(false);
+
+  //const [tamaño, setTamaño] = useState(0);
 
   //const [listas] = useSelector(state => [state.byId.election]);
   const dispatch = useDispatch();
@@ -92,6 +95,9 @@ export const ListaScreen = () => {
 
   useEffect(() => {
     init();
+    obtenerListas();
+
+   
 
   }, [])
 
@@ -158,12 +164,16 @@ export const ListaScreen = () => {
 
   const obtenerListas = () => {
 
+    
     getStats()
       .then(tx => {
         console.log(tx);
-        setproposal(tx)
+        tamaño= tx.length;
+        console.log('es lo q va ', tx.length );
+        //setproposal(tx)
       })
       .catch(err => console.log(err))
+  
   }
 
 
@@ -181,13 +191,16 @@ export const ListaScreen = () => {
 
   const agregarListas = () => {
 
-
+    obtenerListas();
 
     if (lists.length > 0) {
       for (let index = 0; index < lists.length; index++) {
         //setproposal(prop => [...prop, (lists[index].nombre)]);
         listasBlockchain.push((lists[index].nombre));
       }
+      listasBlockchain.push("Voto Blanco");
+      listasBlockchain.push("Voto Nulo");
+
     }
 
 
@@ -195,9 +208,9 @@ export const ListaScreen = () => {
 
     Swal.fire({
       title: "Guardar Listas",
-      text: "¿Está seguro de guardar las listas en la blockchain?",
+      text: "¿Está seguro de guardar las listas en la blockchain? Una vez guardadas no se podrán modificar, ni agregar más listas a la blockchain",
       imageUrl: "https://wetech.mx/wp-content/uploads/2020/12/kisspng-blockchain-vector-graphics-computer-icons-illustra-flvr-calculator-chasing-coins-5bf69839402611.9278574715428874812628.png",
-      imageWidth: 300,
+      imageWidth: 275,
       imageHeight: 225,
       imageAlt: "Guardar Listas",
       showCancelButton: true,
@@ -210,19 +223,32 @@ export const ListaScreen = () => {
     }).then(resultado => {
       if (resultado.value) {
 
+        console.log('como llega el tamaño blockchain', tamaño)
+        if (tamaño > 0) {
+          toast.error('Ya tiene listas en la blockchain', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
 
-        for (let i = 0; i < listasBlockchain.length; i++) {
-          console.log(listasBlockchain[i])
-          AddListas(listasBlockchain[i])
-            .then(tx => {
-              //listasBlockchain.pop();
-              console.log(tx, 'addd a block');
-              //setproposal("");
-            })
-            .catch(err => {
-              console.log(err);
+        } else {
+          for (let i = 0; i < listasBlockchain.length; i++) {
+            console.log(listasBlockchain[i])
+            AddListas(listasBlockchain[i])
+              .then(tx => {
+                //listasBlockchain.pop();
+                console.log(tx, 'addd a block');
+                //setproposal("");
+              })
+              .catch(err => {
+                console.log(err);
 
-            })
+              })
+          }
         }
 
 
@@ -252,6 +278,8 @@ export const ListaScreen = () => {
   }
 
   if (idEleccion === '') return <h1>Loading</h1>
+
+
 
 
   return (
@@ -287,16 +315,14 @@ export const ListaScreen = () => {
 
       </form>
 
-      
-      <button className="btn btn-primary btn-compact" onClick={agregarListas}>
-        <i className="fa-brands fa-ethereum"></i>
-        Agregar Listas
-      </button>
+
+     
       <button
         className="btn btn-success fab " onClick={openModal}>
         <i className="fas fa-plus"></i>
 
       </button>
+
 
 
       <br />
@@ -305,7 +331,7 @@ export const ListaScreen = () => {
         <table className="table ">
           <thead>
             <tr>
-              <th>ID</th>
+             
               <th>Lista</th>
               <th>Nombre</th>
               <th>Descripcion</th>
@@ -322,20 +348,20 @@ export const ListaScreen = () => {
                   <tr key={lista.id} >
 
                     {lista.eleccion._id && lista.eleccion._id.search(idEleccion) ? '' :
-                      <> <td >{lista.id}</td>
-                      <td>
-                        {
-                          (lista.img)
-                          && (
+                      <> 
+                        <td>
+                          {
+                            (lista.img)
+                            && (
 
-                            <div >
-                              <img className='userListImg'
-                                src={lista.img}
-                                alt=""
-                              />
-                            </div>
-                          )}
-                      </td>
+                              <div >
+                                <img className='userListImg'
+                                  src={lista.img}
+                                  alt=""
+                                />
+                              </div>
+                            )}
+                        </td>
                         <td>{lista.nombre}</td>
                         <td>{lista.descripcion}</td>
 
@@ -363,6 +389,11 @@ export const ListaScreen = () => {
           </tbody>
         </table>
       </div>
+
+      
+         
+          <button type="button" name="vote" id="vote" className="btn btn-success fab-danger" onClick={agregarListas}>Agregar a Blockchain</button>
+       
       <ListaModal idEleccion={idEleccion} />
 
 

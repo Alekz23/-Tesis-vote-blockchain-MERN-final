@@ -7,6 +7,7 @@ import { authReducer } from './authReducer';
 import { listaReducer } from './listaReducer';
 import { candidatoReducer } from './candidatoReducer';
 import { userReducer } from './userReducer';
+import { cargoReducer } from './cargoReducer';
 //import { electionByIdReducer } from './electionByIdReducer';
 
 
@@ -19,7 +20,8 @@ export const rootReducer = combineReducers({
     lista: listaReducer,
     candidato: candidatoReducer,
     //byId: electionByIdReducer
-    user: userReducer 
+    user: userReducer,
+    cargo: cargoReducer,
     // TODO: AuthReducer
 })
 

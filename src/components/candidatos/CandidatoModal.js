@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { uiCloseModal } from '../../actions/ui';
 import { listaStartLoading } from '../../actions/lists';
 import { candidatoClearActiveCandidato, candidatoStartAddNew, candidatoStartLoading, candidatoStartUpdate } from '../../actions/candidates';
+import Swal from 'sweetalert2';
+import { fileUpload } from '../../helpers/fileUpload';
 
 
 
@@ -25,11 +27,12 @@ const initEvent = {
     nombre: '',
     apellido: '',
     cargo: '',
-    lista: ''
+    lista: '',
+    img: ''
 }
 
 
-export const CandidatoModal = ({idLista}) => {
+export const CandidatoModal = ({ idLista }) => {
 
 
     //const [isOpen, setIsOpen] = useState(true); // abrir y cerrar el formulario
@@ -39,7 +42,7 @@ export const CandidatoModal = ({idLista}) => {
     const { activeCandidato } = useSelector(state => state.candidato);
     const [lists] = useSelector(state => [state.lista.lista]);
 
-   // const [lists] = useSelector(state => [state.lista.lista]);
+    // const [lists] = useSelector(state => [state.lista.lista]);
 
     useEffect(() => {
 
@@ -52,7 +55,7 @@ export const CandidatoModal = ({idLista}) => {
     //const [dateEnd, setDateEnd] = useState(nowPlus1.toDate()); //estdo fin de la fecha del form
 
     const [formValues, setFormValues] = useState(initEvent);
-    const { nombre, apellido, cargo, lista } = formValues;
+    const { nombre, apellido, cargo, lista, img } = formValues;
 
     //estados para validaciones+
     const [titleValid, setTitleValid] = useState(true);
@@ -77,7 +80,7 @@ export const CandidatoModal = ({idLista}) => {
         dispatch(candidatoClearActiveCandidato);
         //dispatch(candidatoStartLoading());
         setFormValues(initEvent); //se cierra el modal y los valores se borran
-       
+
     }
 
 
@@ -86,20 +89,22 @@ export const CandidatoModal = ({idLista}) => {
     const handleInputChange = ({ target }) => {
         setFormValues({
             ...formValues,
-             [target.name]: target.value
-       });
+            [target.name]: target.value
+        });
     }
 
     //tomar todos los valores del formulario al dar al boton guardar
     const handleSubmitForm = (e) => {
 
- 
-        const nuevo= {...formValues, lista: 
-            idLista , cargo: formValues.cargo===''?
-              "Presidente"
-             :formValues.cargo}
-          
-    
+
+        const nuevo = {
+            ...formValues, lista:
+                idLista, cargo: formValues.cargo === '' ?
+                    "Presidente"
+                    : formValues.cargo
+        }
+
+
         e.preventDefault();
         //console.log(nuevo, 'como envia el candidato')
         //console.log(formValues, 'enviados desde el form')
@@ -117,14 +122,50 @@ export const CandidatoModal = ({idLista}) => {
             dispatch(candidatoStartAddNew(nuevo));
         }
 
-        
+
         setTitleValid(true);
         dispatch(candidatoStartLoading());
         closeModal();
 
     }
 
-    if(lists.length===0) return <h1>Loading</h1>
+    const startUploading = (file) => {
+        return async () => {
+
+            console.log(file);
+
+            Swal.fire({
+                title: 'Uploading...',
+                text: 'Please wait...',
+                allowOutsideClick: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            const fileUrl = await fileUpload(file);
+            console.log(fileUrl)
+            setFormValues({ ...formValues, img: fileUrl })
+
+            Swal.close();
+
+        }
+    }
+    //toma los valores del archivo seleccionado
+    const handleFileChange = (e) => {
+        console.log(e.target.files);
+        const file = e.target.files[0];
+        if (file) {
+            dispatch(startUploading(file));
+        }
+
+        console.log(img, 'haber q esta en el state')
+
+
+    }
+
+
+    if (lists.length === 0) return <h1>Loading</h1>
     return (
         <Modal
             isOpen={modalOpen}
@@ -138,7 +179,30 @@ export const CandidatoModal = ({idLista}) => {
             <h1> {(activeCandidato) ? 'Editar candidato' : 'Nuevo candidato'} </h1>
             <hr />
             <form className="container" onSubmit={handleSubmitForm}>
+                <div className="form-group">
+                    <input
+                        //id="fileSelector"
+                        type="file"
+                        name="file"
+                        // style={{ display: 'none' }}
+                        onChange={handleFileChange}
+                    />
 
+
+                    <small id="emailHelp" className="form-text text-muted">Imagen de la lista</small>
+                </div>
+
+                {
+                    (img)
+                    && (
+
+                        <div className="notes__image">
+                            <img className='imgCentrar'
+                                src={img}
+                                alt=""
+                            />
+                        </div>
+                    )}
                 {/* <div className="form-group">
                     <select className="form-control"
                         name="lista"

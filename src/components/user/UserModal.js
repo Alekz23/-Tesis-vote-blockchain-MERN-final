@@ -8,6 +8,16 @@ import {  electionStartAddNew, electionStartUpdated } from '../../actions/electi
 
 import 'react-toastify/dist/ReactToastify.css';
 import { userClearActiveUser, userStartAddNew, userStartUpdate } from '../../actions/users';
+import { ToastContainer, toast } from 'react-toastify';
+
+const { verificarCedula } = require('udv-ec');
+var validator = require("email-validator");
+
+
+
+
+
+
 
 
 const customStyles = {
@@ -47,6 +57,7 @@ export const UserModal = () => {
   //estados para validaciones+
   const [titleValid, setTitleValid] = useState(true);
   const [cedulaValid, setCedulaValid] = useState(true);
+  const [correoValid, setCorreoValid] = useState(true);
 
   // const handleSubmitRegister = (e) => {
   // 	e.preventDefault();
@@ -106,8 +117,30 @@ export const UserModal = () => {
       return setTitleValid(false);
     }
 
-    if(cedula.trim().length<10){
+    if(verificarCedula(cedula)=== false){
+      toast.error('Cedula invalida', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
       return setCedulaValid(false);
+    }
+
+    if(validator.validate(correo)===false){
+      toast.error('Correo invalido', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
+      return setCorreoValid(false);
     }
 
     if (activeUser) {
@@ -119,11 +152,13 @@ export const UserModal = () => {
 
     setTitleValid(true);
     setCedulaValid(true);
+    setCorreoValid(true);
     closeModal();
 
   }
 
   return (
+    
     <Modal
       isOpen={modalOpen}
       onRequestClose={closeModal}
@@ -132,7 +167,7 @@ export const UserModal = () => {
       className="modal"
       overlayClassName="modal-fondo"
     >
-
+  
       <h1> {(activeUser) ? 'Editar usuario' : 'Nuevo usuario'} </h1>
       <hr />
       <form className="container" onSubmit={handleSubmitForm}>

@@ -32,6 +32,17 @@ export const types = {
     listaLogout : '[lista] Lista logout',
 
 
+    //cargos redux
+      //redux de listas------------------------------------------------
+      cargoSetActive: '[cargo] Set Active',
+      cargoStartAddNew: '[cargo] Start Add new',
+      cargoAddNew: '[cargo] Add new',
+      cargoClearActiveCargo: '[cargo] Clear active cargo', //limpiar del store la eleccion activa
+      cargoDeleted: '[cargo deleted', // eliminar eleccion
+      cargoLoaded: '[cargo]  cargo loaded',
+      cargoLogout : '[cargo] cargo logout',
+  
+
     //redux de candidatos ----------------
 
      //elecciones estados 

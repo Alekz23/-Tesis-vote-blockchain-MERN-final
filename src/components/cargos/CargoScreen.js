@@ -1,33 +1,30 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { electionStartDelete } from '../../actions/elections';
 import { uiOpenModal } from '../../actions/ui';
 import Swal from 'sweetalert2';
 
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { userSetActive, userStartDelete, userStartLoading } from '../../actions/users';
-import { UserModal } from './UserModal';
+import { cargoSetActive, cargoStartDelete, cargoStartLoading } from '../../actions/cargos';
+import { CargoModal } from './CargoModal';
 
 
 
 
 
-export const UserScreen = () => {
+export const CargoScreen = () => {
 
 
-  const [users] = useSelector(state => [state.user.usuarios]);
-
-  //para controlar si tiene listas cada eleccion 
-
-  //console.log(elections, "si llega estos datos");
+  const [cargos] = useSelector(state => [state.cargo.cargos]);
 
   const dispatch = useDispatch();
 
 
   useEffect(() => {
 
-    dispatch(userStartLoading());
+    dispatch(cargoStartLoading());
 
   }, [dispatch])
 
@@ -35,19 +32,15 @@ export const UserScreen = () => {
     dispatch(uiOpenModal());
   }
 
-  const onSelectUser = (e) => {
-    dispatch(userSetActive(e));
-    dispatch(uiOpenModal());
-    //console.log(e)
-  }
+ 
 
-  const onDeletUser = (e) => {
-    dispatch(userSetActive(e));
+  const onDeletElection = (e) => {
+    dispatch(cargoSetActive(e));
 
     
 
     Swal.fire({
-      title: "Are you sure about deleting this user?",
+      title: "Are you sure about deleting this cargo?",
       type: "info",
       showCancelButton: true,
       confirmButtonText: "Delete It",
@@ -58,7 +51,9 @@ export const UserScreen = () => {
       focusCancel: true
     }).then(resultado => {
       if (resultado.value) {
-          dispatch(userStartDelete());
+
+          dispatch(cargoStartDelete());
+      
       } else {
 
       }
@@ -75,10 +70,10 @@ export const UserScreen = () => {
 
     <div >
       <br />
-      <h2 className="titulos">Usuarios</h2>
+      <h3 className="titulos">Cargos</h3>
       <button
-        className="btn btn-success fab " onClick={openModal}>
-        <i className="fas fa-plus"></i>
+        className="btn btn-primary " onClick={openModal}>
+       Add Cargos
 
       </button>
 
@@ -88,37 +83,22 @@ export const UserScreen = () => {
         <table className="table ">
           <thead>
             <tr>
-         
+              <th>ID</th>
               <th>Nombre</th>
-              <th>Cedula</th>
-              <th>Correo</th>
-              <th>Rol</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {
-              users.map((usuario) => {
+              cargos.map((cargo) => {
                 return (
-                  <tr key={usuario._id}>
-                   
-                    <td>{usuario.nombre}</td>
-                    <td>{usuario.cedula}</td>
-                    <td>{usuario.correo}</td>
-                    <td>{usuario.rol}</td>
-                 
+                  <tr key={cargo.id}>
+                    <td>{cargo.id}</td>
+                    <td>{cargo.nombre}</td>
                     <td>
                       <button
-                        className="btn btn-primary"
-                        onClick={() => onSelectUser(usuario)}
-
-                      >
-                        <i className="fas fa-edit"></i>
-                      </button>
-                      {"   "}
-                      <button
                         className="btn btn-danger"
-                        onClick={() => onDeletUser(usuario)}
+                        onClick={() => onDeletElection(cargo)}
                       >
                         <i className="fas fa-trash-alt"></i>
                       </button>
@@ -130,7 +110,7 @@ export const UserScreen = () => {
         </table>
       </div>
 
-      <UserModal/>
+      <CargoModal />
 
 
 

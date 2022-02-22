@@ -10,6 +10,8 @@ import { useState } from 'react';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CargoScreen } from '../cargos/CargoScreen';
+import { CargoModal } from '../cargos/CargoModal';
 
 
 export const CandidatoScreen = () => {
@@ -145,10 +147,10 @@ export const CandidatoScreen = () => {
 
         </div>
 
-       
+
       </form>
 
-
+      {/* <CargoScreen/> */}
       <button
         className="btn btn-success fab" onClick={openModal}>
         <i className="fas fa-plus"></i>
@@ -161,7 +163,7 @@ export const CandidatoScreen = () => {
         <table className="table">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>Candidato</th>
               <th>Nombre</th>
               <th>Apellido</th>
               <th>Cargo</th>
@@ -175,7 +177,19 @@ export const CandidatoScreen = () => {
                 return (
                   <tr key={candidate.id}>
                     {candidate.lista._id && candidate.lista._id.search(idLista) ? '' :
-                      <> <td>{candidate.id}</td>
+                      <> 
+                        <td>
+                          {
+                            (candidate.img)
+                            && (
+                              <div >
+                                <img className='userListImg'
+                                  src={candidate.img}
+                                  alt=""
+                                />
+                              </div>
+                            )}
+                        </td>
                         <td>{candidate.nombre}</td>
                         <td>{candidate.apellido}</td>
                         <td>{candidate.cargo}</td>
@@ -206,6 +220,7 @@ export const CandidatoScreen = () => {
         </table>
       </div>
       <CandidatoModal idLista={idLista} />
+     
 
 
 
