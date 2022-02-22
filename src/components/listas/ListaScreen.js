@@ -236,9 +236,23 @@ export const ListaScreen = () => {
           });
 
         } else {
-          for (let i = 0; i < listasBlockchain.length; i++) {
-            console.log(listasBlockchain[i])
-            AddListas(listasBlockchain[i])
+          // for (let i = 0; i < listasBlockchain.length; i++) {
+          //   console.log(listasBlockchain[i])
+          //   AddListas(listasBlockchain[i])
+          //     .then(tx => {
+          //       //listasBlockchain.pop();
+          //       console.log(tx, 'addd a block');
+          //       //setproposal("");
+          //     })
+          //     .catch(err => {
+          //       console.log(err);
+
+          //     })
+          // }
+
+         
+            console.log(listasBlockchain, 'esto es lo q se piensa enviar')
+            AddListas(listasBlockchain)
               .then(tx => {
                 //listasBlockchain.pop();
                 console.log(tx, 'addd a block');
@@ -248,7 +262,7 @@ export const ListaScreen = () => {
                 console.log(err);
 
               })
-          }
+          
         }
 
 

@@ -7,10 +7,20 @@ let voteContract
 let isInit = false
 
 export const init = async () => {
-  const providerUrl_default = 'http://localhost:7545' // Ganache-cli
-  // const providerUrl_default = 'http://localhost:7545' // Ganache desktop
-  const providerUrl = process.env.PROVIDER_URL || providerUrl_default
 
+try {
+  let providerUrl_default = '' // Ganache-cli
+
+if (window.ethereum) {
+    let provider = window.ethereum;
+     await window.ethereum.request({ method: "eth_requestAccounts" });
+  }else {
+    window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
+  }
+
+
+  // const providerUrl_default = 'http://localhost:7545' // Ganache desktop
+  const providerUrl = window.web3.currentProvider
   // check for metamask
   let provider = window.ethereum
   if (typeof provider !== 'undefined') {
@@ -58,6 +68,12 @@ export const init = async () => {
   console.log(voteContract)
 
   isInit = true
+} catch (error) {
+      window.alert('Por favor agrega una cuenta a Metamask!')
+
+}
+
+
 }
 
 
@@ -75,10 +91,11 @@ export const vote = async ({ proposal, ci }) => {
 
 export const AddListas = async (proposals) => {
   if (!isInit) await init()
-  console.log(Array(proposals))
+  console.log(proposals,'esto llega en arrays para ya agregar a blockchain')
   return voteContract
     .methods
-    .AddListas(Array(proposals)) // 
+    .AddListas(proposals) // 
+    //.AddListas(Array(proposals)) // 
     .send({ from: selectedAccount })
     .then(vote => vote);
 
@@ -102,4 +119,5 @@ export const getStats = async () => {
     .getStats()
     .call()
 }
+
 
