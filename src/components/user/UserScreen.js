@@ -44,31 +44,43 @@ export const UserScreen = () => {
   const onDeletUser = (e) => {
     dispatch(userSetActive(e));
 
-    
+
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger'
+      },
+      buttonsStyling: false
+    })
 
     Swal.fire({
-      title: "Are you sure about deleting this user?",
-      type: "info",
+      title: 'Eliminar',
+      text: "Estas seguro de eliminar este usuario?",
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: "Delete It",
-      confirmButtonColor: "#ff0055",
-      cancelButtonColor: "#999999",
-      reverseButtons: true,
-      focusConfirm: false,
-      focusCancel: true
-    }).then(resultado => {
-      if (resultado.value) {
-          dispatch(userStartDelete());
-      } else {
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delet it!',
 
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        dispatch(userStartDelete());
+
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swalWithBootstrapButtons.fire(
+          'Cancelado',
+          'Tu usuario sigue activo :(',
+          'error'
+        )
       }
-
-    }
-    )
-
+    })
   }
 
- // console.log('llega a elecc');
+  // console.log('llega a elecc');
   return (
 
 
@@ -88,7 +100,7 @@ export const UserScreen = () => {
         <table className="table ">
           <thead>
             <tr>
-         
+
               <th>Nombre</th>
               <th>Cedula</th>
               <th>Correo</th>
@@ -101,12 +113,12 @@ export const UserScreen = () => {
               users.map((usuario) => {
                 return (
                   <tr key={usuario._id}>
-                   
+
                     <td>{usuario.nombre}</td>
                     <td>{usuario.cedula}</td>
                     <td>{usuario.correo}</td>
                     <td>{usuario.rol}</td>
-                 
+
                     <td>
                       <button
                         className="btn btn-primary"
@@ -130,7 +142,7 @@ export const UserScreen = () => {
         </table>
       </div>
 
-      <UserModal/>
+      <UserModal />
 
 
 

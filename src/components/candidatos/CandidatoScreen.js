@@ -85,27 +85,40 @@ export const CandidatoScreen = () => {
 
   const onDeletElection = (e) => {
     dispatch(candidatoSetActive(e));
+
+
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger'
+      },
+      buttonsStyling: false
+    })
+
     Swal.fire({
-      title: "Are you sure about deleting this candidate?",
-      type: "info",
+      title: 'Eliminar',
+      text: "Estas seguro de eliminar este candidato?",
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: "Delete It",
-      confirmButtonColor: "#ff0055",
-      cancelButtonColor: "#999999",
-      reverseButtons: true,
-      focusConfirm: false,
-      focusCancel: true
-    }).then(resultado => {
-      if (resultado.value) {
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delet it!',
+
+    }).then((result) => {
+      if (result.isConfirmed) {
+
         dispatch(candidatoStartDelete());
-
-      } else {
-
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swalWithBootstrapButtons.fire(
+          'Cancelado',
+          'Tu candidato sigue activo :(',
+          'error'
+        )
       }
-
-    }
-    )
-
+    })
 
   }
 
@@ -177,7 +190,7 @@ export const CandidatoScreen = () => {
                 return (
                   <tr key={candidate.id}>
                     {candidate.lista._id && candidate.lista._id.search(idLista) ? '' :
-                      <> 
+                      <>
                         <td>
                           {
                             (candidate.img)
@@ -220,7 +233,7 @@ export const CandidatoScreen = () => {
         </table>
       </div>
       <CandidatoModal idLista={idLista} />
-     
+
 
 
 

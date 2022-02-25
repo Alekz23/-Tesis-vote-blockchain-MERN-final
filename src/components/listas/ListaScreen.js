@@ -13,7 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { CargoScreen } from '../cargos/CargoScreen';
 
 
-let tamaño=0;
+let tamaño = 0;
 
 export const ListaScreen = () => {
 
@@ -97,7 +97,7 @@ export const ListaScreen = () => {
     init();
     obtenerListas();
 
-   
+
 
   }, [])
 
@@ -122,19 +122,27 @@ export const ListaScreen = () => {
   }
 
   const onDeletElection = (e) => {
+
     dispatch(listaSetActive(e));
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger'
+      },
+      buttonsStyling: false
+    })
+
     Swal.fire({
-      title: "Are you sure about deleting this list?",
-      type: "info",
+      title: 'Eliminar',
+      text: "Estas seguro de eliminar esta lista?",
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: "Delete It",
-      confirmButtonColor: "#ff0055",
-      cancelButtonColor: "#999999",
-      reverseButtons: true,
-      focusConfirm: false,
-      focusCancel: true
-    }).then(resultado => {
-      if (resultado.value) {
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delet it!',
+
+    }).then((result) => {
+      if (result.isConfirmed) {
 
         if (e.candidates?.length > 0) {
           toast.error('Tiene candidatos', {
@@ -149,14 +157,18 @@ export const ListaScreen = () => {
         } else {
           dispatch(listaStartDelete());
         }
-
-
-      } else {
-
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swalWithBootstrapButtons.fire(
+          'Cancelado',
+          'Tu lista sigue activa :(',
+          'error'
+        )
       }
+    })
 
-    }
-    )
   }
 
 
@@ -164,16 +176,16 @@ export const ListaScreen = () => {
 
   const obtenerListas = () => {
 
-    
+
     getStats()
       .then(tx => {
         console.log(tx);
-        tamaño= tx.length;
-        console.log('es lo q va ', tx.length );
+        tamaño = tx.length;
+        console.log('es lo q va ', tx.length);
         //setproposal(tx)
       })
       .catch(err => console.log(err))
-  
+
   }
 
 
@@ -250,19 +262,19 @@ export const ListaScreen = () => {
           //     })
           // }
 
-         
-            console.log(listasBlockchain, 'esto es lo q se piensa enviar')
-            AddListas(listasBlockchain)
-              .then(tx => {
-                //listasBlockchain.pop();
-                console.log(tx, 'addd a block');
-                //setproposal("");
-              })
-              .catch(err => {
-                console.log(err);
 
-              })
-          
+          console.log(listasBlockchain, 'esto es lo q se piensa enviar')
+          AddListas(listasBlockchain)
+            .then(tx => {
+              //listasBlockchain.pop();
+              console.log(tx, 'addd a block');
+              //setproposal("");
+            })
+            .catch(err => {
+              console.log(err);
+
+            })
+
         }
 
 
@@ -330,7 +342,7 @@ export const ListaScreen = () => {
       </form>
 
 
-     
+
       <button
         className="btn btn-success fab " onClick={openModal}>
         <i className="fas fa-plus"></i>
@@ -345,7 +357,7 @@ export const ListaScreen = () => {
         <table className="table ">
           <thead>
             <tr>
-             
+
               <th>Lista</th>
               <th>Nombre</th>
               <th>Descripcion</th>
@@ -362,7 +374,7 @@ export const ListaScreen = () => {
                   <tr key={lista.id} >
 
                     {lista.eleccion._id && lista.eleccion._id.search(idEleccion) ? '' :
-                      <> 
+                      <>
                         <td>
                           {
                             (lista.img)
@@ -404,10 +416,10 @@ export const ListaScreen = () => {
         </table>
       </div>
 
-      
-         
-          <button type="button" name="vote" id="vote" className="btn btn-success fab-danger" onClick={agregarListas}>Agregar a Blockchain</button>
-       
+
+
+      <button type="button" name="vote" id="vote" className="btn btn-success fab-danger" onClick={agregarListas}>Agregar a Blockchain</button>
+
       <ListaModal idEleccion={idEleccion} />
 
 

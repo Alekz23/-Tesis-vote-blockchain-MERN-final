@@ -45,22 +45,29 @@ export const EleccionScreen = () => {
   const onDeletElection = (e) => {
     dispatch(electionSetActive(e));
 
-    
+
+
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger'
+      },
+      buttonsStyling: false
+    })
 
     Swal.fire({
-      title: "Are you sure about deleting this file?",
-      type: "info",
+      title: 'Eliminar',
+      text: "Estas seguro de eliminar esta elección?",
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: "Delete It",
-      confirmButtonColor: "#ff0055",
-      cancelButtonColor: "#999999",
-      reverseButtons: true,
-      focusConfirm: false,
-      focusCancel: true
-    }).then(resultado => {
-      if (resultado.value) {
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delet it!',
 
-        if(e.lists?.length > 0) {
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        if (e.lists?.length > 0) {
           toast.error('Tiene Listas', {
             position: "top-right",
             autoClose: 2000,
@@ -69,22 +76,26 @@ export const EleccionScreen = () => {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-        });
-        }else{
+          });
+        } else {
           dispatch(electionStartDelete());
         }
-        
 
-      } else {
-
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swalWithBootstrapButtons.fire(
+          'Cancelado',
+          'Tu eleccion sigue activa :(',
+          'error'
+        )
       }
-
-    }
-    )
+    })
 
   }
 
- // console.log('llega a elecc');
+  // console.log('llega a elecc');
   return (
 
 
@@ -100,8 +111,8 @@ export const EleccionScreen = () => {
 
       <br />
       <ToastContainer></ToastContainer>
-      <div className="form-screen ">
-        <table className="table ">
+      <div className="form-screen">
+        <table className="table">
           <thead>
             <tr>
               <th>Nombre</th>

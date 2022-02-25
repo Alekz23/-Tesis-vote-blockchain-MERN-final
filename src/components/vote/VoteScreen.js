@@ -64,22 +64,22 @@ export const VoteScreen = () => {
 
     }
 
-    let votoBlanco={
-      id:"231442",
+    let votoBlanco = {
+      id: "231442",
       nombre: "Voto Blanco",
       img: "https://res.cloudinary.com/universidad-tecnica-del-norte/image/upload/v1645414706/vote/arton27355_fh7pev.jpg",
       descripcion: " ",
       candidates: []
     }
 
-    let votoNulo={
-      id:"23146",
+    let votoNulo = {
+      id: "23146",
       nombre: "Voto Nulo",
       img: "https://res.cloudinary.com/universidad-tecnica-del-norte/image/upload/v1645414706/vote/1-72_t6qtfg.jpg",
       descripcion: " ",
       candidates: []
     }
-    if(nuevo.length>0){
+    if (nuevo.length > 0) {
       nuevo.push(votoBlanco)
       nuevo.push(votoNulo)
 
@@ -92,27 +92,72 @@ export const VoteScreen = () => {
 
   const onSelectElection = (e) => {
 
-    const init = {
-      ...state,
-      proposal: e,
-      ci: cedula
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger'
+      },
+      buttonsStyling: false
+    })
 
-    }
-    setState(init)
+    Swal.fire({
+      title: 'Estas seguro?',
+      text: "No podrás revertir esto!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, send it!',
 
-    //-----state []
-    if (init.ci) {
-      vote(init)
-        .then(tx => {
-          Swal.fire("Enviado", "Voto generado con exito!", "success");
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Sending...',
+          text: 'Please wait...',
+          allowOutsideClick: false,
+          onBeforeOpen: () => {
+            Swal.showLoading();
+          }
+        });
 
-          setState(initialState)
-        })
-        .catch(err => {
-          console.log(err)
-          Swal.fire("Error", "Ya has votado!", "error");
-        })
-    }
+        const init = {
+          ...state,
+          proposal: e,
+          ci: cedula
+
+        }
+        setState(init)
+
+        if (init.ci) {
+          vote(init)
+            .then(tx => {
+              Swal.close();
+              Swal.fire("Enviado", "Voto generado con exito!", "success");
+              console.log(tx.transactionHash, 'del voto tx'); 
+              console.log(tx, 'toda info')
+              console.log("https://rinkeby.etherscan.io/tx/",tx.transactionHash)
+              setState(initialState)
+            })
+            .catch(err => {
+              console.log(err)
+              Swal.fire("Error", "Ya has votado!", "error");
+            })
+        }
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swalWithBootstrapButtons.fire(
+          'Cancelado',
+          'Tu voto ha sido cancelado :(',
+          'error'
+        )
+      }
+    })
+
+
+    ///-----------
+
 
 
   }

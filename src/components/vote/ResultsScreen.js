@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-
 import { Chart, Doughnut } from 'react-chartjs-2';
 import { getStats, getWinner, init } from '../../helpers/getWeb3Vote';
 import { ToastContainer } from 'react-toastify';

@@ -22,6 +22,8 @@
 //
 // const fs = require('fs');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
+var HDWalletProvider = require("truffle-hdwallet-provider")
+var mnemonic = "piece wreck ranch immense summer observe orbit peasant giraffe wool radar poet"
 
 module.exports = {
   /**
@@ -45,6 +47,16 @@ module.exports = {
      host: "127.0.0.1",     // Localhost (default: none)
      port: 7545,            // Standard Ethereum port (default: none)
      network_id: "*",       // Any network (default: none)
+    },
+
+     // Rinkeby
+    rinkeby: {
+      provider: function () {
+        return new HDWalletProvider(mnemonic, "https://rinkeby.infura.io/v3/02e6ba60363b49b7922a4f9ad1a87b4c")
+      },
+      network_id: 4,
+      gas: 4500000,
+      gasPrice: 10000000000
     },
     // Another network with more advanced options...
     // advanced: {
