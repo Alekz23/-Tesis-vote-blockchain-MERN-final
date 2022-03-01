@@ -9,6 +9,9 @@ import { init, vote } from '../../helpers/getWeb3Vote';
 import Swal from 'sweetalert2';
 import { electionStartLoading } from '../../actions/elections';
 import moment from 'moment';
+import { Table } from 'react-bootstrap';
+import { NavUser } from '../ui/NavUser';
+import { userStartLoading, userStartUpdate } from '../../actions/users';
 
 
 
@@ -27,6 +30,7 @@ export const VoteScreen = () => {
   const initialState = {}
   const [state, setState] = useState(initialState);
 
+  const [users] = useSelector(state => [state.user.usuarios]);
 
 
   const [elections] = useSelector(state => [state.eleccion.election]);
@@ -43,7 +47,12 @@ export const VoteScreen = () => {
 
   }, [dispatch])
 
+  useEffect(() => {
 
+    dispatch(userStartLoading());
+
+
+  }, [dispatch])
 
 
   useEffect(() => {
@@ -56,7 +65,7 @@ export const VoteScreen = () => {
 
   let nuevo = [];
   const listasEleccion = () => {
-
+    // solo las listas de la eleccion 1 por el mometo
     for (let i = 0; i < lists.length; i++) {
       if (lists[i].eleccion._id === (elections[0].id)) {
         nuevo.push(lists[i])
@@ -79,15 +88,35 @@ export const VoteScreen = () => {
       descripcion: " ",
       candidates: []
     }
-    if (nuevo.length > 0) {
-      nuevo.push(votoBlanco)
-      nuevo.push(votoNulo)
 
+    if (lists[0].voteBN === true) {
+      if (nuevo.length > 0) {
+        nuevo.push(votoBlanco)
+        nuevo.push(votoNulo)
+
+      }
     }
-    console.log(nuevo, 'nueva lista con voto blanco')
+
+
+    console.log(nuevo, 'nueva lista con o sin vot B/n')
   }
 
+  const buscarUsuario = () => {
 
+    let idUsuario = ''
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].cedula === cedula) {
+        idUsuario = users[i]._id;
+        const data = {
+          _id: idUsuario,
+          vote: true
+        }
+        dispatch(userStartUpdate(data));
+        //dispatch(userStartLoading());
+        console.log(data, 'ya voto ver');
+      }
+    }
+  }
 
 
   const onSelectElection = (e) => {
@@ -132,10 +161,11 @@ export const VoteScreen = () => {
           vote(init)
             .then(tx => {
               Swal.close();
+              buscarUsuario();
               Swal.fire("Enviado", "Voto generado con exito!", "success");
-              console.log(tx.transactionHash, 'del voto tx'); 
+              console.log(tx.transactionHash, 'del voto tx');
               console.log(tx, 'toda info')
-              console.log("https://rinkeby.etherscan.io/tx/",tx.transactionHash)
+              console.log("https://rinkeby.etherscan.io/tx/", tx.transactionHash)
               setState(initialState)
             })
             .catch(err => {
@@ -155,13 +185,7 @@ export const VoteScreen = () => {
       }
     })
 
-
-    ///-----------
-
-
-
   }
-
 
   useEffect(() => {
     dispatch(listaStartLoading());
@@ -175,27 +199,24 @@ export const VoteScreen = () => {
     dispatch(candidatoStartLoading());
   }, [dispatch])
 
-
   if (elections.length === 0) return <h2>No hay elecciones disponibles</h2>
 
-  // agregar un esatdo global y obtener datos de la eleccion activa
   const start = moment(elections[0].start);
   const end = moment(elections[0].end);
 
   const now = moment().seconds(0).add(0, 'hours'); // 3:00:00
   const fechaActual = now;
 
-  //console.log(fechaActual,'fecha actual');
-
   if (elections.length > 0 && lists.length > 0) {
     listasEleccion();
   }
 
   if (nuevo.length === 0) return <h2>No hay listas</h2>
+  if (users.length === 0) return <h2>No hay electores registrados</h2>
   return (
 
 
-    <div>
+    <div >
 
       <br />
 
@@ -204,16 +225,15 @@ export const VoteScreen = () => {
 
       {(fechaActual.isSameOrAfter(start) && fechaActual < end) ? <div>
         <br />
-        <div className="form-screen ">
-          <table className="table ">
+        <div >
+          <Table className="titulos">
             <thead>
               <tr>
-
-                <th>Nombre</th>
-                <th>Descripcion</th>
-                <th>Imagen</th>
-                <th>Candidatos</th>
-                <th>Votar</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripcion</th>
+                <th scope="col">Imagen</th>
+                <th scope="col">Candidatos</th>
+                <th scope="col">Votar</th>
               </tr>
             </thead>
             <tbody>
@@ -259,7 +279,7 @@ export const VoteScreen = () => {
                   );
                 })}
             </tbody>
-          </table>
+          </Table>
         </div>
 
 

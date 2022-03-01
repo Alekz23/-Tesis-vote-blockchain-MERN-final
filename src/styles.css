@@ -1,7 +1,3 @@
-html, body {
-    height: 100vh;
-    width: 100vw;
-}
 
 .calendar-screen {
     display: flex;
@@ -13,7 +9,7 @@ html, body {
     display: flex;
     flex-flow: column;
    text-align: center;
-    padding: 30px;
+    padding: 20px;
 }
 
 .btn-compact{
@@ -123,7 +119,10 @@ html, body {
 }
 
 .votes__image img {
-    height: 100px;
+    width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 50%;
  
 }
 
@@ -163,16 +162,39 @@ html, body {
           border: none;
           border-radius: 10px;
           padding: 5px 10px;
-          background-color: #3bb077;
+          /* background-color: #3bb077; */
           color: white;
           cursor: pointer;
-          margin-right: 20px;
+          margin-right: 7px;
       }
+
+      .userListStatus{
+        border: none;
+        border-radius: 50px;
+        padding: 4px 8px;
+       
+        /* background-color: #3bb077; */
+        color: white;
+        cursor: pointer;
+        margin-right: 7px;
+    }
+    
       
       .userListDelete{
           color: red;
           cursor: pointer;
       }
+
+      .userListUpdate{
+        color: blue;
+        cursor: pointer;
+    }
+
+    .cargosListDelete{
+        color: black;
+        cursor: pointer;
+    }
+
     
       .encabezado{
           text-align: center;
@@ -180,4 +202,15 @@ html, body {
     
       th{
           text-align: center;
+      }
+
+      ::-webkit-file-upload-button {
+       
+        border: none;
+          border-radius: 10px;
+          padding: 5px 10px;
+          background-color: black; 
+          color: white;
+          cursor: pointer;
+          margin-right: 7px;
       }

@@ -1,21 +1,43 @@
 import React, { useEffect, useState } from 'react';
 
-
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Bar, Chart, Doughnut } from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
 import { getStats, getWinner, init } from '../../helpers/getWeb3Vote';
 import { ToastContainer } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { electionStartLoading } from '../../actions/elections';
 import moment from 'moment';
 import { userStartLoading } from '../../actions/users';
-ChartJS.register(ArcElement, Tooltip, Legend);
+import 'chart.piecelabel.js';
 
-const total_votantes = 5;
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  ArcElement,
+  Legend,
+  Chart,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement
+);
+
+//testear con porcentajes
+
 
 
 const dataset = {
-  label: '# de Votos',
+  label: 'Porcentaje %',
   data: [],
   backgroundColor: [
     'rgba(255, 99, 132, 0.2)',
@@ -34,71 +56,16 @@ const dataset = {
     'rgba(255, 159, 64, 1)',
   ],
   borderWidth: 2,
-  
   options: {
-    responsive: true,
-    legend: {
-      position: 'bottom',
-    },
-    title: {
-      display: false,
-      text: 'Chart.js Doughnut Chart'
-    },
-    animation: {
-      onComplete: function () {
-        var chartInstance = this.chart;
-        var ctx = chartInstance.ctx;
-        console.log(chartInstance);
-        var height = chartInstance.controller.boxes[0].bottom;
-        ctx.textAlign = "center";
-        Chart.helpers.each(this.data.dataset.forEach(function (dataset, i) {
-          var meta = chartInstance.controller.getDatasetMeta(i);
-          Chart.helpers.each(meta.data.forEach(function (bar, index) {
-            ctx.fillText(dataset.data[index], bar._model.x, height - ((height - bar._model.y) / 2));
-          }),this)
-        }),this);
-      }
-    },
-    tooltips: {
-      callbacks: {
-        label: function(tooltipItem, data) {
-        	var dataset = data.datasets[tooltipItem.datasetIndex];
-          var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
-            return previousValue + currentValue;
-          });
-          var currentValue = dataset.data[tooltipItem.index];
-          var percentage = Math.floor(((currentValue/total) * 100)+0.5);         
-          return percentage + "%";
+    plugins: {
+      datalabels: {
+        formatter: (value) => {
+          return value + '%';
         }
       }
     }
   }
 
-};
-
-
-export const options = {
-  responsive: true,
-  plugins: {
-    
-    title: {
-      display: true,
-      text: 'Chart.js Bar Chart',
-    },
-    tooltips: {
-      callbacks: {
-        label: function(tooltipItem, data) {
-        	var dataset = data.datasets[tooltipItem.datasetIndex];
-          var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
-            return previousValue + currentValue;
-          });
-          var currentValue = dataset.data[tooltipItem.index];
-          var percentage = Math.floor(((currentValue/total) * 100)+0.5);         
-          return percentage + "%";
-        }
-      }
-    }
-  },
 };
 
 
@@ -114,10 +81,14 @@ export const ResultsScreen = () => {
   const [proposals, setProposals] = useState([])
   const [totalVotes, setTotalVotes] = useState(0)
 
+  const [tipoGrafico, setTipoGrafico] = useState(1);
+
 
   const [elections] = useSelector(state => [state.eleccion.election]);
   const [users] = useSelector(state => [state.user.usuarios]);
   const dispatch = useDispatch();
+
+
 
 
   useEffect(() => {
@@ -130,6 +101,7 @@ export const ResultsScreen = () => {
   useEffect(() => {
 
     dispatch(electionStartLoading());
+
 
   }, [dispatch])
 
@@ -152,23 +124,24 @@ export const ResultsScreen = () => {
       .then(tx => {
         const labels = tx.map(vote => vote[0])
         setProposals(labels)
-        console.log(labels, 'eso en labels');
-        let porc=100/5;
-        const data = tx.map(vote => (Number(vote[1])*porc))
+
+        let porc = (100 / totalVotantes());
+        const data = tx.map(vote => (Number(vote[1]) * porc))
         const datasets = [{
           ...dataset,
           data
         }]
-        console.log(data, 'eso en data');
+
+       
+        
         const statsData = {
           labels,
-          datasets
+          datasets,
+          
         }
-
-        console.log(statsData, 'stast data lo q envia al grafico')
         setStats(statsData)
-
-        const total = data.reduce((acc, item) => acc + item)
+        const data2 = tx.map(vote => Number(vote[1]));
+        const total = data2.reduce((acc, item) => acc + item)
         setTotalVotes(total)
       })
       .catch(err => console.log(err))
@@ -191,6 +164,7 @@ export const ResultsScreen = () => {
         cont++;
       }
     }
+
     console.log('num de votantes', cont);
     return cont;
   }
@@ -200,13 +174,14 @@ export const ResultsScreen = () => {
     getStats()
       .then(tx => {
         console.log(tx);
+        console.log(tx.length, 'este tamaño tiene en blockchain');
         //setproposal(tx)
       })
       .catch(err => console.log(err))
   }
 
   const percent = () => {
-    
+
     const val = ((totalVotes * 100) / totalVotantes()).toFixed(2)
     return `${val}%`
 
@@ -215,10 +190,45 @@ export const ResultsScreen = () => {
   //   const val = ((totalVotes * 100) / total_votantes).toFixed(2)
   //   return `${val}%`
   // }
-
+  if (totalVotantes() === 0) return <h1>No hay votantes</h1>
   if (elections.length === 0) return <h1>Loading</h1>
   if (users.length === 0) return <h1>Loading</h1>
-  if (totalVotantes() === 0) return <h1>No hay votantes</h1>
+  if (!stats) return <h1>Loading stats</h1>
+
+
+
+  const optionsaa = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: false,
+        text: 'Chart.js Bar Chart',
+      },
+      tooltips: {
+        callbacks: {
+          label: function (tooltipItem, data) {
+            var dataset = data.dataset[tooltipItem.datasetIndex];
+            var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+              return previousValue + currentValue;
+            });
+            var currentValue = dataset.data[tooltipItem.index];
+            var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+            return percentage + "%";
+          }
+        }
+      },
+
+    },
+  };
+
+  const handleInputChange = ({ target }) => {
+    setTipoGrafico(target.value)
+    //console.log(target.value,'select maldita');
+
+  }
 
   //obtener datos del estado global de eleccion activa
   const end = moment(elections[0].end);
@@ -232,49 +242,96 @@ export const ResultsScreen = () => {
 
   console.log(stats, 'final data')
 
-  const opciones={
-    respondive: true,
+  const opciones = {
+    responsive: true,
     maintainAspectRatio: true,
-    piecelabel:{
-      render: function(args){
-        return args.label+": "+args.value+"%";
+    piecelabel: {
+      render: function (args) {
+        return args.label + ": " + args.value + "%";
       },
-      fontSize:15,
+      fontSize: 15,
       fontColor: '#fff',
       fontfamily: 'Arial'
     }
-  
-  
   }
+
+
+
+  
+
+  var options = {
+    // pieceLabel: {
+    //   render: function (d) { return d.label + " (" + d.percentage + "%)" },
+    //   fontColor: '#000',
+    //   position: 'outside',
+    //   segment: true
+    // }
+
+  
+      plugins: {
+        datalabels: {
+          formatter: (value) => {
+            return value + '%';
+          }
+        }
+      }
+    }
+  
+  
+
+
+  
+
 
   return <div>
 
 
 
     <h2 className="titulos"> Resultados de la Eleccion</h2>
-    <hr />
+
 
     {(fechaActual > end) ?
 
       <div>
         <ToastContainer />
         <div>
+
+
+          <div className="form-group">
+            <small id="emailHelp" className="form-text text-muted">Seleccione el tipo de grafico</small>
+            <select className="form-control"
+              name="tipoGrafico"
+              value={tipoGrafico}
+              onChange={handleInputChange}>
+
+
+              <option key={1} value={1} > Barras </option>
+              <option key={2} value={2}  > Dona </option>
+            </select>
+
+
+          </div>
           {
-            stats &&
-            <Doughnut
-              data={stats}
-              className='categoriesDiv'
-
-              options={options}
-
-            />
+            tipoGrafico === "1" ? <Bar data={stats}  options={options} className='categoriesDiv' />
+              : tipoGrafico === "2" ? <Doughnut data={stats}  options={options}   className='categoriesDiv' />
+                : <Bar data={stats } className='categoriesDiv' />
           }
+
+
+
+          {/* {
+           tipoGrafico===2&&
+            <Doughnut options={options} data={stats}
+              className='categoriesDiv'
+            />
+          } */}
+
           {
             totalVotes && totalVotantes() &&
             <>
               <p>Votos: {totalVotes}/{totalVotantes()}</p>
               <div className="progress my-2" style={{ height: 30 }}>
-                <div className="progress-bar" role="progressbar" style={{ width: percent() }} aria-valuenow={totalVotes} aria-valuemin="0" aria-valuemax={total_votantes}>{percent()}</div>
+                <div className="progress-bar" role="progressbar" style={{ width: percent() }} aria-valuenow={totalVotes} aria-valuemin="0" aria-valuemax={totalVotantes()}>{percent()}</div>
               </div>
             </>
           }
@@ -290,6 +347,9 @@ export const ResultsScreen = () => {
           <button type="button" name="vote" id="vote" className="btn btn-primary" onClick={getWinnerF}>get winner</button>
           <button type="button" name="vote" id="vote" className="btn btn-primary" onClick={getStatsF}>get stats</button>
           <button type="button" name="vote" id="vote" className="btn btn-primary" onClick={obtenerListas}>blockchain</button>
+
+
+
         </div>
 
 

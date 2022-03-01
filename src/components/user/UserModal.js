@@ -168,7 +168,7 @@ export const UserModal = () => {
       overlayClassName="modal-fondo"
     >
   
-      <h1> {(activeUser) ? 'Editar usuario' : 'Nuevo usuario'} </h1>
+      <h2> {(activeUser) ? 'Editar usuario' : 'Nuevo usuario'} </h2>
       <hr />
       <form className="container" onSubmit={handleSubmitForm}>
         <div className="form-group">

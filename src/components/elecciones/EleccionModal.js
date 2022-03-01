@@ -136,7 +136,7 @@ export const EleccionModal = () => {
       overlayClassName="modal-fondo"
     >
 
-      <h1> {(activeElection) ? 'Editar eleccion' : 'Nueva eleccion'} </h1>
+      <h2> {(activeElection) ? 'Editar eleccion' : 'Nueva eleccion'} </h2>
       <hr />
       <form className="container" onSubmit={handleSubmitForm}>
 

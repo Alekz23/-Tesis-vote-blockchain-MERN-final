@@ -2,6 +2,7 @@ import Swal from 'sweetalert2';
 
 import { fetchConToken } from '../helpers/fetch';
 import { types } from '../types/types';
+import { toast } from 'react-toastify';
 
 
 export const userStartAddNew = ( user ) => {
@@ -26,10 +27,23 @@ export const userStartAddNew = ( user ) => {
             }else{
                 //Swal.fire('Error', body.msg, 'error');
                
-                Swal.fire('Error', body.errors?.cedula?.msg ||
-                 body.errors?.correo?.msg 
-                 || body.errors?.password?.msg 
-                 || body.msg , 'error');
+                // Swal.fire('Error', body.errors?.cedula?.msg ||
+                //  body.errors?.correo?.msg 
+                //  || body.errors?.password?.msg 
+                //  || body.msg , 'error');
+
+                 toast.error(body.errors?.cedula?.msg ||
+                    body.errors?.correo?.msg 
+                    || body.errors?.password?.msg 
+                    || body.msg , {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                  });
 
             }
 

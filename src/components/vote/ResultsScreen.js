@@ -1,35 +1,34 @@
 import React, { useEffect, useState } from 'react';
 
-import { Chart, Doughnut } from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
 import { getStats, getWinner, init } from '../../helpers/getWeb3Vote';
 import { ToastContainer } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { electionStartLoading } from '../../actions/elections';
 import moment from 'moment';
 import { userStartLoading } from '../../actions/users';
+import 'chart.piecelabel.js';
+
+//--------------IMPORTANTE----------------
+// page de graficos https://js.devexpress.com/Demos/WidgetsGallery/Demo/Charts/FunnelChart/React/Light/
+
+
+import PieChart, {
+  Legend,
+  Export,
+  Series,
+  Label,
+  Font,
+  Connector,
+} from 'devextreme-react/pie-chart';
 
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+  Chart, SeriesTemplate, CommonSeriesSettings, Title,
+} from 'devextreme-react/chart'
 
 
-const total_votantes = 5;
+//testear con porcentajes
+
 
 
 const dataset = {
@@ -52,8 +51,15 @@ const dataset = {
     'rgba(255, 159, 64, 1)',
   ],
   borderWidth: 2,
-
-
+  options: {
+    plugins: {
+      datalabels: {
+        formatter: (value) => {
+          return value + '%';
+        }
+      }
+    }
+  }
 
 };
 
@@ -61,14 +67,17 @@ const dataset = {
 
 //fecha actual
 //const momentEnd = moment(end);
-
+let listasJson = [];
 const seconds = 120
 export const ResultsScreen = () => {
+
 
   const [winner, setWinner] = useState('')
   const [stats, setStats] = useState()
   const [proposals, setProposals] = useState([])
   const [totalVotes, setTotalVotes] = useState(0)
+
+  const [tipoGrafico, setTipoGrafico] = useState(1);
 
 
   const [elections] = useSelector(state => [state.eleccion.election]);
@@ -76,9 +85,12 @@ export const ResultsScreen = () => {
   const dispatch = useDispatch();
 
 
+
+
   useEffect(() => {
 
     dispatch(userStartLoading());
+
 
   }, [dispatch])
 
@@ -86,6 +98,7 @@ export const ResultsScreen = () => {
   useEffect(() => {
 
     dispatch(electionStartLoading());
+
 
   }, [dispatch])
 
@@ -95,6 +108,7 @@ export const ResultsScreen = () => {
 
   //iniciar blockchain
   useEffect(() => {
+    listasJson = []
     init();
     getStatsF()
     setInterval(() => {
@@ -103,21 +117,32 @@ export const ResultsScreen = () => {
   }, [])
 
 
+
   const getStatsF = () => {
     getStats()
       .then(tx => {
+        console.log(tx, 'asi viene', tx.length, tx[0].voteCount);
+        for (let i = 0; i < tx.length; i++) {
+          let name = tx[i].name;
+          let voteCount = tx[i].voteCount;
+
+          listasJson.push({ name: name, voteCount: voteCount });
+
+        }
         const labels = tx.map(vote => vote[0])
         setProposals(labels)
-       
-        let porc = (100 /totalVotantes());
+
+        let porc = (100 / totalVotantes());
         const data = tx.map(vote => (Number(vote[1]) * porc))
         const datasets = [{
           ...dataset,
           data
         }]
+
         const statsData = {
           labels,
-          datasets
+          datasets,
+
         }
         setStats(statsData)
         const data2 = tx.map(vote => Number(vote[1]));
@@ -144,21 +169,12 @@ export const ResultsScreen = () => {
         cont++;
       }
     }
-   
+
     console.log('num de votantes', cont);
     return cont;
   }
 
-  const obtenerListas = () => {
 
-    getStats()
-      .then(tx => {
-        console.log(tx);
-        console.log(tx.length, 'este tamaño tiene en blockchain');
-        //setproposal(tx)
-      })
-      .catch(err => console.log(err))
-  }
 
   const percent = () => {
 
@@ -166,82 +182,180 @@ export const ResultsScreen = () => {
     return `${val}%`
 
   }
-  // const percent = () => {
-  //   const val = ((totalVotes * 100) / total_votantes).toFixed(2)
-  //   return `${val}%`
-  // }
-  if (totalVotantes() === 0) return <h1>No hay votantes</h1>
-  if (elections.length === 0) return <h1>Loading</h1>
-  if (users.length === 0) return <h1>Loading</h1>
+ 
+  const handleInputChange = ({ target }) => {
+    setTipoGrafico(target.value)
+    //console.log(target.value,'select maldita');
 
+  }
 
-
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: false,
-        text: 'Chart.js Bar Chart',
-      },
-      tooltips: {
-        callbacks: {
-          label: function (tooltipItem, data) {
-            var dataset = data.dataset[tooltipItem.datasetIndex];
-            var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
-              return previousValue + currentValue;
-            });
-            var currentValue = dataset.data[tooltipItem.index];
-            var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
-            return percentage + "%";
-          }
-        }
-      },
-     
-    },
-  };
-
-
-  //obtener datos del estado global de eleccion activa
   const end = moment(elections[0].end);
 
-  //console.log(start,'fecha de start');
-  //console.log(end,'fecha de emd');
+
 
   const now = moment().seconds(0).add(0, 'hours'); // 3:00:00
   //const nowPlus1 = now.clone().add(1, 'hours');
   const fechaActual = now;
 
   console.log(stats, 'final data')
- 
-  
+
+  function customizeText(arg) {
+    return `votos: ${arg.valueText} (${arg.percentText})`;
+  }
+
+
+
+
+  if (totalVotantes() === 0) return <h1>No hay votantes</h1>
+  if (elections.length === 0) return <h1>Loading</h1>
+  if (users.length === 0) return <h1>Loading</h1>
+  if (!stats) return <h1>Loading stats</h1>
+  console.log(listasJson, 'a json');
+
   return <div>
 
+{(fechaActual > end) ?
 
+<div>
 
     <h2 className="titulos"> Resultados de la Eleccion</h2>
-    <hr />
 
-    {(fechaActual > end) ?
+    <div className="form-group">
+      <small id="emailHelp" className="form-text text-muted">Seleccione el tipo de grafico</small>
+      <select className="form-control"
+        name="tipoGrafico"
+        value={tipoGrafico}
+        onChange={handleInputChange}>
 
-      <div>
+
+        <option key={1} value={1}> Gráfico de circular </option>
+        <option key={2} value={2}> Gráfico de barras </option>
+        <option key={3} value={3}> Gráfico de barras Slide </option>
+      </select>
+    </div>
+
+
+
+    {tipoGrafico === "1" ?
+      <PieChart id="pie"
+        palette="Bright"
+        type="doughnut"
+        dataSource={listasJson}
+      // title="Olympic Medals in 2008"
+      >
+        <Legend
+          orientation="horizontal"
+          itemTextPosition="right"
+          horizontalAlignment="center"
+          verticalAlignment="bottom"
+          columnCount={4} />
+        <Export enabled={true} />
+        <Series argumentField="name" valueField="voteCount">
+          <Label
+            visible={true}
+            position="columns"
+            customizeText={customizeText}>
+            <Font size={16} />
+            <Connector visible={true} width={0.5} />
+          </Label>
+        </Series>
+      </PieChart>
+
+      : tipoGrafico === "2" ?
+        <Chart
+          id="chart"
+          palette="Soft"
+          dataSource={listasJson}>
+          <CommonSeriesSettings
+            argumentField="name"
+            valueField="voteCount"
+            type="bar"
+            ignoreEmptyPoints={true}
+
+          >
+           
+            <Label
+              visible={true}
+              position="columns"
+              customizeText={customizeText}>
+              <Font size={16} />
+              <Connector visible={true} width={0.5} />
+            </Label>
+          </CommonSeriesSettings>
+          
+          <SeriesTemplate nameField="name" />
+          <Title
+          // text="Age Breakdown of Facebook Users in the U.S."
+          // subtitle="as of January 2017"
+          />
+          <Export enabled={true} />
+        </Chart>
+        : tipoGrafico === "3" ?
+          <Chart
+            id="chart"
+            palette="Soft"
+            rotated={true}
+            dataSource={listasJson}>
+            <CommonSeriesSettings
+              argumentField="name"
+              valueField="voteCount"
+              type="bar"
+              ignoreEmptyPoints={true}
+
+            >
+              
+              <Label
+                visible={true}
+                position="columns"
+                customizeText={customizeText}>
+                <Font size={16} />
+                <Connector visible={true} width={0.5} />
+              </Label>
+            </CommonSeriesSettings>
+            <SeriesTemplate nameField="name" />
+            <Title
+            // text="Age Breakdown of Facebook Users in the U.S."
+            // subtitle="as of January 2017"
+            />
+             <Export enabled={true} />
+          </Chart>
+          :
+          <PieChart id="pie"
+            palette="Bright"
+            type="doughnut"
+            dataSource={listasJson}
+          // title="Olympic Medals in 2008"
+          >
+            <Legend
+              orientation="horizontal"
+              itemTextPosition="right"
+              horizontalAlignment="center"
+              verticalAlignment="bottom"
+              columnCount={4} />
+            <Export enabled={true} />
+            <Series argumentField="name" valueField="voteCount">
+              <Label
+                visible={true}
+                position="columns"
+                customizeText={customizeText}>
+                <Font size={16} />
+                <Connector visible={true} width={0.5} />
+              </Label>
+            </Series>
+          </PieChart>
+
+
+    }
+    
         <ToastContainer />
         <div>
-          {
-            stats &&
-            <Bar options={options} data={stats}
-            className='categoriesDiv'
 
-            />
-          }
           {
             totalVotes && totalVotantes() &&
             <>
               <p>Votos: {totalVotes}/{totalVotantes()}</p>
               <div className="progress my-2" style={{ height: 30 }}>
-                <div className="progress-bar" role="progressbar" style={{ width: percent() }} aria-valuenow={totalVotes} aria-valuemin="0" aria-valuemax={total_votantes}>{percent()}</div>
+                <div className="progress-bar" role="progressbar" style={{ width: percent() }} aria-valuenow={totalVotes} aria-valuemin="0" aria-valuemax={totalVotantes()}>{percent()}</div>
               </div>
             </>
           }
@@ -256,13 +370,9 @@ export const ResultsScreen = () => {
         <div className='d-flex justify-content-between my-2'>
           <button type="button" name="vote" id="vote" className="btn btn-primary" onClick={getWinnerF}>get winner</button>
           <button type="button" name="vote" id="vote" className="btn btn-primary" onClick={getStatsF}>get stats</button>
-          <button type="button" name="vote" id="vote" className="btn btn-primary" onClick={obtenerListas}>blockchain</button>
+          {/* <button type="button" name="vote" id="vote" className="btn btn-primary" onClick={obtenerListas}>blockchain</button> */}
         </div>
-
-
       </div>
-
-
       :
       <div className="titulos">
         <h1>Eleccion en proceso</h1>

@@ -210,7 +210,7 @@ export const ListaModal = ({ idEleccion }) => {
       overlayClassName="modal-fondo"
     >
 
-      <h1> {(activeLista) ? 'Editar lista' : 'Nueva lista'} </h1>
+      <h2> {(activeLista) ? 'Editar lista' : 'Nueva lista'} </h2>
       <hr />
       <form className="container" onSubmit={handleSubmitForm}>
 
@@ -218,14 +218,11 @@ export const ListaModal = ({ idEleccion }) => {
 
         <div className="form-group">
           <input
-            //id="fileSelector"
             type="file"
             name="file"
-            // style={{ display: 'none' }}
+            accept="image/*"
             onChange={handleFileChange}
           />
-
-
           <small id="emailHelp" className="form-text text-muted">Imagen de la lista</small>
         </div>
 
@@ -240,27 +237,6 @@ export const ListaModal = ({ idEleccion }) => {
               />
             </div>
           )}
-        {/* <div className="form-group">
-          <label>Eleccion</label>
-
-          <select className="form-control"
-            name="eleccion"
-            value={eleccion}
-
-            onChange={handleInputChange}>
-
-            {
-
-              elections.map(election => (
-                <option key={election.id} value={election.id} > {election.nombre} </option>
-              ))
-            }
-
-
-          </select>
-
-          <small id="emailHelp" className="form-text text-muted">Una descripción corta</small>
-        </div> */}
         <br />
         <div className="form-group">
           <label>Nombre</label>
@@ -283,7 +259,7 @@ export const ListaModal = ({ idEleccion }) => {
             type="text"
             className="form-control"
             placeholder="Descripcion"
-            rows="5"
+            rows="3"
             name="descripcion"
             value={descripcion}
             onChange={handleInputChange}

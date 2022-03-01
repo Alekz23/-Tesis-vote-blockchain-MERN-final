@@ -8,6 +8,7 @@ import { listaStartLoading } from '../../actions/lists';
 import { candidatoClearActiveCandidato, candidatoStartAddNew, candidatoStartLoading, candidatoStartUpdate } from '../../actions/candidates';
 import Swal from 'sweetalert2';
 import { fileUpload } from '../../helpers/fileUpload';
+import { cargoStartLoading } from '../../actions/cargos';
 
 
 
@@ -42,11 +43,19 @@ export const CandidatoModal = ({ idLista }) => {
     const { activeCandidato } = useSelector(state => state.candidato);
     const [lists] = useSelector(state => [state.lista.lista]);
 
+    const [cargos] = useSelector(state => [state.cargo.cargos]);
+
     // const [lists] = useSelector(state => [state.lista.lista]);
 
     useEffect(() => {
 
         dispatch(listaStartLoading());
+
+    }, [dispatch])
+
+    useEffect(() => {
+
+        dispatch(cargoStartLoading());
 
     }, [dispatch])
 
@@ -96,12 +105,11 @@ export const CandidatoModal = ({ idLista }) => {
     //tomar todos los valores del formulario al dar al boton guardar
     const handleSubmitForm = (e) => {
 
-
         const nuevo = {
             ...formValues, lista:
                 idLista, cargo: formValues.cargo === '' ?
-                    "Presidente"
-                    : formValues.cargo
+                    cargos[0].nombre
+                    : cargo
         }
 
 
@@ -176,7 +184,7 @@ export const CandidatoModal = ({ idLista }) => {
             overlayClassName="modal-fondo"
         >
 
-            <h1> {(activeCandidato) ? 'Editar candidato' : 'Nuevo candidato'} </h1>
+            <h2> {(activeCandidato) ? 'Editar candidato' : 'Nuevo candidato'} </h2>
             <hr />
             <form className="container" onSubmit={handleSubmitForm}>
                 <div className="form-group">
@@ -203,21 +211,6 @@ export const CandidatoModal = ({ idLista }) => {
                             />
                         </div>
                     )}
-                {/* <div className="form-group">
-                    <select className="form-control"
-                        name="lista"
-                        value={lista}
-                        onChange={handleInputChange}>
-
-                        {
-                            lists.map(lista => (
-                                <option key={lista.id} value={lista.id} > {lista.nombre} </option>
-                            ))
-                        }
-
-                    </select>
-                    <small id="emailHelp" className="form-text text-muted">Listas de las elecciones</small>
-                </div> */}
 
                 <div className="form-group">
                     <label>Nombre</label>
@@ -250,11 +243,11 @@ export const CandidatoModal = ({ idLista }) => {
                         name="cargo"
                         value={cargo}
                         onChange={handleInputChange}>
-
-                        <option value="Presidente"> Presidente</option>
-                        <option value="Vicepresidente">Vicepresidente</option>
-                        <option value="Secretario">Secretario</option>
-                        <option value="Tesorero">Tesorero</option>
+                        {
+                            cargos.map(cargo => (
+                                <option key={cargo.id} > {cargo.nombre} </option>
+                            ))
+                        }
 
                     </select>
                     <small id="emailHelp" className="form-text text-muted">Cargo del candidato</small>

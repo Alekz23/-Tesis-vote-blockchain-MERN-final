@@ -9,6 +9,7 @@ import { EleccionModal } from './EleccionModal';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Table  from 'react-bootstrap/Table';
 
 
 
@@ -100,9 +101,12 @@ export const EleccionScreen = () => {
 
 
 
-    <div >
+    <div>
       <br />
       <h2 className="titulos">Elecciones</h2>
+
+     
+
       <button
         className="btn btn-success fab " onClick={openModal}>
         <i className="fas fa-plus"></i>
@@ -111,8 +115,9 @@ export const EleccionScreen = () => {
 
       <br />
       <ToastContainer></ToastContainer>
-      <div className="form-screen">
-        <table className="table">
+      <div >
+        
+        <Table className="titulos">
           <thead>
             <tr>
               <th>Nombre</th>
@@ -133,7 +138,7 @@ export const EleccionScreen = () => {
                     <td>{moment(eleccion.end).format('YYYY-MM-DD HH:mm:ss')}</td>
                     <td>
                       <button
-                        className="btn btn-primary"
+                        className="btn btn-primary userListEdit"
                         onClick={() => onSelectElection(eleccion)}
 
                       >
@@ -141,7 +146,7 @@ export const EleccionScreen = () => {
                       </button>
                       {"   "}
                       <button
-                        className="btn btn-danger"
+                        className="btn btn-danger userListEdit"
                         onClick={() => onDeletElection(eleccion)}
                       >
                         <i className="fas fa-trash-alt"></i>
@@ -151,7 +156,7 @@ export const EleccionScreen = () => {
                 );
               })}
           </tbody>
-        </table>
+        </Table>
       </div>
 
       <EleccionModal />
