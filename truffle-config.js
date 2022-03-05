@@ -58,6 +58,25 @@ module.exports = {
       gas: 4500000,
       gasPrice: 10000000000
     },
+
+    bscTestnet: {
+      provider: () => new HDWalletProvider(mnemonic, `https://data-seed-prebsc-1-s1.binance.org:8545`),
+      network_id: 97,
+      confirmations: 10,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
+
+    matic: {
+      provider: () => new HDWalletProvider(mnemonic, `https://polygon-mumbai.infura.io/v3/908be0642b3f43148b3b16102c2f7222`),
+      
+      //provider: () => new HDWalletProvider(mnemonic, `https://rpc-mumbai.maticvigil.com`),
+      network_id: 80001,
+      confirmations: 2,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
+  
     // Another network with more advanced options...
     // advanced: {
     // port: 8777,             // Custom port

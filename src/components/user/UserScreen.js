@@ -1,18 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiOpenModal } from '../../actions/ui';
 import Swal from 'sweetalert2';
 
 
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { userSetActive, userStartAddNew, userStartDelete, userStartLoading } from '../../actions/users';
+import { userSetActive, userStartAddNew, userStartDelete, userStartLoading, userStartUpdate } from '../../actions/users';
 import { UserModal } from './UserModal';
 import { Table } from 'react-bootstrap';
 import * as XLSX from 'xlsx';
+import { getStats, init } from '../../helpers/getWeb3Vote';
 
-
+let cont=0;
 let file;
+//let tamaño = 0;
 
 export const UserScreen = () => {
 
@@ -20,6 +22,7 @@ export const UserScreen = () => {
 
   const [users] = useSelector(state => [state.user.usuarios]);
 
+  const [stats, setStats] = useState()
   //para controlar si tiene listas cada eleccion 
 
   //console.log(elections, "si llega estos datos");
@@ -33,6 +36,8 @@ export const UserScreen = () => {
 
   }, [dispatch])
 
+
+
   const openModal = () => {
     dispatch(uiOpenModal());
   }
@@ -42,6 +47,65 @@ export const UserScreen = () => {
     dispatch(uiOpenModal());
     //console.log(e)
   }
+
+
+  useEffect(() => {
+  
+    init();
+    obtenerListas();
+  }, [])
+
+  
+  
+  const obtenerListas = () => {
+
+
+    getStats()
+      .then(tx => {
+
+
+        console.log(tx);
+        let tamaño = tx.length;
+        
+          setStats(tamaño);
+        
+        
+        console.log('es lo q va ', tx.length);
+
+        //en caso de error al no desplegar la blockchain , borrar este if y metdoo
+        // if (tamaño === 0) {
+        //   resetStatusVote()
+        // }
+        //setproposal(tx)
+      })
+      .catch(err => console.log(err))
+  }
+
+ 
+
+  const resetStatusVote = () => {
+  
+    console.log('ingresa a cambiar ststaus', users.length);
+    for (let i = 0; i < users.length; i++) {
+      //console.log(users.length)
+      const data = {
+        _id: users[i]._id,
+        cedula: users[i].cedula,
+        nombre: users[i].nombre,
+        correo: users[i].correo,
+        rol: users[i].rol,
+        vote: false //true
+      }
+      console.log('esto pasa maldita', data);
+      dispatch(userStartUpdate(data));
+    }
+
+
+    dispatch(userStartLoading());
+  }
+
+ 
+
 
   const onDeletUser = (e) => {
     dispatch(userSetActive(e));
@@ -123,9 +187,37 @@ export const UserScreen = () => {
     //console.log(XL_row_object, 'metodo add bdd');
   }
 
+  ///test take dates of blockchain
 
 
-  // console.log('llega a elecc');
+
+  console.log(stats, 'stas cargado 1');
+
+  if (users.length===0) return <div className="padre">
+
+  <div className="spinner">
+    <span>Loading users...</span>
+    <div className="half-spinner"></div>
+  </div>
+</div>
+
+
+
+  if (stats===undefined ) return <div className="padre">
+
+    <div className="spinner">
+      <span>Loading...</span>
+      <div className="half-spinner"></div>
+    </div>
+  </div>
+  console.log(stats, 'stas cargado');
+
+  if (stats === 0 && cont===0) {
+    resetStatusVote()
+    console.log('cuantas veces entra', cont);
+    cont=1;
+  }
+
   return (
 
 
@@ -134,12 +226,12 @@ export const UserScreen = () => {
       <br />
       <h2 className="titulos">Usuarios</h2>
 
-      <br/>
+      <br />
       <div className="container">
         <div className="row">
           <div className="col">
-         
-            <input 
+
+            <input
               id="file"
               type="file"
               name="file"
@@ -147,15 +239,15 @@ export const UserScreen = () => {
               // style={{ display: 'none' }}
               onChange={handleFileChange}
             />
-             <small id="emailHelp" className="form-text text-muted">Archivo de Excel</small>
-            
+            <small id="emailHelp" className="form-text text-muted">Archivo de Excel</small>
+
           </div>
 
           <div className="col">
             <button
               className="btn btn-dark userListEdit" onClick={saveListasBDD}>
               <i className="fa-solid fa-file-csv"> </i>
-              Cargar listas
+              <span> Cargar usuarios</span>
             </button>
           </div>
 
@@ -182,7 +274,7 @@ export const UserScreen = () => {
             <tr>
 
               <th>Nombre</th>
-              <th>Cedula</th>
+              <th>Cédula</th>
               <th>Correo</th>
               <th>Rol</th>
               <th>Vote</th>
@@ -200,18 +292,18 @@ export const UserScreen = () => {
                     <td>{usuario.correo}</td>
                     <td>{usuario.rol}</td>
                     <td>{
-                      usuario.vote === true && usuario.rol!=='ADMIN_ROLE'?
+                      usuario.vote === true && usuario.rol !== 'ADMIN_ROLE' ?
                         <button
                           className="btn btn-success userListStatus"
                         >
                           <i className="fa-solid fa-check"></i>
                         </button>
-                        : usuario.vote === false && usuario.rol!=='ADMIN_ROLE'?
-                        <button
-                          className="btn btn-dark userListStatus">
-                          <i class="fa-brands fa-mixer"></i>
-                        </button>
-                        : ''
+                        : usuario.vote === false && usuario.rol !== 'ADMIN_ROLE' ?
+                          <button
+                            className="btn btn-dark userListStatus">
+                            <i class="fa-brands fa-mixer"></i>
+                          </button>
+                          : ''
 
                     }</td>
 

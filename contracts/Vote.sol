@@ -100,7 +100,7 @@ contract Vote {
         if(winningProposal()==99){
             winnerName_=empateLists();
         }else{
-            winnerName_ =string(abi.encodePacked(proposals[winningProposal()].name, "  Total de votos: ", 
+            winnerName_ =string(abi.encodePacked(proposals[winningProposal()].name, "  ","  Total de votos: ", 
                     uint2str(proposals[winningProposal()].voteCount)));
         }
         

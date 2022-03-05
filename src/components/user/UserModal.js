@@ -189,7 +189,7 @@ export const UserModal = () => {
           <input
             type="text"
             className={`form-control ${!cedulaValid && 'is-invalid'} `}
-            placeholder="cedula"
+            placeholder="cédula"
             name="cedula"
             autoComplete="off"
             value={cedula}

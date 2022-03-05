@@ -10,6 +10,8 @@ export const userStartAddNew = ( user ) => {
 
         const { uid, name } = getState().auth;
 
+     try {
+         
      
             const resp = await fetchConToken('auth/new', user, 'POST');
             const body = await resp.json();
@@ -46,6 +48,10 @@ export const userStartAddNew = ( user ) => {
                   });
 
             }
+            //despes
+        } catch (error) {
+            console.log(error);
+        }
 
 
     }

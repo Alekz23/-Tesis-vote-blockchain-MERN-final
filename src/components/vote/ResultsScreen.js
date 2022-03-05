@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import { Doughnut } from 'react-chartjs-2';
 import { getStats, getWinner, init } from '../../helpers/getWeb3Vote';
 import { ToastContainer } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { electionStartLoading } from '../../actions/elections';
 import moment from 'moment';
 import { userStartLoading } from '../../actions/users';
-import 'chart.piecelabel.js';
+//import 'chart.piecelabel.js';
 
 //--------------IMPORTANTE----------------
 // page de graficos https://js.devexpress.com/Demos/WidgetsGallery/Demo/Charts/FunnelChart/React/Light/
@@ -68,7 +67,7 @@ const dataset = {
 //fecha actual
 //const momentEnd = moment(end);
 let listasJson = [];
-const seconds = 120
+//const seconds = 120
 export const ResultsScreen = () => {
 
 
@@ -111,9 +110,9 @@ export const ResultsScreen = () => {
     listasJson = []
     init();
     getStatsF()
-    setInterval(() => {
-      getStatsF()
-    }, (seconds * 1000)); // sec * millsecs
+    // setInterval(() => {
+    //   getStatsF()
+    // }, (seconds * 1000)); // sec * millsecs
   }, [])
 
 
@@ -190,6 +189,7 @@ export const ResultsScreen = () => {
   }
 
   const end = moment(elections[0].end);
+  const nameElection= (elections[0].nombre);
 
 
 
@@ -199,17 +199,36 @@ export const ResultsScreen = () => {
 
   console.log(stats, 'final data')
 
-  function customizeText(arg) {
-    return `votos: ${arg.valueText} (${arg.percentText})`;
+  // function customizeText(arg) {
+  //   console.log(arg, 'trae');
+  //   //console.log(`votos: ${arg.valueText} (${arg.percentText})`, 'cada grafica');
+  //   return `votos: ${arg.valueText} (${arg.percentText})`;
+  // }
+
+  function roundToTwo(num) {
+    return +(Math.round(num + "e+2")  + "e-2");
+}
+
+  function customizeText2(arg) {
+    let porc = (100 / totalVotantes());
+  
+    
+    //return `votos: ${arg.valueText} (${(arg.value*porc).toFixed(2)}%)`;
+    return `votos: ${arg.valueText} (${roundToTwo(arg.value*porc)}%)`;
   }
 
 
 
+  if (totalVotantes() === 0) return <span>No hay votantes</span>
+  if (elections.length === 0) return <span>Loading</span>
+  if (users.length === 0) return <span>Loading</span>
+  if (!stats) return <div className="padre">
 
-  if (totalVotantes() === 0) return <h1>No hay votantes</h1>
-  if (elections.length === 0) return <h1>Loading</h1>
-  if (users.length === 0) return <h1>Loading</h1>
-  if (!stats) return <h1>Loading stats</h1>
+    <div className="spinner">
+      <span>Loading...</span>
+      <div className="half-spinner"></div>
+    </div>
+  </div>
   console.log(listasJson, 'a json');
 
   return <div>
@@ -218,7 +237,7 @@ export const ResultsScreen = () => {
 
 <div>
 
-    <h2 className="titulos"> Resultados de la Eleccion</h2>
+    <h2 className="titulos"> Resultados de la {nameElection}</h2>
 
     <div className="form-group">
       <small id="emailHelp" className="form-text text-muted">Seleccione el tipo de grafico</small>
@@ -228,7 +247,7 @@ export const ResultsScreen = () => {
         onChange={handleInputChange}>
 
 
-        <option key={1} value={1}> Gráfico de circular </option>
+        <option key={1} value={1}> Gráfico circular </option>
         <option key={2} value={2}> Gráfico de barras </option>
         <option key={3} value={3}> Gráfico de barras Slide </option>
       </select>
@@ -254,7 +273,7 @@ export const ResultsScreen = () => {
           <Label
             visible={true}
             position="columns"
-            customizeText={customizeText}>
+            customizeText={customizeText2}>
             <Font size={16} />
             <Connector visible={true} width={0.5} />
           </Label>
@@ -262,34 +281,30 @@ export const ResultsScreen = () => {
       </PieChart>
 
       : tipoGrafico === "2" ?
-        <Chart
-          id="chart"
-          palette="Soft"
-          dataSource={listasJson}>
-          <CommonSeriesSettings
-            argumentField="name"
-            valueField="voteCount"
-            type="bar"
-            ignoreEmptyPoints={true}
-
-          >
-           
-            <Label
-              visible={true}
-              position="columns"
-              customizeText={customizeText}>
-              <Font size={16} />
-              <Connector visible={true} width={0.5} />
-            </Label>
-          </CommonSeriesSettings>
-          
-          <SeriesTemplate nameField="name" />
-          <Title
-          // text="Age Breakdown of Facebook Users in the U.S."
-          // subtitle="as of January 2017"
-          />
-          <Export enabled={true} />
-        </Chart>
+      <Chart
+      id="chart"
+      palette="Soft"
+      dataSource={listasJson}>
+      <CommonSeriesSettings
+        argumentField="name"
+        valueField="voteCount"
+        type="bar"
+        ignoreEmptyPoints={true}
+      >
+         <Label
+                visible={true}
+                position="columns"
+                customizeText={customizeText2}>
+                <Font size={15} />
+              
+              </Label>
+        </CommonSeriesSettings>
+      <SeriesTemplate nameField="name" />
+      {/* <Title
+        text= {`resulatdo de la `+ nameElection} 
+        subtitle="as of January 2017"
+      /> */}
+    </Chart>
         : tipoGrafico === "3" ?
           <Chart
             id="chart"
@@ -307,8 +322,8 @@ export const ResultsScreen = () => {
               <Label
                 visible={true}
                 position="columns"
-                customizeText={customizeText}>
-                <Font size={16} />
+                customizeText={customizeText2}>
+                <Font size={15} />
                 <Connector visible={true} width={0.5} />
               </Label>
             </CommonSeriesSettings>
@@ -337,7 +352,7 @@ export const ResultsScreen = () => {
               <Label
                 visible={true}
                 position="columns"
-                customizeText={customizeText}>
+                customizeText={customizeText2}>
                 <Font size={16} />
                 <Connector visible={true} width={0.5} />
               </Label>
@@ -361,7 +376,7 @@ export const ResultsScreen = () => {
           }
           {
             winner &&
-            <p className='my-2'>Actual winner: {winner}</p>
+            <h4 className='my-2'>Actual winner: {winner}</h4>
           }
 
 
@@ -369,7 +384,7 @@ export const ResultsScreen = () => {
 
         <div className='d-flex justify-content-between my-2'>
           <button type="button" name="vote" id="vote" className="btn btn-primary" onClick={getWinnerF}>get winner</button>
-          <button type="button" name="vote" id="vote" className="btn btn-primary" onClick={getStatsF}>get stats</button>
+          {/* <button type="button" name="vote" id="vote" className="btn btn-primary" onClick={getStatsF}>get stats</button> */}
           {/* <button type="button" name="vote" id="vote" className="btn btn-primary" onClick={obtenerListas}>blockchain</button> */}
         </div>
       </div>
