@@ -101,7 +101,7 @@ export const EleccionScreen = () => {
 
 
 
-    <div>
+    <div >
       <br />
       <h2 className="titulos">Elecciones</h2>
 
@@ -115,9 +115,9 @@ export const EleccionScreen = () => {
 
       <br />
       <ToastContainer></ToastContainer>
-      <div >
+      <div className="table-responsive-sm">
         
-        <Table className="titulos">
+        <Table className="titulos table table-hover">
           <thead>
             <tr>
               <th>Nombre</th>

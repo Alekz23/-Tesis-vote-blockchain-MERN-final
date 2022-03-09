@@ -18,11 +18,11 @@
  *
  */
 
-// const HDWalletProvider = require('@truffle/hdwallet-provider');
+ const HDWalletProvider = require('@truffle/hdwallet-provider');
 //
 // const fs = require('fs');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
-var HDWalletProvider = require("truffle-hdwallet-provider")
+//var HDWalletProvider = require("truffle-hdwallet-provider")
 var mnemonic = "piece wreck ranch immense summer observe orbit peasant giraffe wool radar poet"
 
 module.exports = {
@@ -68,13 +68,17 @@ module.exports = {
     },
 
     matic: {
-      provider: () => new HDWalletProvider(mnemonic, `https://polygon-mumbai.infura.io/v3/908be0642b3f43148b3b16102c2f7222`),
-      
+      //provider: () => new HDWalletProvider(mnemonic, `https://polygon-mumbai.infura.io/v3/908be0642b3f43148b3b16102c2f7222`),
+      //nodo matic funcionando
+      //https://rpc.maticvigil.com/
+      provider: () => new HDWalletProvider(mnemonic, `https://rpc-mumbai.maticvigil.com/v1/8d9378fdfa5c3bb88018bb2e1e9d958578dc98a8`),
+
       //provider: () => new HDWalletProvider(mnemonic, `https://rpc-mumbai.maticvigil.com`),
       network_id: 80001,
       confirmations: 2,
       timeoutBlocks: 200,
-      skipDryRun: true
+      skipDryRun: true,
+    
     },
   
     // Another network with more advanced options...

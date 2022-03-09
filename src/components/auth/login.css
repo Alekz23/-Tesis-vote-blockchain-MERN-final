@@ -50,3 +50,7 @@
     font-weight: 600;
     text-decoration: none;
 }
+
+.fondo-login{
+    background-image:url(voteFondo.jpg);
+    }

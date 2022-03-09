@@ -35,7 +35,6 @@
     "redux-thunk": "^2.3.0",
     "save": "^2.4.0",
     "sweetalert2": "^10.6.1",
-    "truffle-hdwallet-provider": "^1.0.17",
     "udv-ec": "^1.0.1",
     "web3": "^1.7.0",
     "xlsx": "^0.18.2"

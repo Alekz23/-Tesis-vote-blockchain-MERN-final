@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link, NavLink} from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { Link, NavLink } from 'react-router-dom';
 import { startLogout } from '../../actions/auth';
 
 
@@ -9,42 +9,50 @@ import { startLogout } from '../../actions/auth';
 export const NavUser = () => {
 
     const dispatch = useDispatch();
-    const { name } = useSelector( state => state.auth );
+    const { name } = useSelector(state => state.auth);
 
 
     const handleLogout = () => {
         //history.replace('/login');
-        dispatch( startLogout() );
+        dispatch(startLogout());
     }
 
 
+
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-            
-            <Link 
-                className="navbar-brand" 
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <Link
+                className="navbar-brand"
                 to="/"
             >
                 Vote
             </Link>
 
-            
 
-            <div className="form-inline my-2 my-lg-0">
-                <ul className="navbar-nav ml-auto">
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav mr-auto">
+                </ul>
 
-                    <span className="nav-item nav-link text-info">
-                        { name }
+                <ul className="navbar-nav ml-auto ">
+
+                <span className="nav-item nav-link text-info">
+                        {name}
                     </span>
-                    
-                    <button 
-                        className="nav-item nav-link btn" 
-                        onClick={ handleLogout }
-                    >
-                        Logout
-                    </button>
+                
+                        <button
+                            className="btn btn-outline-danger "
+                            onClick={handleLogout}
+                        >
+                            <i className="fas fa-sign-out-alt"></i>
+                            <span> Salir</span>
+                        </button>
+            
                 </ul>
             </div>
+
         </nav>
     )
 }

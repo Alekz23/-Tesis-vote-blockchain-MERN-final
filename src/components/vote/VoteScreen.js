@@ -5,13 +5,11 @@ import { listaStartLoading } from '../../actions/lists';
 
 import { getStats, init, vote } from '../../helpers/getWeb3Vote';
 
-
 import Swal from 'sweetalert2';
 import { electionStartLoading } from '../../actions/elections';
 import moment from 'moment';
 import { Table } from 'react-bootstrap';
 import { userStartLoading, userStartUpdate } from '../../actions/users';
-
 
 
 // const initialState = [
@@ -36,7 +34,6 @@ export const VoteScreen = () => {
 
   const [elections] = useSelector(state => [state.eleccion.election]);
   //testeando listas de elecciones de
-  const [tests] = useSelector(state => [state.eleccion.election]);
   // const { election: elections } = useSelector(state => state.eleccion);
 
 
@@ -103,9 +100,7 @@ export const VoteScreen = () => {
 
       }
     }
-
-
-    console.log(nuevo, 'nueva lista con o sin vot B/n')
+    //console.log(nuevo, 'nueva lista con o sin vot B/n')
   }
 
   const buscarUsuario = () => {
@@ -119,12 +114,10 @@ export const VoteScreen = () => {
           vote: true
         }
         dispatch(userStartUpdate(data));
-        //dispatch(userStartLoading());
-        console.log(data, 'ya voto ver');
+        //console.log(data, 'ya voto ver');
       }
     }
   }
-
 
   const onSelectElection = (e) => {
 
@@ -170,21 +163,16 @@ export const VoteScreen = () => {
               Swal.close();
               buscarUsuario();
               //Swal.fire("Enviado", "Voto generado con exito!", "success");
-              let url= `https://testnet.bscscan.com/tx/ ${tx.transactionHash}`;
-            
+              let url = `https://testnet.bscscan.com/tx/ ${tx.transactionHash}`;
+
               Swal.fire({
                 icon: 'success',
                 title: 'Voto generado con exito!',
-                //footer:(textoActivo.link(url))
                 footer: '<a id="enlace" href="">Url del voto</a>'
               })
               var elemento = document.getElementById("enlace");
               elemento.href = url
-              elemento.target="_blank"
-
-              console.log(tx.transactionHash, 'del voto tx');
-              console.log(tx, 'toda info')
-              console.log("https://rinkeby.etherscan.io/tx/", tx.transactionHash)
+              elemento.target = "_blank"
               setState(initialState)
             })
             .catch(err => {
@@ -217,13 +205,9 @@ export const VoteScreen = () => {
     getStats()
       .then(tx => {
         tamaño = tx.length;
-        //setproposal(tx)
       })
       .catch(err => console.log(err))
   }
-
-
-
 
   //...---------------------------
 
@@ -237,7 +221,6 @@ export const VoteScreen = () => {
 
   const start = moment(elections[0].start);
   const end = moment(elections[0].end);
-
   const now = moment().seconds(0).add(0, 'hours'); // 3:00:00
   const fechaActual = now;
 
@@ -249,102 +232,85 @@ export const VoteScreen = () => {
   if (users.length === 0) return <span>No hay electores registrados</span>
   obtenerListas();
 
-  console.log('estats actual', stats);
-  // if (!stats) return <div className="spinner">
-  //   <span> no aparece...</span>
-  //   <div className="half-spinner"></div>
-  // </div>
-if(stats===0){
-  console.log('sin listas en la blockchain!');
-}
-  if(stats === 0) return <div className="padre">
-        <div className="spinner">
-          <span>Loading...</span>
-          <div className="half-spinner"></div>
-        </div>
-      </div>
+  //console.log('estats actual', stats);
+
+  if (stats === 0) {
+    console.log('sin listas en la blockchain!');
+  }
+  if (stats === 0) return <div className="padre">
+    <div className="spinner">
+      <span>Loading...</span>
+      <div className="half-spinner"></div>
+    </div>
+  </div>
 
   return (
     <div >
 
-          <h2 className="titulos">Listas</h2>
+      <h2 className="titulos">Listas</h2>
 
-          {(fechaActual.isSameOrAfter(start) && fechaActual < end) ? <div>
-            <br />
-            <div >
-              <Table className="titulos">
-                <thead>
-                  <tr>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Descripcion</th>
-                    <th scope="col">Imagen</th>
-                    <th scope="col">Candidatos</th>
-                    <th scope="col">Votar</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    nuevo.map((lista, index) => {
-                      return (
-                        <tr key={lista.id} >
+      {(fechaActual.isSameOrAfter(start) && fechaActual < end) ? <div>
+        <br />
+        <div className="table-responsive-sm">
+          <Table className="titulos table table-hover table-sm">
+            <thead>
+              <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Imagen</th>
+                <th scope="col">Candidatos</th>
+                <th scope="col">Votar</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                nuevo.map((lista, index) => {
+                  return (
+                    <tr key={lista.id} >
 
-                          <td>{lista.nombre}</td>
-                          <td>{lista.descripcion}</td>
+                      <td data-label="Nombre">{lista.nombre}</td>
+                      <td data-label="Descripción">{lista.descripcion}</td>
 
-                          <td>
-                            {
-                              (lista.img)
-                              && (
+                      <td data-label="Imagen">
+                        {
+                          (lista.img)
+                          && (
 
-                                <div className="votes__image">
-                                  <img className='imgCentrar'
-                                    src={lista.img}
-                                    alt=""
-                                  />
-                                </div>
-                              )}
-                          </td>
+                            <div className="votes__image">
+                              <img className='imgCentrar'
+                                src={lista.img}
+                                alt=""
+                              />
+                            </div>
+                          )}
+                      </td>
 
-                          <td>{candidatos.map((candidate) => {
-                            // return <td> {candidate.lista._id.search(lista.id) ? candidate.nombre :'no hay candidatos'} </td>
-                            return <p key={candidate.id}> {lista.id?.search(candidate.lista?._id) ? '' : `${candidate.nombre} ${candidate.apellido}: ${candidate.cargo} `} </p>
+                      <td data-label="Candidatos">{candidatos.map((candidate) => {
+                        return <p key={candidate.id}> {lista.id?.search(candidate.lista?._id) ? '' : `${candidate.nombre} ${candidate.apellido}: ${candidate.cargo} `} </p>
+                      })}</td>
 
-                          })}</td>
-
-                          <td>
-                            <button
-                              className="btn btn-primary"
-                              onClick={() => onSelectElection(index)}
-
-                            >
-                              <i className="fas fa-vote-yea"></i>
-                            </button>
-
-                          </td>
-                        </tr>
-                      );
-                    })}
-                </tbody>
-              </Table>
-            </div>
-
-
-
-          </div>
-            :
-            <div>
-
-              <h1 className='titulos'>Eleccion Inactiva</h1>
-              <h2 className='titulos'>Fecha de inicio: {moment(start).format('YYYY-MM-DD HH:mm:ss')}</h2>
-              <h2 className='titulos'>Fecha de fin: {moment(end).format('YYYY-MM-DD HH:mm:ss')}</h2>
-
-
-            </div>
-
-          }
-
-       
-
+                      <td>
+                        <button
+                          className="btn btn-primary"
+                          onClick={() => onSelectElection(index)}
+                        >
+                          <i className="fas fa-vote-yea fa-lg"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </Table>
+        </div>
+      </div>
+        :
+        <div>
+          <h1 className='titulos'>Eleccion Inactiva</h1>
+          <h2 className='titulos'>Fecha de inicio: {moment(start).format('YYYY-MM-DD HH:mm:ss')}</h2>
+          <h2 className='titulos'>Fecha de fin: {moment(end).format('YYYY-MM-DD HH:mm:ss')}</h2>
+        </div>
+      }
     </div>
   );
 }

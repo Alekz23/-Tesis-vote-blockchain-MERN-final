@@ -11,7 +11,6 @@ import { fileUpload } from '../../helpers/fileUpload';
 import { cargoStartLoading } from '../../actions/cargos';
 
 
-
 const customStyles = {
     content: {
         top: '50%',
@@ -32,7 +31,6 @@ const initEvent = {
     img: ''
 }
 
-
 export const CandidatoModal = ({ idLista }) => {
 
 
@@ -42,57 +40,36 @@ export const CandidatoModal = ({ idLista }) => {
     const dispatch = useDispatch(); //modifica el estado de las funciones
     const { activeCandidato } = useSelector(state => state.candidato);
     const [lists] = useSelector(state => [state.lista.lista]);
-
     const [cargos] = useSelector(state => [state.cargo.cargos]);
 
-    // const [lists] = useSelector(state => [state.lista.lista]);
 
     useEffect(() => {
-
         dispatch(listaStartLoading());
-
     }, [dispatch])
 
     useEffect(() => {
-
         dispatch(cargoStartLoading());
-
     }, [dispatch])
 
-
-    //const [dateStart, setDateStart] = useState(now.toDate()); //estado de las fechas del form
-    //const [dateEnd, setDateEnd] = useState(nowPlus1.toDate()); //estdo fin de la fecha del form
 
     const [formValues, setFormValues] = useState(initEvent);
-    const { nombre, apellido, cargo, lista, img } = formValues;
-
-    //estados para validaciones+
+    const { nombre, apellido, cargo, img } = formValues;
     const [titleValid, setTitleValid] = useState(true);
 
     useEffect(() => {
         if (activeCandidato) {
             setFormValues(activeCandidato);
-            //console.log('complet stado')
         } else {
             setFormValues(initEvent);
-            //console.log('borrando stado')
         }
     }, [activeCandidato, setFormValues])
 
-    //console.log(activeElection)
-
-
 
     const closeModal = (e) => {
-        //setIsOpen(false);
         dispatch(uiCloseModal());
         dispatch(candidatoClearActiveCandidato);
-        //dispatch(candidatoStartLoading());
         setFormValues(initEvent); //se cierra el modal y los valores se borran
-
     }
-
-
 
     //con el valor de los inputs por medio del name, agrega al state del formValues
     const handleInputChange = ({ target }) => {
@@ -114,11 +91,6 @@ export const CandidatoModal = ({ idLista }) => {
 
 
         e.preventDefault();
-        //console.log(nuevo, 'como envia el candidato')
-        //console.log(formValues, 'enviados desde el form')
-
-        //validaciones
-
 
         if (nombre.trim().length < 2) {
             return setTitleValid(false);
@@ -129,8 +101,6 @@ export const CandidatoModal = ({ idLista }) => {
         } else {
             dispatch(candidatoStartAddNew(nuevo));
         }
-
-
         setTitleValid(true);
         dispatch(candidatoStartLoading());
         closeModal();
@@ -139,9 +109,7 @@ export const CandidatoModal = ({ idLista }) => {
 
     const startUploading = (file) => {
         return async () => {
-
-            console.log(file);
-
+            //console.log(file);
             Swal.fire({
                 title: 'Uploading...',
                 text: 'Please wait...',
@@ -150,26 +118,21 @@ export const CandidatoModal = ({ idLista }) => {
                     Swal.showLoading();
                 }
             });
-
             const fileUrl = await fileUpload(file);
-            console.log(fileUrl)
+            //console.log(fileUrl)
             setFormValues({ ...formValues, img: fileUrl })
-
             Swal.close();
 
         }
     }
     //toma los valores del archivo seleccionado
     const handleFileChange = (e) => {
-        console.log(e.target.files);
+        //console.log(e.target.files);
         const file = e.target.files[0];
         if (file) {
             dispatch(startUploading(file));
         }
-
-        console.log(img, 'haber q esta en el state')
-
-
+        //console.log(img, 'haber q esta en el state')
     }
 
 
@@ -183,27 +146,20 @@ export const CandidatoModal = ({ idLista }) => {
             className="modal"
             overlayClassName="modal-fondo"
         >
-
             <h2> {(activeCandidato) ? 'Editar candidato' : 'Nuevo candidato'} </h2>
             <hr />
             <form className="container" onSubmit={handleSubmitForm}>
                 <div className="form-group">
                     <input
-                        //id="fileSelector"
                         type="file"
                         name="file"
-                        // style={{ display: 'none' }}
                         onChange={handleFileChange}
                     />
-
-
                     <small id="emailHelp" className="form-text text-muted">Imagen de la lista</small>
                 </div>
-
                 {
                     (img)
                     && (
-
                         <div className="notes__image">
                             <img className='imgCentrar'
                                 src={img}
@@ -260,9 +216,7 @@ export const CandidatoModal = ({ idLista }) => {
                     <i className="far fa-save"></i>
                     <span> Guardar</span>
                 </button>
-
             </form>
-
         </Modal>
     )
 }

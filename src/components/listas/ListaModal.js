@@ -40,53 +40,24 @@ export const ListaModal = ({ idEleccion }) => {
 
   const { election: elections } = useSelector(state => state.eleccion);
 
-  //modificando el sleector para mandar la eleccion desde reducer
-  //const [listas] = useSelector(state => [state.byId.election]);
-
-  // useEffect(() => {
-  //   console.log('change global lits');
-
-  // }, [listas])
-
-
-
-  //carga las eleccione
-
-  //console.log(elections);
   useEffect(() => {
-
     dispatch(electionStartLoading());
-    console.log('use efect active')
-
   }, [dispatch])
 
 
   const [formValues, setFormValues] = useState(initEvent);
-  const { nombre, descripcion, eleccion, img } = formValues;
+  const { nombre, descripcion, img } = formValues;
 
   //estados para validaciones+
   const [titleValid, setTitleValid] = useState(true);
-  //para imagenes test
-  //const [img, setimg] = useState("");
-
-
-  // useEffect(() => {
-
-  // },[img])
-
-
 
   useEffect(() => {
     if (activeLista) {
       setFormValues(activeLista);
-
     } else {
       setFormValues(initEvent);
-
     }
   }, [activeLista, setFormValues])
-
-  //console.log(activeElection)
 
 
   const closeModal = (e) => {
@@ -95,8 +66,6 @@ export const ListaModal = ({ idEleccion }) => {
     dispatch(listaClearActiveLista());
     //dispatch(listaStartLoading());
     setFormValues(initEvent); //se cierra el modal y los valores se borran
-
-
   }
 
 
@@ -106,8 +75,6 @@ export const ListaModal = ({ idEleccion }) => {
       ...formValues,
       [target.name]: target.value
     });
-
-    //console.log(formValues)
   }
 
   //tomar todos los valores del formulario al dar al boton guardar
@@ -127,9 +94,7 @@ export const ListaModal = ({ idEleccion }) => {
     // : idEleccion
     // }
     e.preventDefault();
-    //console.log(formValues, 'enviados desde el form')
 
-    //validaciones
     if (nombre.trim().length < 2) {
       return setTitleValid(false);
     }
@@ -139,15 +104,9 @@ export const ListaModal = ({ idEleccion }) => {
       dispatch(listaStartAddNew(nuevo));
     }
 
-
     setTitleValid(true);
     dispatch(listaStartLoading());
     closeModal();
-
-    //agregado para test
-    //dispatch(electionStartLoadingByList(listas[0].eleccion))
-
-
   }
 
 
@@ -159,12 +118,7 @@ export const ListaModal = ({ idEleccion }) => {
   //pasa el valor al img del objeto antes de crearse
   const startUploading = (file) => {
     return async () => {
-
-
-      console.log(file);
-      //console.log(activeLista);
-
-
+      //console.log(file);
       Swal.fire({
         title: 'Uploading...',
         text: 'Please wait...',
@@ -173,33 +127,24 @@ export const ListaModal = ({ idEleccion }) => {
           Swal.showLoading();
         }
       });
-
       const fileUrl = await fileUpload(file);
-      console.log(fileUrl)
+      //console.log(fileUrl)
       setFormValues({ ...formValues, img: fileUrl })
-
       Swal.close();
-
-
     }
   }
-//toma los valores del archivo seleccionado
+  //toma los valores del archivo seleccionado
   const handleFileChange = (e) => {
     console.log(e.target.files);
     const file = e.target.files[0];
     if (file) {
       dispatch(startUploading(file));
     }
-
-    console.log(img, 'haber q esta en el state')
-
-
+    //console.log(img, 'haber q esta en el state')
   }
 
+  if (elections.length === 0) return <span>Loading</span>
 
-
-
-  if (elections.length === 0) return <h1>Loading</h1>
   return (
     <Modal
       isOpen={modalOpen}
@@ -209,7 +154,6 @@ export const ListaModal = ({ idEleccion }) => {
       className="modal"
       overlayClassName="modal-fondo"
     >
-
       <h2> {(activeLista) ? 'Editar lista' : 'Nueva lista'} </h2>
       <hr />
       <form className="container" onSubmit={handleSubmitForm}>
@@ -229,7 +173,6 @@ export const ListaModal = ({ idEleccion }) => {
         {
           (img)
           && (
-
             <div className="notes__image">
               <img className='imgCentrar'
                 src={img}
@@ -251,7 +194,6 @@ export const ListaModal = ({ idEleccion }) => {
           />
           <small id="emailHelp" className="form-text text-muted">Una descripción corta</small>
         </div>
-
 
 
         <div className="form-group">
@@ -277,6 +219,6 @@ export const ListaModal = ({ idEleccion }) => {
 
       </form>
 
-    </Modal >
+    </Modal>
   )
 }

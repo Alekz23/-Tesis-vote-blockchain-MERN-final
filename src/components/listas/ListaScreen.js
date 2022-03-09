@@ -176,15 +176,12 @@ export const ListaScreen = () => {
     //setStats('true');
     getStats()
       .then(tx => {
-        console.log(tx,'estado actual');
+        //console.log(tx,'estado actual');
         tamaño = tx.length;
         let tamaño2 = tx.length;
         
           setStats(tamaño2);
-        
-        
-        console.log('es lo q va ', tx.length);
-        //setproposal(tx)
+        //console.log('es lo q va ', tx.length);
       })
       .catch(err => console.log(err))
   }
@@ -202,12 +199,10 @@ export const ListaScreen = () => {
 
   const limpiarListas = () => {
     for (let i = listasBlockchain.length; i > 0; i--) {
-      console.log('entra a borrar 1')
+      //console.log('entra a borrar 1')
       listasBlockchain.pop();
     }
   }
-
-
 
 
   const agregarListas = () => {
@@ -218,7 +213,6 @@ export const ListaScreen = () => {
       for (let index = 0; index < lists.length; index++) {
         listasBlockchain.push((lists[index].nombre));
       }
-      //cuando se deployed el new contrato en alguna blockchain cambia ls datos de la bdd
       if (tamaño === 0) {
         test(false);
 
@@ -242,7 +236,7 @@ export const ListaScreen = () => {
 
       }).then(resultado => {
         if (resultado.value) {
-          console.log('como llega el tamaño blockchain', tamaño)
+          //console.log('como llega el tamaño blockchain', tamaño)
           if (tamaño > 0) {
             toast.error('Ya tiene listas en la blockchain', {
               position: "top-right",
@@ -273,16 +267,13 @@ export const ListaScreen = () => {
               cancelButtonColor: '#d33',
               confirmButtonText: 'Si, agregar voto N/B!',
               cancelButtonText: 'No, solo listas',
-              // denyButtonColor: '#808080',
-              // showDenyButton: true,
-              // denyButtonText: 'Cancelar',
-
+            
             }).then((result) => {
               if (result.isConfirmed) {
 
                 listasBlockchain.push("Voto Blanco");
                 listasBlockchain.push("Voto Nulo");
-                console.log(listasBlockchain, 'esto es lo con votos bn')
+                //console.log(listasBlockchain, 'esto es lo con votos bn')
 
                 Swal.fire({
                   title: 'Agregando a blockchain...',
@@ -299,7 +290,7 @@ export const ListaScreen = () => {
                     Swal.close();
                     console.log(tx, 'addd a block');
                     tamaño=4;
-                    console.log('cuando se agrega a block con N/B', tamaño);
+                    //console.log('cuando se agrega a block con N/B', tamaño);
                     Swal.fire('Saved!', 'Se encuentra habilitado los votos nulos y blancos en el proceso electoral', 'success')
                   })
                   .catch(err => {
@@ -310,7 +301,7 @@ export const ListaScreen = () => {
                 /* Read more about handling dismissals below */
                 result.dismiss === Swal.DismissReason.cancel
               ) {
-                console.log(listasBlockchain, 'esto es lo q se piensa enviar sin voto nb')
+               //console.log(listasBlockchain, 'esto es lo q se piensa enviar sin voto nb')
 
                 Swal.fire({
                   title: 'Agregando a blockchain...',
@@ -326,7 +317,7 @@ export const ListaScreen = () => {
                     Swal.close();
                     console.log(tx, 'addd a block');
                     tamaño=4;
-                    console.log('cuando se agrega a block sin N/B', tamaño);
+                    //console.log('cuando se agrega a block sin N/B', tamaño);
                     swalWithBootstrapButtons.fire(
                       'Saved!', 'Inhabilitado los votos nulos y blancos para el proceso electoral', 'info')
                   })
@@ -357,7 +348,7 @@ export const ListaScreen = () => {
   }
 
   const handleFileChange = (e) => {
-    console.log(e.target.files);
+    //console.log(e.target.files);
     file = e.target.files[0];
     const target = e.target;
 
@@ -368,16 +359,16 @@ export const ListaScreen = () => {
       reader.onloadend = (e) => {
         var data = new Uint8Array(e.target.result);
         var workbook = XLSX.read(data, { type: 'array' });
-        console.log(workbook, 'workbook');
+        //console.log(workbook, 'workbook');
 
         workbook.SheetNames.forEach(function (sheetName) {
 
           XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-          console.log(XL_row_object, 'xl');
-          console.log(XL_row_object.length, 'xl deimesnsion');
+          //console.log(XL_row_object, 'xl');
+          //console.log(XL_row_object.length, 'xl deimesnsion');
 
         })
-        console.log(XL_row_object, 'ya converido de xls');
+        //console.log(XL_row_object, 'ya converido de xls');
 
       }
     }
@@ -434,7 +425,7 @@ export const ListaScreen = () => {
     </div>
   </div>
 
-console.log(stats, 'esto seria blockchain');
+//console.log(stats, 'esto seria blockchain');
 
   return (
     <div className="container py-4">
@@ -465,7 +456,6 @@ console.log(stats, 'esto seria blockchain');
               type="file"
               name="file"
               accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-              // style={{ display: 'none' }}
               onChange={handleFileChange}
             />
             <small id="emailHelp" className="form-text text-muted">Archivo de Excel</small>
@@ -500,7 +490,7 @@ console.log(stats, 'esto seria blockchain');
           <div className="card card-body bg-light rounded-3 mb-4">
             <div className="d-flex align-items-center">
               <span className="material-icons">
-                <i class="fa-solid fa-wallet"></i>
+                <i className="fa-solid fa-wallet"></i>
                 Contract BSC: </span>
             </div>
             <span id="account">{addressContract}</span>
@@ -510,7 +500,7 @@ console.log(stats, 'esto seria blockchain');
 
         <div className="col-md-8">
           <br /><br /><br />
-          <Table className="titulos">
+          <Table className="titulos table table-hover">
             <thead>
               <tr>
 

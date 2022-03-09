@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import Swal from 'sweetalert2';
-import { startLogin, startRegister } from '../../actions/auth';
+import { startLogin} from '../../actions/auth';
 import { useForm } from '../../hooks/useForm';
 
 import './login.css';
@@ -33,14 +32,7 @@ export const LoginScreen = () => {
 	})
 	const { correo, password } = valuesLogin;
 
-	const [valuesRegister, handleInputChangeRegister] = useForm({
-		"Rcorreo": "alekz@gmail.com",
-		"Rnombre": "Alekz",
-		"Rcedula": "1004542369",
-		"Rpassword": "123456",
-		"Rpassword2": "123456"
-	})
-	const { Rcorreo, Rnombre, Rcedula, Rpassword, Rpassword2 } = valuesRegister;
+
 
 	const dispatch = useDispatch();
 
@@ -50,22 +42,10 @@ export const LoginScreen = () => {
 		dispatch(startLogin(correo, password));
 	}
 
-	const handleSubmitRegister = (e) => {
-		e.preventDefault();
-		console.log(valuesRegister);
 
-		dispatch(startRegister(Rcedula, Rnombre, Rcorreo, Rpassword))
+	return <div className='fondo-login'>
 
-		if (Rpassword !== Rpassword2) {
-			return Swal.fire('Error', 'las contraseñas deben ser iguales', 'error')
-		}
-		//dispatch( startLogin(correo, password));
-	}
-
-
-	return <div>
-
-		<div className="limiter fondo">
+		<div className="fondo-login">
 			<div className="container-login100">
 				<div className="wrap-login100">
 					<form className="login100-form validate-form" onSubmit={handleSubmit}>
@@ -78,8 +58,8 @@ export const LoginScreen = () => {
 						<small id="emailHelp" className="form-text text-muted">Email</small>
 
 						<div className="wrap-input100 validate-input" data-validate="Valid email is: a@b.c">
-							<input className="input100" type="text" 
-							name="correo" value={correo} onChange={handleInputChangeLogin}/>
+							<input className="input100" type="text"
+								name="correo" value={correo} onChange={handleInputChangeLogin} />
 						</div>
 
 						<small id="emailHelp" className="form-text text-muted">Password</small>
@@ -88,8 +68,8 @@ export const LoginScreen = () => {
 							<span className="btn-show-pass">
 								<i className="zmdi zmdi-eye"></i>
 							</span>
-							<input className="input100" type="password" 
-							name="password" value={password} onChange={handleInputChangeLogin} />
+							<input className="input100" type="password"
+								name="password" value={password} onChange={handleInputChangeLogin} />
 						</div>
 
 						<div className="container-login100-form-btn">

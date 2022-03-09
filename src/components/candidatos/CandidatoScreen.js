@@ -73,7 +73,7 @@ export const CandidatoScreen = () => {
 
   const openModal = () => {
 
-    if (cargos.length >0) {
+    if (cargos.length > 0) {
       dispatch(uiOpenModal());
     } else {
       toast.error('Por favor agrege los cargos para los candidatos!', {
@@ -173,17 +173,17 @@ export const CandidatoScreen = () => {
         className="btn btn-success fab" onClick={openModal}>
         <i className="fas fa-plus"></i>
       </button>
-      <br/>
+      <br />
       <div>
 
         <div className="row">
           <div className="col-md-4">
             <CargoScreen />
           </div>
-          <div className="col-md-8">
-            <br/>
-            <br/>
-            <Table className="titulos">
+          <div className="table-responsive-sm col-md-8">
+            <br />
+            <br />
+            <Table className="titulos table table-hover">
               <thead>
                 <tr>
                   <th>Candidato</th>
@@ -222,7 +222,6 @@ export const CandidatoScreen = () => {
                               >
                                 <i className="fas fa-edit"></i>
                               </button>
-
                               <button
                                 className="btn btn-danger userListEdit"
                                 onClick={() => onDeletElection(candidate)}

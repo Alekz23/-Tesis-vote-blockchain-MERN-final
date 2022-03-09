@@ -13,8 +13,6 @@ import { ResultsScreen } from '../components/vote/ResultsScreen';
 
 export const DashboardRoutes = () => {
 
-   
- 
     return (
         <>
             <NavAdmin/>
@@ -23,11 +21,9 @@ export const DashboardRoutes = () => {
                 <Routes>
                     <Route path="elecciones" element={<EleccionScreen/>}/>
                     <Route path="listas" element={<ListaScreen/>}/>
-
                     <Route path="candidatos" element={<CandidatoScreen/>}/>
                     <Route path="usuarios" element={<UserScreen/>}/>
                     <Route path="resultados" element={<ResultsScreen/>}/>
-
                     <Route path="/" element={<EleccionScreen/>}/>
 
                 </Routes>

@@ -3,21 +3,13 @@ import { useState } from 'react';
 import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiCloseModal } from '../../actions/ui';
-import {  electionStartAddNew, electionStartUpdated } from '../../actions/elections';
-
 
 import 'react-toastify/dist/ReactToastify.css';
 import { userClearActiveUser, userStartAddNew, userStartUpdate } from '../../actions/users';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 const { verificarCedula } = require('udv-ec');
 var validator = require("email-validator");
-
-
-
-
-
-
 
 
 const customStyles = {
@@ -43,14 +35,9 @@ const initEvent = {
 
 export const UserModal = () => {
 
-
-  //const [isOpen, setIsOpen] = useState(true); // abrir y cerrar el formulario
-  // toma los valores del state ui
   const { modalOpen } = useSelector(state => state.ui);
   const dispatch = useDispatch(); //modifica el estado de las funciones
   const { activeUser } = useSelector(state => state.user);
-
-
   const [formValues, setFormValues] = useState(initEvent);
   const { cedula, nombre, correo, password, rol } = formValues;
 
@@ -59,31 +46,15 @@ export const UserModal = () => {
   const [cedulaValid, setCedulaValid] = useState(true);
   const [correoValid, setCorreoValid] = useState(true);
 
-  // const handleSubmitRegister = (e) => {
-  // 	e.preventDefault();
-  // 	console.log(valuesRegister);
-
-  // 	dispatch(startRegister(Rcedula, Rnombre, Rcorreo, Rpassword))
-
-  // 	if (Rpassword !== Rpassword2) {
-  // 		return Swal.fire('Error', 'las contraseñas deben ser iguales', 'error')
-  // 	}
-  // 	//dispatch( startLogin(correo, password));
-  // }
 
 
   useEffect(() => {
     if (activeUser) {
       setFormValues(activeUser);
-      //console.log('complet stado')
     } else {
       setFormValues(initEvent);
-      //console.log('borrando stado')
     }
   }, [activeUser, setFormValues])
-
-  //console.log(activeElection)
-
 
 
   const closeModal = (e) => {
@@ -92,8 +63,6 @@ export const UserModal = () => {
     dispatch(userClearActiveUser());
     setFormValues(initEvent); //se cierra el modal y los valores se borran
   }
-
-
 
   //con el valor de los inputs por medio del name, agrega al state del formValues
   const handleInputChange = ({ target }) => {
@@ -149,7 +118,6 @@ export const UserModal = () => {
       dispatch(userStartAddNew(nuevo));
     }
 
-
     setTitleValid(true);
     setCedulaValid(true);
     setCorreoValid(true);
@@ -185,7 +153,7 @@ export const UserModal = () => {
         </div>
 
         <div className="form-group">
-          <label>Cedula</label>
+          <label>Cédula</label>
           <input
             type="text"
             className={`form-control ${!cedulaValid && 'is-invalid'} `}
@@ -201,7 +169,7 @@ export const UserModal = () => {
           <label>Correo</label>
           <input
             type="text"
-            className={"form-control"}
+            className={`form-control ${!correoValid && 'is-invalid'} `}
             placeholder="correo"
             name="correo"
             autoComplete="off"

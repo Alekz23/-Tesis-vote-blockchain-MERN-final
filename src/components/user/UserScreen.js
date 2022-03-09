@@ -147,7 +147,7 @@ export const UserScreen = () => {
   }
 
   const handleFileChange = (e) => {
-    console.log(e.target.files);
+    //console.log(e.target.files);
     file = e.target.files[0];
     const target = e.target;
 
@@ -158,16 +158,16 @@ export const UserScreen = () => {
       reader.onloadend = (e) => {
         var data = new Uint8Array(e.target.result);
         var workbook = XLSX.read(data, { type: 'array' });
-        console.log(workbook, 'workbook');
+        //console.log(workbook, 'workbook');
 
         workbook.SheetNames.forEach(function (sheetName) {
 
           XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-          console.log(XL_row_object, 'xl');
-          console.log(XL_row_object.length, 'xl deimesnsion');
+          //console.log(XL_row_object, 'xl');
+          //console.log(XL_row_object.length, 'xl deimesnsion');
 
         })
-        console.log(XL_row_object, 'ya converido de xls');
+        //console.log(XL_row_object, 'ya converido de xls');
 
       }
     }
@@ -191,7 +191,7 @@ export const UserScreen = () => {
 
 
 
-  console.log(stats, 'stas cargado 1');
+  //console.log(stats, 'stas cargado 1');
 
   if (users.length===0) return <div className="padre">
 
@@ -210,11 +210,11 @@ export const UserScreen = () => {
       <div className="half-spinner"></div>
     </div>
   </div>
-  console.log(stats, 'stas cargado');
+  //console.log(stats, 'stas cargado');
 
   if (stats === 0 && cont===0) {
     resetStatusVote()
-    console.log('cuantas veces entra', cont);
+    //console.log('cuantas veces entra', cont);
     cont=1;
   }
 
@@ -222,11 +222,11 @@ export const UserScreen = () => {
 
 
 
-    <div >
-      <br />
+    <div>
+      <br/>
       <h2 className="titulos">Usuarios</h2>
 
-      <br />
+      <br/>
       <div className="container">
         <div className="row">
           <div className="col">
@@ -266,10 +266,10 @@ export const UserScreen = () => {
 
       </button>
 
-      <br />
+      <br/>
       <ToastContainer></ToastContainer>
-      <div >
-        <Table className="titulos">
+      <div className="table-responsive-sm" >
+        <Table className="titulos table table-hover table-sm">
           <thead>
             <tr>
 
@@ -301,7 +301,7 @@ export const UserScreen = () => {
                         : usuario.vote === false && usuario.rol !== 'ADMIN_ROLE' ?
                           <button
                             className="btn btn-dark userListStatus">
-                            <i class="fa-brands fa-mixer"></i>
+                            <i className="fa-brands fa-mixer"></i>
                           </button>
                           : ''
 
@@ -329,10 +329,7 @@ export const UserScreen = () => {
           </tbody>
         </Table>
       </div>
-
-      <UserModal />
-
-
+      <UserModal/>
 
     </div>
   );

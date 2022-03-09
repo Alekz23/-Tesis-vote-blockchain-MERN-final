@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { uiOpenModal } from '../../actions/ui';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 
@@ -9,16 +8,10 @@ import { cargoSetActive, cargoStartAddNew, cargoStartDelete, cargoStartLoading }
 import { CargoModal } from './CargoModal';
 
 
-
-
-
 export const CargoScreen = () => {
 
-
   const [cargos] = useSelector(state => [state.cargo.cargos]);
-
   const dispatch = useDispatch();
-
 
   useEffect(() => {
 
@@ -26,17 +19,12 @@ export const CargoScreen = () => {
 
   }, [dispatch])
 
-  // const openModal = () => {
-  //   dispatch(uiOpenModal());
-  // }
-
-
-
+ 
   const onDeletElection = (e) => {
     dispatch(cargoSetActive(e));
 
     Swal.fire({
-      title: "Are you sure about deleting this cargo?",
+      title: "Estas seguro de eliminar el cargo?",
       type: "info",
       showCancelButton: true,
       confirmButtonText: "Delete It",
@@ -52,7 +40,6 @@ export const CargoScreen = () => {
       }
     }
     )
-
   }
 
   const addCargos = async () => {
@@ -78,23 +65,17 @@ export const CargoScreen = () => {
         progress: undefined,
       });
       dispatch(cargoStartAddNew(nuevo));
-      //Swal.fire(`Cargo: ${text}`)
     }
   }
 
-  // console.log('llega a elecc');
   return (
-
-
-
     <div >
-
       <button
         className="btn btn-dark userListEdit" onClick={addCargos}>
         Agregar cargos
       </button>
       <div className="form-screen ">
-        <table className="table ">
+        <table className="table table-hover">
           <thead>
             <tr>
               <th>Nombre</th>
@@ -110,8 +91,7 @@ export const CargoScreen = () => {
                     <td>
                       <button
                         className="cargosListDelete"
-                        onClick={() => onDeletElection(cargo)}
-                      >
+                        onClick={() => onDeletElection(cargo)}>
                         <i className="fas fa-trash-alt"></i>
                       </button>
                     </td>
@@ -121,11 +101,8 @@ export const CargoScreen = () => {
           </tbody>
         </table>
       </div>
-
-      <CargoModal />
-
-
-
+      
+      <CargoModal/>
     </div>
   );
 }

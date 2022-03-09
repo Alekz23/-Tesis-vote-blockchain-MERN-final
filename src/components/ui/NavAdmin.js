@@ -28,7 +28,11 @@ export const NavAdmin = () => {
                 Vote
             </Link>
 
-            <div className="navbar-collapse">
+            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span className="navbar-toggler-icon"></span>
+            </button>
+
+            <div className="collapse navbar-collapse" id="navbarNav">
                 <div className="navbar-nav">
 
                     <NavLink
@@ -59,31 +63,35 @@ export const NavAdmin = () => {
                         Usuarios
                     </NavLink>
                 </div>
+
+                <div className="navbar-collapse collapse w-100 order-3 dual-collapse2 d-flex justify-content-end">
+
+                    <ul className="navbar-nav ml-auto">
+
+                        <NavLink
+                            className={({ isActive }) => 'nav-item nav-link ' + (isActive ? 'active' : '')}
+                            to="/resultados"
+                        >
+                            Resultados
+                        </NavLink>
+                        <span className="nav-item nav-link text-info">
+                            {name}
+                        </span>
+
+                        <button
+                            className="btn btn-outline-danger"
+                            onClick={handleLogout}
+                        >
+                            <i className="fas fa-sign-out-alt"></i>
+                            <span> Salir</span>
+                        </button>
+
+                    </ul>
+
+                </div>
+
             </div>
 
-            <div className="navbar-collapse collapse w-100 order-3 dual-collapse2 d-flex justify-content-end">
-                <ul className="navbar-nav ml-auto">
-
-                    <NavLink
-                        className={({ isActive }) => 'nav-item nav-link ' + (isActive ? 'active' : '')}
-                        to="/resultados"
-                    >
-                        Resultados
-                    </NavLink>
-                    <span className="nav-item nav-link text-info">
-                        {name}
-                    </span>
-
-                    <button
-                        className="btn btn-outline-danger"
-                        onClick={handleLogout}
-                    >
-                        <i className="fas fa-sign-out-alt"></i>
-                        <span> Salir</span>
-                    </button>
-
-                </ul>
-            </div>
         </nav>
     )
 }

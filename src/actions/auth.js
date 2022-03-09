@@ -30,6 +30,29 @@ export const startLogin=(correo, password) => {
     }
 }
 
+export const startChecking = () => {
+    return async(dispatch) => {
+
+        const resp = await  fetchConToken( 'auth/renew' );
+        const body = await resp.json();
+
+        if( body.ok ) {
+            localStorage.setItem('token', body.token );
+            localStorage.setItem('token-init-date', new Date().getTime() );
+
+            dispatch( login({
+                uid: body.uid,
+                name: body.nombre,
+                cedula: body.cedula,
+                rol: body.rol,
+            }) )
+        } else {
+            dispatch( checkingFinish() );
+        }
+    }
+}
+
+
 export const startRegister=(cedula, nombre, correo, password) => {
     return async(dispatch)=>{
         const resp= await fetchSinToken('auth/new', {cedula, nombre, correo, password, rol:"ADMIN_ROLE"}, 'POST');
@@ -43,7 +66,8 @@ export const startRegister=(cedula, nombre, correo, password) => {
             dispatch( login({
                 //busca en la respuesat json del body si tiene objetos ir esacalando user.name o name
                 uid: body.uid,
-                name: body.nombre
+                name: body.nombre,
+               
                 
             }) )
         } else {
@@ -55,25 +79,7 @@ export const startRegister=(cedula, nombre, correo, password) => {
     }
 }
 
-export const startChecking = () => {
-    return async(dispatch) => {
 
-        const resp = await  fetchConToken( 'auth/renew' );
-        const body = await resp.json();
-
-        if( body.ok ) {
-            localStorage.setItem('token', body.token );
-            localStorage.setItem('token-init-date', new Date().getTime() );
-
-            dispatch( login({
-                uid: body.uid,
-                name: body.nombre
-            }) )
-        } else {
-            dispatch( checkingFinish() );
-        }
-    }
-}
 
 const checkingFinish = () => ({ type: types.authCheckingFinish });
 
