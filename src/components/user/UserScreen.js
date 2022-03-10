@@ -39,22 +39,14 @@ export const UserScreen = () => {
 
     
    
-    $(document).ready(function() {
-      $('#example').DataTable();
-  } );
+  //   $(document).ready(function() {
+  //     $('#example').DataTable();
+  // } );
    
 
   }, [dispatch])
 
 
-  useEffect(() => {
-
-    $(document).ready(function() {
-      $('#example').DataTable();
-  } );
-   
-
-  }, [users])
 
   const openModal = () => {
     dispatch(uiOpenModal());
@@ -238,9 +230,9 @@ export const UserScreen = () => {
     cont=1;
   }
 
-  $(document).ready(function() {
-    $('#example').DataTable();
-} );
+//   $(document).ready(function() {
+//     $('#example').DataTable();
+// } );
 
   return (
 
