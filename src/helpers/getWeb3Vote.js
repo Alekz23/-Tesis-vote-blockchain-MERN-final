@@ -22,9 +22,9 @@ let isInit = false
 
 
 export const init = async () => {
-  //const provider = new Provider(privateKey, 'https://rinkeby.infura.io/v3/02e6ba60363b49b7922a4f9ad1a87b4c');
+  const provider = new Provider(privateKey, 'https://rinkeby.infura.io/v3/02e6ba60363b49b7922a4f9ad1a87b4c');
   //test con BSC
-  const provider = new Provider(privateKey, 'https://data-seed-prebsc-1-s1.binance.org:8545');
+  //const provider = new Provider(privateKey, 'https://data-seed-prebsc-1-s1.binance.org:8545');
   // test con Polygon
   //const provider = new Provider(privateKey, 'https://rpc-mumbai.maticvigil.com/v1/8d9378fdfa5c3bb88018bb2e1e9d958578dc98a8');
   const web3 = new Web3(provider);
