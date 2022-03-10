@@ -80,7 +80,7 @@ export const VoteScreen = () => {
     let votoBlanco = {
       id: "231442",
       nombre: "Voto Blanco",
-      img: "https://res.cloudinary.com/universidad-tecnica-del-norte/image/upload/v1645414706/vote/arton27355_fh7pev.jpg",
+      img: "https://res.cloudinary.com/universidad-tecnica-del-norte/image/upload/v1646872890/images%20vote/boto_blanco_mrvevr.png",
       descripcion: " ",
       candidates: []
     }
@@ -88,7 +88,7 @@ export const VoteScreen = () => {
     let votoNulo = {
       id: "23146",
       nombre: "Voto Nulo",
-      img: "https://res.cloudinary.com/universidad-tecnica-del-norte/image/upload/v1645414706/vote/1-72_t6qtfg.jpg",
+      img: "https://res.cloudinary.com/universidad-tecnica-del-norte/image/upload/v1646873036/images%20vote/VOTO_NULO_whrvhx.png",
       descripcion: " ",
       candidates: []
     }
@@ -164,7 +164,7 @@ export const VoteScreen = () => {
               buscarUsuario();
               //Swal.fire("Enviado", "Voto generado con exito!", "success");
               let url = `https://testnet.bscscan.com/tx/ ${tx.transactionHash}`;
-
+              //console.log(tx)
               Swal.fire({
                 icon: 'success',
                 title: 'Voto generado con exito!',
@@ -174,6 +174,7 @@ export const VoteScreen = () => {
               elemento.href = url
               elemento.target = "_blank"
               setState(initialState)
+
             })
             .catch(err => {
               console.log(err)
@@ -234,9 +235,9 @@ export const VoteScreen = () => {
 
   //console.log('estats actual', stats);
 
-  if (stats === 0) {
-    console.log('sin listas en la blockchain!');
-  }
+  // if (stats === 0) {
+  //   console.log('sin listas en la blockchain!');
+  // }
   if (stats === 0) return <div className="padre">
     <div className="spinner">
       <span>Loading...</span>
@@ -244,10 +245,12 @@ export const VoteScreen = () => {
     </div>
   </div>
 
+  const nameElection = (elections[0].nombre);
+
   return (
     <div >
 
-      <h2 className="titulos">Listas</h2>
+      <h2 className="titulos">{nameElection}</h2>
 
       {(fechaActual.isSameOrAfter(start) && fechaActual < end) ? <div>
         <br />
@@ -268,7 +271,7 @@ export const VoteScreen = () => {
                   return (
                     <tr key={lista.id} >
 
-                      <td data-label="Nombre">{lista.nombre}</td>
+                      <td data-label="Nombre" className='tabla_letra'>{lista.nombre.toUpperCase()}</td>
                       <td data-label="Descripción">{lista.descripcion}</td>
 
                       <td data-label="Imagen">

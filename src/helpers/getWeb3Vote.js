@@ -18,6 +18,7 @@ let myContract
 let isInit = false
 
  export let addressContract
+ //let nonces
 
 
 export const init = async () => {
@@ -25,15 +26,19 @@ export const init = async () => {
   //test con BSC
   const provider = new Provider(privateKey, 'https://data-seed-prebsc-1-s1.binance.org:8545');
   // test con Polygon
-  //const provider = new Provider(privateKey, 'https://polygon-mumbai.infura.io/v3/908be0642b3f43148b3b16102c2f7222');
+  //const provider = new Provider(privateKey, 'https://rpc-mumbai.maticvigil.com/v1/8d9378fdfa5c3bb88018bb2e1e9d958578dc98a8');
   const web3 = new Web3(provider);
   const networkId = await web3.eth.net.getId()
   myContract = new web3.eth.Contract(
     voteContractBuild.abi,
-    voteContractBuild.networks[networkId].address
+    voteContractBuild.networks[networkId].address,
+   
   );
+  console.log(myContract);
  // the destination address
  addressContract =   voteContractBuild.networks[networkId].address;
+
+ //nonces = web3.eth.getTransactionCount(address);
   // console.log(await myContract.methods.data().call());
   // console.log(`Old data value: ${await myContract.methods.data().call()}`);
   // const receipt = await myContract.methods.setData(3).send({ from: address });
@@ -46,8 +51,26 @@ export const init = async () => {
 
 export const vote = async ({ proposal, ci }) => {
   if (!isInit) await init()
-  console.log('asi llegan los datos', proposal, ci)
-  
+
+  // const tx = myContract.methods.vote(Number(proposal), Number(ci));
+  // const gas = 8500000;
+  // const gasPrice = 10000000000;
+  // const data = tx.encodeABI();
+  // const nonce = nonces
+  // const txData = {
+  //   from: address,
+  //   to: myContract.options.address,
+  //   data: data,
+  //   gas,
+  //   gasPrice,
+  //   nonce, 
+  //   chainId: '80001', 
+  //   hardfork: 'istanbul'
+  // };
+
+
+  //console.log('asi llegan los datos', txData)
+  //gas: 9500000 , gasPrice: 20000000000
   return myContract
     .methods
     .vote(Number(proposal), Number(ci))

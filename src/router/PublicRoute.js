@@ -2,6 +2,7 @@ import React  from 'react';
 import { useSelector } from 'react-redux';
 
 import { Navigate } from 'react-router-dom';
+import { DashboardPublic } from './DashboardPublic';
 
 
 
@@ -14,5 +15,6 @@ export const PublicRoute = ({ children }) => {
 
     return (!!uid)
         ? <Navigate to="/" />
-        : children
+        :  <DashboardPublic/>
+        // :  <DashboardPublic/>
 }

@@ -123,12 +123,16 @@
         height: 100px;
         object-fit: cover;
         border-radius: 50%;
+       
+      
+       
  
 }
 
 .imgCentrar{
     display:block;
     margin:auto;
+    
     }
 
 
@@ -290,6 +294,10 @@
         background-image:url(voteFondo.jpg);
         }
 
+        .tabla_letra{
+         
+          font-weight: bold;
+        }
 
         /*------------------------responsive  tables----------------------------------------------*/
 

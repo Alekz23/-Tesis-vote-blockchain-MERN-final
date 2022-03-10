@@ -7,7 +7,7 @@ import { ListaScreen } from '../components/listas/ListaScreen';
 import { CandidatoScreen } from '../components/candidatos/CandidatoScreen';
 import { NavAdmin } from '../components/ui/NavAdmin';
 import { UserScreen } from '../components/user/UserScreen';
-import { ResultsScreen } from '../components/vote/ResultsScreen';
+//import { ResultsScreen } from '../components/vote/ResultsScreen';
 
 
 
@@ -23,7 +23,7 @@ export const DashboardRoutes = () => {
                     <Route path="listas" element={<ListaScreen/>}/>
                     <Route path="candidatos" element={<CandidatoScreen/>}/>
                     <Route path="usuarios" element={<UserScreen/>}/>
-                    <Route path="resultados" element={<ResultsScreen/>}/>
+                    {/* <Route path="resultados" element={<ResultsScreen/>}/> */}
                     <Route path="/" element={<EleccionScreen/>}/>
 
                 </Routes>

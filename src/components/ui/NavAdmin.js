@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { startLogout } from '../../actions/auth';
@@ -11,10 +11,16 @@ export const NavAdmin = () => {
     const dispatch = useDispatch();
     const { name } = useSelector(state => state.auth);
 
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         //history.replace('/login');
+        navigate('/',
+        {
+            replace: true
+        });
         dispatch(startLogout());
+       
     }
 
 
@@ -68,12 +74,12 @@ export const NavAdmin = () => {
 
                     <ul className="navbar-nav ml-auto">
 
-                        <NavLink
+                        {/* <NavLink
                             className={({ isActive }) => 'nav-item nav-link ' + (isActive ? 'active' : '')}
                             to="/resultados"
                         >
                             Resultados
-                        </NavLink>
+                        </NavLink> */}
                         <span className="nav-item nav-link text-info">
                             {name}
                         </span>

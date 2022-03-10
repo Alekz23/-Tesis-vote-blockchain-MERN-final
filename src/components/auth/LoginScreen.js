@@ -42,18 +42,31 @@ export const LoginScreen = () => {
 		dispatch(startLogin(correo, password));
 	}
 
+	// const navigate = useNavigate();
+
+	// const handleNavigate=()=>{
+	// 	navigate('/resultados',
+	// 	{
+	// 		replace: true
+	// 	});
+	// }
+
+
 
 	return <div className='fondo-login'>
-
+{/* <button className="btn btn-primary" onClick={handleNavigate}> Resultados</button> */}
 		<div className="fondo-login">
 			<div className="container-login100">
+		
+
 				<div className="wrap-login100">
+				
 					<form className="login100-form validate-form" onSubmit={handleSubmit}>
 						<span className="login100-form-title p-b-26">
-							Welcome
+						Welcome
 						</span>
 						<span className="login100-form-title p-b-48">
-							<i className="zmdi zmdi-font"></i>
+						<i className="fa-brands fa-ethereum"></i>
 						</span>
 						<small id="emailHelp" className="form-text text-muted">Email</small>
 

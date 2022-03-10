@@ -8,13 +8,16 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { userSetActive, userStartAddNew, userStartDelete, userStartLoading, userStartUpdate } from '../../actions/users';
 import { UserModal } from './UserModal';
-import { Table } from 'react-bootstrap';
+//import { Table } from 'react-bootstrap';
 import * as XLSX from 'xlsx';
 import { getStats, init } from '../../helpers/getWeb3Vote';
 
 let cont=0;
 let file;
 //let tamaño = 0;
+let $ = require( "jquery" );
+$.DataTable= require('datatables.net')
+
 
 export const UserScreen = () => {
 
@@ -34,12 +37,28 @@ export const UserScreen = () => {
 
     dispatch(userStartLoading());
 
+    
+   
+    $(document).ready(function() {
+      $('#example').DataTable();
+  } );
+   
+
   }, [dispatch])
 
 
+  useEffect(() => {
+
+    $(document).ready(function() {
+      $('#example').DataTable();
+  } );
+   
+
+  }, [users])
 
   const openModal = () => {
     dispatch(uiOpenModal());
+    
   }
 
   const onSelectUser = (e) => {
@@ -50,7 +69,8 @@ export const UserScreen = () => {
 
 
   useEffect(() => {
-  
+   
+   
     init();
     obtenerListas();
   }, [])
@@ -218,13 +238,17 @@ export const UserScreen = () => {
     cont=1;
   }
 
+  $(document).ready(function() {
+    $('#example').DataTable();
+} );
+
   return (
 
 
 
     <div>
-      <br/>
-      <h2 className="titulos">Usuarios</h2>
+     
+      <h3 className="titulos">Usuarios</h3>
 
       <br/>
       <div className="container">
@@ -269,7 +293,7 @@ export const UserScreen = () => {
       <br/>
       <ToastContainer></ToastContainer>
       <div className="table-responsive-sm" >
-        <Table className="titulos table table-hover table-sm">
+        <table className="titulos table table-hover table-borderless table-sm " id="example">
           <thead>
             <tr>
 
@@ -327,9 +351,18 @@ export const UserScreen = () => {
                 );
               })}
           </tbody>
-        </Table>
+        </table>
+ <script src='https://code.jquery.com/jquery-3.5.1.js'></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+   
+
       </div>
       <UserModal/>
+
+     
+     
+
 
     </div>
   );

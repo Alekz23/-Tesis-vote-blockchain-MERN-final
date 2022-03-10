@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 
 import { PrivateRoute } from './PrivateRoute';
 import { PublicRoute } from './PublicRoute';
 
-import { LoginScreen } from '../components/auth/LoginScreen';
 import { DashboardRoutes } from './DashboardRoutes';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { DashboardUser } from './DashboardUser';
-import { startChecking } from '../actions/auth';
+
+import { DashboardPublic } from './DashboardPublic';
 //import { startChecking } from '../actions/auth';
 
 
@@ -40,7 +40,9 @@ export const AppRouter = () => {
             <Routes>
                 <Route path="/login" element={
                     <PublicRoute>
-                        <LoginScreen />
+                         {/* <LoginScreen /> */}
+                        {/* <ResultsScreen/>  */}
+                        <DashboardPublic></DashboardPublic>
                     </PublicRoute>
                 }
                 />

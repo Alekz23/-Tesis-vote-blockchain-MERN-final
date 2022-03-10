@@ -156,10 +156,6 @@ export const ResultsScreen = () => {
     setTipoGrafico(target.value)
   }
 
-  const end = moment(elections[0].end);
-  const nameElection = (elections[0].nombre);
-  const now = moment().seconds(0).add(0, 'hours'); // 3:00:00
-  const fechaActual = now;
 
   //console.log(stats, 'final data')
 
@@ -181,6 +177,11 @@ export const ResultsScreen = () => {
 
   if (totalVotantes() === 0) return <span>No hay votantes</span>
   if (elections.length === 0) return <span>Loading</span>
+  const end = moment(elections[0].end);
+  const nameElection = (elections[0].nombre);
+  const now = moment().seconds(0).add(0, 'hours'); // 3:00:00
+  const fechaActual = now;
+
   if (users.length === 0) return <span>Loading</span>
   if (!stats) return <div className="padre">
 
@@ -189,9 +190,9 @@ export const ResultsScreen = () => {
       <div className="half-spinner"></div>
     </div>
   </div>
-  console.log(listasJson, 'a json');
+  //console.log(listasJson, 'a json');
 
-  return <div>
+  return <div className='container'>
 
     {(fechaActual > end) ?
 
@@ -333,14 +334,14 @@ export const ResultsScreen = () => {
           }
           {
             winner &&
-            <h4 className='my-2'>Actual winner: {winner}</h4>
+            <h5 className='my-2 titulos'>Actual winner: {winner}</h5>
           }
 
 
         </div>
 
         <div className='d-flex justify-content-between my-2'>
-          <button type="button" name="vote" id="vote" className="btn btn-primary" onClick={getWinnerF}>get winner</button>
+          <button type="button" name="vote" id="vote" className="btn btn-primary" onClick={getWinnerF}>Obtener ganador</button>
         </div>
       </div>
       :

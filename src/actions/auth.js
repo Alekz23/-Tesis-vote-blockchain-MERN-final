@@ -36,6 +36,7 @@ export const startChecking = () => {
         const resp = await  fetchConToken( 'auth/renew' );
         const body = await resp.json();
 
+        console.log(body,'renew');
         if( body.ok ) {
             localStorage.setItem('token', body.token );
             localStorage.setItem('token-init-date', new Date().getTime() );
