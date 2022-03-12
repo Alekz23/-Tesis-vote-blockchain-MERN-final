@@ -83,11 +83,20 @@ export const UserModal = () => {
 
 
     if (nombre.trim().length < 2) {
+      toast.error('El nombre es obligatorio', {
+				position: "top-right",
+				autoClose: 2000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
       return setTitleValid(false);
     }
 
     if(verificarCedula(cedula)=== false){
-      toast.error('Cedula invalida', {
+      toast.error('Cedula inválida', {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -100,7 +109,7 @@ export const UserModal = () => {
     }
 
     if(validator.validate(correo)===false){
-      toast.error('Correo invalido', {
+      toast.error('Correo inválido', {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -110,6 +119,19 @@ export const UserModal = () => {
         progress: undefined,
     });
       return setCorreoValid(false);
+    }
+
+    if(password.trim().length<6){
+      return toast.error('La contraseña debe ser mayor a 6 caracteres', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
+      
     }
 
     if (activeUser) {

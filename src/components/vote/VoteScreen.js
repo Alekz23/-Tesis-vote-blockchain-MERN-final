@@ -130,19 +130,19 @@ export const VoteScreen = () => {
     })
 
     Swal.fire({
-      title: 'Estas seguro?',
+      title: '¿Estás seguro?',
       text: "No podrás revertir esto!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, send it!',
+      confirmButtonText: 'Si, enviar',
 
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          title: 'Sending...',
-          text: 'Please wait...',
+          title: 'Enviando...',
+          text: 'Espere por favor...',
           allowOutsideClick: false,
           onBeforeOpen: () => {
             Swal.showLoading();
@@ -248,14 +248,16 @@ export const VoteScreen = () => {
   const nameElection = (elections[0].nombre);
 
   return (
-    <div >
+    <div className="container py-3">
 
-      <h2 className="titulos">{nameElection}</h2>
+      
 
       {(fechaActual.isSameOrAfter(start) && fechaActual < end) ? <div>
+
+        <h2 className="titulos">{nameElection}</h2>
         <br />
         <div className="table-responsive-sm">
-          <Table className="titulos table table-hover table-sm">
+          <Table className="titulos table table-hover table-sm ">
             <thead>
               <tr>
                 <th scope="col">Nombre</th>
@@ -308,10 +310,10 @@ export const VoteScreen = () => {
         </div>
       </div>
         :
-        <div>
+        <div className="container py-3">
           <h1 className='titulos'>Eleccion Inactiva</h1>
-          <h2 className='titulos'>Fecha de inicio: {moment(start).format('YYYY-MM-DD HH:mm:ss')}</h2>
-          <h2 className='titulos'>Fecha de fin: {moment(end).format('YYYY-MM-DD HH:mm:ss')}</h2>
+          <h3 className='titulos'>Fecha de inicio: {moment(start).format('YYYY-MM-DD HH:mm:ss')}</h3>
+          <h3 className='titulos'>Fecha de fin: {moment(end).format('YYYY-MM-DD HH:mm:ss')}</h3>
         </div>
       }
     </div>

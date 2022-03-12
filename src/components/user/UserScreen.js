@@ -14,7 +14,6 @@ import { getStats, init } from '../../helpers/getWeb3Vote';
 
 let cont=0;
 let file;
-//let tamaño = 0;
 let $ = require( "jquery" );
 $.DataTable= require('datatables.net')
 
@@ -24,26 +23,17 @@ export const UserScreen = () => {
   let XL_row_object = [];
 
   const [users] = useSelector(state => [state.user.usuarios]);
-
   const [stats, setStats] = useState()
-  //para controlar si tiene listas cada eleccion 
-
-  //console.log(elections, "si llega estos datos");
-
   const dispatch = useDispatch();
 
 
   useEffect(() => {
 
     dispatch(userStartLoading());
-
-    
-   
   //   $(document).ready(function() {
   //     $('#example').DataTable();
   // } );
    
-
   }, [dispatch])
 
 
@@ -133,12 +123,12 @@ export const UserScreen = () => {
 
     Swal.fire({
       title: 'Eliminar',
-      text: "Estas seguro de eliminar este usuario?",
+      text: "¿Estás seguro de eliminar este usuario?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delet it!',
+      confirmButtonText: 'Si, Eliminar!',
 
     }).then((result) => {
       if (result.isConfirmed) {
@@ -158,49 +148,41 @@ export const UserScreen = () => {
     })
   }
 
-  const handleFileChange = (e) => {
-    //console.log(e.target.files);
-    file = e.target.files[0];
-    const target = e.target;
 
-    if (file) {
-      // dispatch(startUploading(file));
-      let reader = new FileReader();
-      reader.readAsArrayBuffer(target.files[0])
-      reader.onloadend = (e) => {
-        var data = new Uint8Array(e.target.result);
-        var workbook = XLSX.read(data, { type: 'array' });
-        //console.log(workbook, 'workbook');
+  const saveSwal = async () => {
 
-        workbook.SheetNames.forEach(function (sheetName) {
+      const { value: file } = await Swal.fire({
+        title: 'Seleccione un archivo excel con usuarios',
+        input: 'file',
+        inputAttributes: {
+          'accept': '.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel',
+          'aria-label': 'Upload your profile picture'
+        }
+      })
 
-          XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-          //console.log(XL_row_object, 'xl');
-          //console.log(XL_row_object.length, 'xl deimesnsion');
+      if (file) {
+        let reader = new FileReader();
+        reader.readAsArrayBuffer(file)
+        reader.onloadend = (e) => {
+          var data = new Uint8Array(e.target.result);
+          var workbook = XLSX.read(data, { type: 'array' });
+          workbook.SheetNames.forEach(function (sheetName) {
 
-        })
-        //console.log(XL_row_object, 'ya converido de xls');
+            XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
 
+          })
+
+          setTimeout(() => {
+            for (let i = 0; i < XL_row_object.length; i++) {
+              dispatch(userStartAddNew(XL_row_object[i]))
+            }
+          }, (2000));
+      
+          dispatch(userStartLoading())
+        }
       }
-    }
+
   }
-
-  const saveListasBDD = () => {
-
-    file = "";
-    setTimeout(() => {
-      for (let i = 0; i < XL_row_object.length; i++) {
-        dispatch(userStartAddNew(XL_row_object[i]))
-      }
-    }, (2000));
-
-    dispatch(userStartLoading())
-    document.getElementById("file").value = '';
-    //console.log(XL_row_object, 'metodo add bdd');
-  }
-
-  ///test take dates of blockchain
-
 
 
   //console.log(stats, 'stas cargado 1');
@@ -238,43 +220,25 @@ export const UserScreen = () => {
 
 
 
-    <div>
+    <div className="container py-3">
      
       <h3 className="titulos">Usuarios</h3>
 
       <br/>
       <div className="container">
         <div className="row">
-          <div className="col">
-
-            <input
-              id="file"
-              type="file"
-              name="file"
-              accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-              // style={{ display: 'none' }}
-              onChange={handleFileChange}
-            />
-            <small id="emailHelp" className="form-text text-muted">Archivo de Excel</small>
-
-          </div>
-
+          
           <div className="col">
             <button
-              className="btn btn-dark userListEdit" onClick={saveListasBDD}>
+              className="btn btn-dark userListEdit" onClick={saveSwal}>
               <i className="fa-solid fa-file-csv"> </i>
               <span> Cargar usuarios</span>
             </button>
           </div>
 
-          <div className="col">
-
-          </div>
-
 
         </div>
       </div>
-
 
       <button
         className="btn btn-success fab " onClick={openModal}>

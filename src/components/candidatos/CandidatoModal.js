@@ -9,6 +9,8 @@ import { candidatoClearActiveCandidato, candidatoStartAddNew, candidatoStartLoad
 import Swal from 'sweetalert2';
 import { fileUpload } from '../../helpers/fileUpload';
 import { cargoStartLoading } from '../../actions/cargos';
+import { toast } from 'react-toastify';
+
 
 
 const customStyles = {
@@ -93,7 +95,31 @@ export const CandidatoModal = ({ idLista }) => {
         e.preventDefault();
 
         if (nombre.trim().length < 2) {
+
+            toast.error('El nombre es obligatorio', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
             return setTitleValid(false);
+        }
+
+        if (apellido.trim().length < 2) {
+
+            return toast.error('El apellido es obligatorio', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
+            
         }
 
         if (activeCandidato) {
@@ -111,8 +137,8 @@ export const CandidatoModal = ({ idLista }) => {
         return async () => {
             //console.log(file);
             Swal.fire({
-                title: 'Uploading...',
-                text: 'Please wait...',
+                title: 'Cargando...',
+                text: 'Espere por favor...',
                 allowOutsideClick: false,
                 onBeforeOpen: () => {
                     Swal.showLoading();
@@ -179,13 +205,13 @@ export const CandidatoModal = ({ idLista }) => {
                         value={nombre}
                         onChange={handleInputChange}
                     />
-                    <small id="emailHelp" className="form-text text-muted">Una descripción corta</small>
                 </div>
 
                 <div className="form-group">
+                <label>Apellido</label>
                     <input
                         type="text"
-                        className={`form-control ${!titleValid && 'is-invalid'} `}
+                        className={`form-control`}
                         placeholder="Apellido"
                         name="apellido"
                         autoComplete="off"
@@ -195,6 +221,7 @@ export const CandidatoModal = ({ idLista }) => {
                 </div>
 
                 <div className="form-group">
+                <label>Cargo</label>
                     <select className="form-control"
                         name="cargo"
                         value={cargo}

@@ -9,6 +9,8 @@ import { electionClearActiveElection, electionStartAddNew, electionStartUpdated}
 
 
 import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 
 const customStyles = {
@@ -22,7 +24,8 @@ const customStyles = {
   }
 };
 Modal.setAppElement('#root');
-const now = moment().minutes(0).seconds(0).add(0, 'hours'); // 3:00:00
+//const now = moment().minutes(0).seconds(0).add(0, 'hours'); // 3:00:00
+const now = moment().seconds(0).add(0, 'hours'); // 3:00:00
 const nowPlus1 = now.clone().add(1, 'hours');
 
 const initEvent = {
@@ -55,16 +58,10 @@ export const EleccionModal = () => {
   useEffect(() => {
     if (activeElection) {
       setFormValues(activeElection);
-      //console.log('complet stado')
     } else {
       setFormValues(initEvent);
-      //console.log('borrando stado')
     }
   }, [activeElection, setFormValues])
-
-  //console.log(activeElection)
-
-
 
   const closeModal = (e) => {
     //setIsOpen(false);
@@ -102,16 +99,37 @@ export const EleccionModal = () => {
     e.preventDefault();
     //console.log(formValues, 'enviados desde el form')
 
-    //validaciones
-    // const momentStart = moment(start);
-    // const momentEnd = moment(end);
+    //validaciones fecha
+    const momentStart = moment(start);
+    const momentEnd = moment(end);
 
-    // if (momentStart.isSameOrAfter(momentEnd)) {
-    //   return Swal.fire('Error', 'La fecha fin debe de ser mayor a la fecha de inicio', 'error');
-    // }
+    if (momentStart.isSameOrAfter(momentEnd)) {
+      return Swal.fire('Error', 'La fecha de fin debe ser mayor a la fecha de inicio', 'error');
+    }
 
     if (nombre.trim().length < 2) {
+      toast.error('El nombre es obligatorio', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return setTitleValid(false);
+    }
+
+    if(descripcion.trim().length<2){
+      return toast.error('La descripción es obligatoria', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
 
     if (activeElection) {
@@ -178,7 +196,7 @@ export const EleccionModal = () => {
           <textarea
             type="text"
             className="form-control"
-            placeholder="Descripcion"
+            placeholder="Descripción"
             rows="5"
             name="descripcion"
             value={descripcion}

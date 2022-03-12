@@ -11,6 +11,8 @@ import { userStartLoading } from '../../actions/users';
 //--------------IMPORTANTE----------------
 // page de graficos https://js.devexpress.com/Demos/WidgetsGallery/Demo/Charts/FunnelChart/React/Light/
 
+// https://vizzuhq.com/
+
 
 import PieChart, {
   Legend,
@@ -190,15 +192,33 @@ export const ResultsScreen = () => {
       <div className="half-spinner"></div>
     </div>
   </div>
-  //console.log(listasJson, 'a json');
+ 
+ if (listasJson.length===0) return <span>Sin datos de la Elección</span>
 
-  return <div className='container'>
+ let cont=0;
+ if (listasJson.length>0){
+   for (let i = 0; i < listasJson.length; i++) {
+     
+     if(listasJson[i].voteCount !=='0'){
+      console.log(listasJson[i].voteCount);
+      cont=1;
+
+     }
+   }
+
+   if (cont===0) return <span className="titulos">Sin datos de la Elección</span>
+  
+   
+ }
+
+
+  return <div className='container  py-2'>
 
     {(fechaActual > end) ?
 
       <div>
 
-        <h2 className="titulos"> Resultados de la {nameElection}</h2>
+        <h3 className="titulos"> Resultados de la {nameElection}</h3>
 
         <div className="form-group">
           <small id="emailHelp" className="form-text text-muted">Seleccione el tipo de grafico</small>
@@ -334,7 +354,7 @@ export const ResultsScreen = () => {
           }
           {
             winner &&
-            <h5 className='my-2 titulos'>Actual winner: {winner}</h5>
+            <h5 className='my-2 titulos'>Actual ganador: {winner}</h5>
           }
 
 
@@ -346,8 +366,9 @@ export const ResultsScreen = () => {
       </div>
       :
       <div className="titulos">
-        <h1>Eleccion en proceso</h1>
-        <h2>Fecha de Resultados: {moment(end).format('YYYY-MM-DD HH:mm:ss')}</h2>
+        <br/>
+        <h1>Eleccion en proceso...</h1>
+        <h3>Fecha de resultados: {moment(end).format('YYYY-MM-DD HH:mm:ss')}</h3>
       </div>
     }
 

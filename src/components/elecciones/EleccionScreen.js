@@ -58,18 +58,19 @@ export const EleccionScreen = () => {
 
     Swal.fire({
       title: 'Eliminar',
-      text: "Estas seguro de eliminar esta elección?",
+      text: "¿Estás seguro de eliminar esta elección?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delet it!',
+      confirmButtonText: 'Si, eliminar',
+      
 
     }).then((result) => {
       if (result.isConfirmed) {
 
         if (e.lists?.length > 0) {
-          toast.error('Tiene Listas', {
+          toast.error('Tiene Listas!', {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: false,
@@ -101,9 +102,9 @@ export const EleccionScreen = () => {
 
 
 
-    <div >
-      <br />
-      <h2 className="titulos">Elecciones</h2>
+    <div className="container py-3">
+
+    <h3 className="titulos">Elecciones</h3>
 
      
 

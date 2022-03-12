@@ -5,39 +5,33 @@ import { types } from '../types/types';
 import { toast } from 'react-toastify';
 
 
-export const userStartAddNew = ( user ) => {
-    return async( dispatch, getState ) => {
+export const userStartAddNew = (user) => {
+    return async (dispatch, getState) => {
 
         const { uid, name } = getState().auth;
 
-     try {
-         
-     
+        try {
+
             const resp = await fetchConToken('auth/new', user, 'POST');
             const body = await resp.json();
 
-            console.log(body, 'asi lega el body de usuarios')
+            //console.log(body, 'asi lega el body de usuarios')
 
-            if ( body.ok ) {
+            if (body.ok) {
                 user._id = body.uid;
                 user.user = {
                     _id: uid,
                     name: name
                 }
-                console.log( user );
-                dispatch( userAddNew( user ) );
-            }else{
-                //Swal.fire('Error', body.msg, 'error');
-               
-                // Swal.fire('Error', body.errors?.cedula?.msg ||
-                //  body.errors?.correo?.msg 
-                //  || body.errors?.password?.msg 
-                //  || body.msg , 'error');
+                //console.log( user );
+                dispatch(userAddNew(user));
+            } else {
 
-                 toast.error(body.errors?.cedula?.msg ||
-                    body.errors?.correo?.msg 
-                    || body.errors?.password?.msg 
-                    || body.msg , {
+                toast.error(body.errors?.cedula?.msg ||
+                    body.errors?.correo?.msg ||
+                    body.errors?.nombre?.msg
+                    || body.errors?.password?.msg
+                    || body.msg, {
                     position: "top-right",
                     autoClose: 2000,
                     hideProgressBar: false,
@@ -45,7 +39,7 @@ export const userStartAddNew = ( user ) => {
                     pauseOnHover: true,
                     draggable: true,
                     progress: undefined,
-                  });
+                });
 
             }
             //despes
@@ -73,15 +67,15 @@ export const userClearActiveUser = () => ({ type: types.userClearActiveUser });
 
 
 
-export const userStartUpdate = ( user ) => {
-    return async(dispatch) => {
+export const userStartUpdate = (user) => {
+    return async (dispatch) => {
 
         try {
-            const resp = await fetchConToken(`auth/${ user._id }`, user, 'PUT' );
+            const resp = await fetchConToken(`auth/${user._id}`, user, 'PUT');
             const body = await resp.json();
 
-            if ( body.ok ) {
-                dispatch( userUpdated( user ) );
+            if (body.ok) {
+                dispatch(userUpdated(user));
             } else {
                 Swal.fire('Error', body.msg, 'error');
             }
@@ -94,22 +88,22 @@ export const userStartUpdate = ( user ) => {
     }
 }
 
-const userUpdated = ( user ) => ({
+const userUpdated = (user) => ({
     type: types.userUpdated,
     payload: user
 });
 
 
 export const userStartDelete = () => {
-    return async ( dispatch, getState ) => {
+    return async (dispatch, getState) => {
 
         const { _id } = getState().user.activeUser;
         try {
-            const resp = await fetchConToken(`auth/${ _id }`, {}, 'DELETE' );
+            const resp = await fetchConToken(`auth/${_id}`, {}, 'DELETE');
             const body = await resp.json();
 
-            if ( body.ok ) {
-                dispatch( userDeleted() );
+            if (body.ok) {
+                dispatch(userDeleted());
             } else {
                 Swal.fire('Error', body.msg, 'error');
             }
@@ -127,14 +121,14 @@ const userDeleted = () => ({ type: types.userDeleted });
 
 
 export const userStartLoading = () => {
-    return async(dispatch) => {
+    return async (dispatch) => {
 
         try {
-            
-            const resp = await fetchConToken( 'auth' );
+
+            const resp = await fetchConToken('auth');
             const body = await resp.json();
-            
-            dispatch( userLoaded( body.usuarios ) );
+
+            dispatch(userLoaded(body.usuarios));
 
         } catch (error) {
             console.log(error)
@@ -148,4 +142,4 @@ const userLoaded = (user) => ({
     payload: user
 })
 
-export const userLogout =() => ({ type: types.userLogout });
+export const userLogout = () => ({ type: types.userLogout });

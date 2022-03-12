@@ -11,7 +11,8 @@ const address = '0xc01dda89e6151D19005c29DeEf364618273Ec148';
 //test con la cuenta de BSC
 const privateKey = '62e93d412b219ecb9afd757e99070d6d7bc2bd02de6a77c6450082e46c487c08';
 //const infuraUrl = 'https://rinkeby.infura.io/v3/02e6ba60363b49b7922a4f9ad1a87b4c';
-
+//let gasPrice
+//let gasLimit 
 
 let myContract
 
@@ -22,9 +23,9 @@ let isInit = false
 
 
 export const init = async () => {
-  const provider = new Provider(privateKey, 'https://rinkeby.infura.io/v3/02e6ba60363b49b7922a4f9ad1a87b4c');
+  //const provider = new Provider(privateKey, 'https://rinkeby.infura.io/v3/02e6ba60363b49b7922a4f9ad1a87b4c');
   //test con BSC
-  //const provider = new Provider(privateKey, 'https://data-seed-prebsc-1-s1.binance.org:8545');
+  const provider = new Provider(privateKey, 'https://data-seed-prebsc-1-s1.binance.org:8545');
   // test con Polygon
   //const provider = new Provider(privateKey, 'https://rpc-mumbai.maticvigil.com/v1/8d9378fdfa5c3bb88018bb2e1e9d958578dc98a8');
   const web3 = new Web3(provider);
@@ -36,14 +37,12 @@ export const init = async () => {
   );
   console.log(myContract);
  // the destination address
+ //gasPrice= web3.utils.toHex(web3.utils.toWei("10", "gwei"))
+ //gasLimit= web3.utils.toHex(500000)
  addressContract =   voteContractBuild.networks[networkId].address;
 
  //nonces = web3.eth.getTransactionCount(address);
-  // console.log(await myContract.methods.data().call());
-  // console.log(`Old data value: ${await myContract.methods.data().call()}`);
-  // const receipt = await myContract.methods.setData(3).send({ from: address });
-  // console.log(`Transaction hash: ${receipt.transactionHash}`);
-  // console.log(`New data value: ${await myContract.methods.data().call()}`);
+
 
   isInit = true
 }
@@ -52,29 +51,18 @@ export const init = async () => {
 export const vote = async ({ proposal, ci }) => {
   if (!isInit) await init()
 
-  // const tx = myContract.methods.vote(Number(proposal), Number(ci));
-  // const gas = 8500000;
-  // const gasPrice = 10000000000;
-  // const data = tx.encodeABI();
-  // const nonce = nonces
-  // const txData = {
-  //   from: address,
-  //   to: myContract.options.address,
-  //   data: data,
-  //   gas,
-  //   gasPrice,
-  //   nonce, 
-  //   chainId: '80001', 
-  //   hardfork: 'istanbul'
-  // };
+
 
 
   //console.log('asi llegan los datos', txData)
   //gas: 9500000 , gasPrice: 20000000000
+
+   //console.log('que llega ', gasPrice, gasLimit);
+    //.send({ from: address, gasPrice})
   return myContract
     .methods
     .vote(Number(proposal), Number(ci))
-    .send({ from: address })
+    .send({ from: address})
     .then(vote => vote,
       );
     
@@ -87,7 +75,6 @@ export const AddListas = async (proposals) => {
   return myContract
     .methods
     .AddListas(proposals) // 
-    //.AddListas(Array(proposals)) // 
     .send({ from: address})
     .then(vote => vote);
 

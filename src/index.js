@@ -5,7 +5,6 @@ import { CalendarApp } from './CalendarApp';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
-//import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
     <CalendarApp/>,

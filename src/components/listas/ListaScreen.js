@@ -109,8 +109,6 @@ export const ListaScreen = () => {
 
     if (tamaño === 0) {
 
-
-
       dispatch(listaSetActive(e));
       const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -122,18 +120,18 @@ export const ListaScreen = () => {
 
       Swal.fire({
         title: 'Eliminar',
-        text: "Estas seguro de eliminar esta lista?",
+        text: "¿Estás seguro de eliminar esta lista?",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delet it!',
+        confirmButtonText: 'Si, eliminar',
 
       }).then((result) => {
         if (result.isConfirmed) {
 
           if (e.candidates?.length > 0) {
-            toast.error('Tiene candidatos', {
+            toast.error('Tiene candidatos!', {
               position: "top-right",
               autoClose: 2000,
               hideProgressBar: false,
@@ -179,8 +177,8 @@ export const ListaScreen = () => {
         //console.log(tx,'estado actual');
         tamaño = tx.length;
         let tamaño2 = tx.length;
-        
-          setStats(tamaño2);
+
+        setStats(tamaño2);
         //console.log('es lo q va ', tx.length);
       })
       .catch(err => console.log(err))
@@ -238,7 +236,7 @@ export const ListaScreen = () => {
         if (resultado.value) {
           //console.log('como llega el tamaño blockchain', tamaño)
           if (tamaño > 0) {
-            toast.error('Ya tiene listas en la blockchain', {
+            toast.error('Ya tienes listas en la blockchain!', {
               position: "top-right",
               autoClose: 2000,
               hideProgressBar: false,
@@ -260,14 +258,14 @@ export const ListaScreen = () => {
             })
             Swal.fire({
               title: 'Voto Nulo y Blanco',
-              text: "Desea habilitar el voto Nulo y Blanco al proceso electoral?",
+              text: "¿Desea habilitar el voto Nulo y Blanco al proceso electoral?",
               icon: 'question',
               showCancelButton: true,
               confirmButtonColor: '#3085d6',
               cancelButtonColor: '#d33',
-              confirmButtonText: 'Si, agregar voto N/B!',
+              confirmButtonText: 'Si, agregar voto N/B',
               cancelButtonText: 'No, solo listas',
-            
+
             }).then((result) => {
               if (result.isConfirmed) {
 
@@ -277,7 +275,7 @@ export const ListaScreen = () => {
 
                 Swal.fire({
                   title: 'Agregando a blockchain...',
-                  text: 'Please wait...',
+                  text: 'Espere por favor...',
                   allowOutsideClick: false,
                   onBeforeOpen: () => {
                     Swal.showLoading();
@@ -288,10 +286,10 @@ export const ListaScreen = () => {
                   .then(tx => {
                     test(true);
                     Swal.close();
-                    console.log(tx, 'addd a block');
-                    tamaño=4;
+                    //console.log(tx, 'addd a block');
+                    tamaño = 4;
                     //console.log('cuando se agrega a block con N/B', tamaño);
-                    Swal.fire('Saved!', 'Se encuentra habilitado los votos nulos y blancos en el proceso electoral', 'success')
+                    Swal.fire('Guardado!', 'Se encuentra habilitado los votos nulos y blancos en el proceso electoral', 'success')
                   })
                   .catch(err => {
                     console.log(err);
@@ -301,11 +299,11 @@ export const ListaScreen = () => {
                 /* Read more about handling dismissals below */
                 result.dismiss === Swal.DismissReason.cancel
               ) {
-               //console.log(listasBlockchain, 'esto es lo q se piensa enviar sin voto nb')
+                //console.log(listasBlockchain, 'esto es lo q se piensa enviar sin voto nb')
 
                 Swal.fire({
                   title: 'Agregando a blockchain...',
-                  text: 'Please wait...',
+                  text: 'Espere por favor...',
                   allowOutsideClick: false,
                   onBeforeOpen: () => {
                     Swal.showLoading();
@@ -315,11 +313,11 @@ export const ListaScreen = () => {
                 AddListas(listasBlockchain)
                   .then(tx => {
                     Swal.close();
-                    console.log(tx, 'addd a block');
-                    tamaño=4;
+                    //console.log(tx, 'addd a block');
+                    tamaño = 4;
                     //console.log('cuando se agrega a block sin N/B', tamaño);
                     swalWithBootstrapButtons.fire(
-                      'Saved!', 'Inhabilitado los votos nulos y blancos para el proceso electoral', 'info')
+                      'Guardado!', 'Inhabilitado los votos nulos y blancos para el proceso electoral', 'info')
                   })
                   .catch(err => {
                     console.log(err);
@@ -335,7 +333,7 @@ export const ListaScreen = () => {
       }
       )
     } else {
-      toast.error('Por favor agregue listas antes de agregar a la blockchain', {
+      toast.error('Por favor agregue listas antes de agregar a la blockchain!', {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -347,53 +345,49 @@ export const ListaScreen = () => {
     }
   }
 
-  const handleFileChange = (e) => {
-    //console.log(e.target.files);
-    file = e.target.files[0];
-    const target = e.target;
-
-    if (file) {
-      // dispatch(startUploading(file));
-      let reader = new FileReader();
-      reader.readAsArrayBuffer(target.files[0])
-      reader.onloadend = (e) => {
-        var data = new Uint8Array(e.target.result);
-        var workbook = XLSX.read(data, { type: 'array' });
-        //console.log(workbook, 'workbook');
-
-        workbook.SheetNames.forEach(function (sheetName) {
-
-          XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-          //console.log(XL_row_object, 'xl');
-          //console.log(XL_row_object.length, 'xl deimesnsion');
-
-        })
-        //console.log(XL_row_object, 'ya converido de xls');
-
-      }
-    }
-  }
-
-  const saveListasBDD = () => {
+  const saveSwal = async () => {
 
     if (tamaño === 0) {
-      file = "";
-      //recorre para agregar al json un campo mas
-      for (let i = 0; i < XL_row_object.length; i++) {
-        XL_row_object[i].eleccion = idEleccion;
+
+      const { value: file } = await Swal.fire({
+        title: 'Seleccione un archivo excel con listas',
+        input: 'file',
+        inputAttributes: {
+          'accept': '.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel',
+          'aria-label': 'Upload your profile picture'
+        }
+      })
+
+      if (file) {
+        let reader = new FileReader();
+        reader.readAsArrayBuffer(file)
+        reader.onloadend = (e) => {
+          var data = new Uint8Array(e.target.result);
+          var workbook = XLSX.read(data, { type: 'array' });
+          workbook.SheetNames.forEach(function (sheetName) {
+
+            XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+
+          })
+
+          for (let i = 0; i < XL_row_object.length; i++) {
+            XL_row_object[i].eleccion = idEleccion;
+          }
+
+          setTimeout(() => {
+            for (let i = 0; i < XL_row_object.length; i++) {
+              dispatch(listaStartAddNew(XL_row_object[i]))
+            }
+          }, (2000));
+
+          dispatch(listaStartLoading())
+
+        }
       }
 
-      setTimeout(() => {
-        for (let i = 0; i < XL_row_object.length; i++) {
-          dispatch(listaStartAddNew(XL_row_object[i]))
-        }
-      }, (2000));
 
-      dispatch(listaStartLoading())
-      document.getElementById("file").value = '';
-      //console.log(XL_row_object, 'metodo add bdd');
     } else {
-      toast.error('Tiene listas agregadas a blockchain!', {
+      toast.error('Tienes listas agregadas a blockchain!', {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -403,8 +397,6 @@ export const ListaScreen = () => {
         progress: undefined,
       });
     }
-
-
   }
 
 
@@ -417,7 +409,7 @@ export const ListaScreen = () => {
 
   if (idEleccion === '') return <span>Loading</span>
 
-  if (stats=== undefined) return <div className="padre">
+  if (stats === undefined) return <div className="padre">
 
     <div className="spinner">
       <span>Loading...</span>
@@ -425,10 +417,12 @@ export const ListaScreen = () => {
     </div>
   </div>
 
-//console.log(stats, 'esto seria blockchain');
+  //console.log(stats, 'esto seria blockchain');
 
   return (
-    <div className="container py-4">
+    <div className="container py-3">
+
+    <h3 className="titulos">Listas</h3>
       <ToastContainer></ToastContainer>
       <form className="container" onSubmit={handleSubmitForm}>
         <div className="form-group">
@@ -449,29 +443,13 @@ export const ListaScreen = () => {
 
       <div className="container">
         <div className="row">
-          <div className="col">
-
-            <input
-              id="file"
-              type="file"
-              name="file"
-              accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-              onChange={handleFileChange}
-            />
-            <small id="emailHelp" className="form-text text-muted">Archivo de Excel</small>
-
-          </div>
-
+          
           <div className="col">
             <button
-              className="btn btn-dark userListEdit" onClick={saveListasBDD}>
+              className="btn btn-dark userListEdit" onClick={saveSwal}>
               <i className="fa-solid fa-file-csv"> </i>
-              <span> Cargar listas</span>  
+              <span> Cargar listas</span>
             </button>
-          </div>
-
-          <div className="col">
-
           </div>
 
 
@@ -484,8 +462,8 @@ export const ListaScreen = () => {
       </button>
 
       <div className="row">
-        <div className="col-md-4">
-          <br /><br /><br />
+        <div className="col-md-3">
+          <br /><br />
 
           <div className="card card-body bg-light rounded-3 mb-4">
             <div className="d-flex align-items-center">
@@ -497,9 +475,11 @@ export const ListaScreen = () => {
           </div>
 
         </div>
+        <div className="col-md-1">
+        </div>
 
         <div className="col-md-8">
-          <br /><br /><br />
+          <br /><br />
           <Table className="titulos table table-hover">
             <thead>
               <tr>

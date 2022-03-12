@@ -24,10 +24,10 @@ export const CargoScreen = () => {
     dispatch(cargoSetActive(e));
 
     Swal.fire({
-      title: "Estas seguro de eliminar el cargo?",
+      title: "¿Estás seguro de eliminar el cargo?",
       type: "info",
       showCancelButton: true,
-      confirmButtonText: "Delete It",
+      confirmButtonText: "Si, eliminar",
       confirmButtonColor: "#ff0055",
       cancelButtonColor: "#999999",
       reverseButtons: true,

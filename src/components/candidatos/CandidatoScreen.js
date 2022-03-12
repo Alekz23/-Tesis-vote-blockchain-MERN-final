@@ -109,19 +109,18 @@ export const CandidatoScreen = () => {
 
     Swal.fire({
       title: 'Eliminar',
-      text: "Estas seguro de eliminar este candidato?",
+      text: "¿Estás seguro de eliminar este candidato?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delet it!',
+      confirmButtonText: 'Si, eliminar',
 
     }).then((result) => {
       if (result.isConfirmed) {
 
         dispatch(candidatoStartDelete());
       } else if (
-        /* Read more about handling dismissals below */
         result.dismiss === Swal.DismissReason.cancel
       ) {
         swalWithBootstrapButtons.fire(
@@ -145,9 +144,9 @@ export const CandidatoScreen = () => {
 
 
   return (
-    <div className="container py-4">
+    <div className="container py-3">
 
-      <h2 className="titulos">Candidatos</h2>
+      <h3 className="titulos">Candidatos</h3>
       <ToastContainer></ToastContainer>
 
       <form className="container" onSubmit={handleSubmitForm}>

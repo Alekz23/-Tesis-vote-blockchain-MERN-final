@@ -22,8 +22,8 @@ export const startLogin=(correo, password) => {
                 
             }) )
         } else {
-            Swal.fire('Error', body.msg, 'error');
-            console.log(body.errors)
+            Swal.fire('Error', body.errors?.correo?.msg ||  body.errors?.password?.msg || body.msg, 'error');
+            //console.log(body.errors)
         }
         
 
@@ -36,7 +36,7 @@ export const startChecking = () => {
         const resp = await  fetchConToken( 'auth/renew' );
         const body = await resp.json();
 
-        console.log(body,'renew');
+        //console.log(body,'renew');
         if( body.ok ) {
             localStorage.setItem('token', body.token );
             localStorage.setItem('token-init-date', new Date().getTime() );
@@ -58,7 +58,7 @@ export const startRegister=(cedula, nombre, correo, password) => {
     return async(dispatch)=>{
         const resp= await fetchSinToken('auth/new', {cedula, nombre, correo, password, rol:"ADMIN_ROLE"}, 'POST');
         const body= await resp.json();
-        console.log(body)
+       // console.log(body)
         if( body.ok ) {
             
             localStorage.setItem('token', body.token );

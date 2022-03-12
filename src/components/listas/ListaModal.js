@@ -10,6 +10,7 @@ import { electionStartLoading } from '../../actions/elections';
 import 'react-toastify/dist/ReactToastify.css';
 import { fileUpload } from '../../helpers/fileUpload';
 import Swal from 'sweetalert2';
+import { toast} from 'react-toastify';
 
 const customStyles = {
   content: {
@@ -77,27 +78,41 @@ export const ListaModal = ({ idEleccion }) => {
     });
   }
 
-  //tomar todos los valores del formulario al dar al boton guardar
   const handleSubmitForm = (e) => {
-    // const nuevo= {...formValues, eleccion: formValues.eleccion.length===0?
-    //    elections[0].id
-    //     :formValues.eleccion}
-
-    //funcionando
+   
     const nuevo = {
       ...formValues, eleccion:
         idEleccion
     }
-
-    //funcionando con errores
-    // const nuevo= {...formValues, eleccion: idEleccion==='' ? elections[0].id
-    // : idEleccion
-    // }
     e.preventDefault();
 
     if (nombre.trim().length < 2) {
+      toast.error('El nombre es obligatorio', {
+				position: "top-right",
+				autoClose: 2000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
       return setTitleValid(false);
     }
+
+    if (descripcion.trim().length < 2) {
+     return toast.error('La descripción es obligatoria', {
+				position: "top-right",
+				autoClose: 2000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
+     
+    }
+
+
     if (activeLista) {
       dispatch(listaStartUpdated(formValues))
     } else {
@@ -120,8 +135,8 @@ export const ListaModal = ({ idEleccion }) => {
     return async () => {
       //console.log(file);
       Swal.fire({
-        title: 'Uploading...',
-        text: 'Please wait...',
+        title: 'Cargando...',
+        text: 'Espere por favor...',
         allowOutsideClick: false,
         onBeforeOpen: () => {
           Swal.showLoading();

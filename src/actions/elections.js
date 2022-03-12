@@ -2,6 +2,8 @@ import Swal from "sweetalert2";
 import { fetchConToken } from "../helpers/fetch";
 import { prepareElections } from "../helpers/prepareElections";
 import { types } from "../types/types";
+import { toast } from 'react-toastify';
+
 
 export const electionStartAddNew= (election) => {
     return async( dispatch, getState ) => {
@@ -12,7 +14,7 @@ export const electionStartAddNew= (election) => {
             const resp = await fetchConToken('elecciones', election, 'POST');
             const body = await resp.json();
 
-            console.log(body)
+            //console.log(body)
 
             if ( body.ok ) {
                 election.id = body.eleccion.id; //id de la eleccion una vez en la bdd
@@ -20,8 +22,22 @@ export const electionStartAddNew= (election) => {
                     _id: uid,
                     name: name
                 }
-                console.log( election );
+                //console.log( election );
                 dispatch( electionAddNew( election ) );
+            }else{
+                toast.error( body.errors?.nombre?.msg ||
+                    body.errors?.start?.msg ||
+                    body.errors?.end?.msg ||
+                    body.errors?.descripcion?.msg
+                    || body.msg, {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                  });
             }
 
 
@@ -61,7 +77,7 @@ export const  electionStartUpdated=(election)=>{
 
             if ( body.ok ) {
                 dispatch(electionUpdated(election));
-                console.log('sie entra al update')
+                //console.log('sie entra al update')
             }else{
                 Swal.fire('Error', body.msg, 'error')
                
@@ -80,29 +96,6 @@ const electionUpdated = ( election ) => ({
 });
 
 
-// export const electionStartLoadingByList = (election) => {
-//     return async(dispatch) => {
-
-//         try {
-            
-//             const resp = await fetchConToken(`elecciones/${election.idEleccion}`, 'GET');
-
-//             const body = await resp.json();
-//             console.log(body.elecciones.lists, 'lo q envia')
-           
-//             dispatch( electionLoadedByList( body.elecciones.lists ) );
-
-//         } catch (error) {
-//             console.log(error)
-//         }
-
-//     }
-// }
-
-// const electionLoadedByList = (elections) => ({
-//     type: types.electionLoadedByList,
-//     payload: elections
-// })
 
 export const electionStartLoading = () => {
     return async(dispatch) => {
