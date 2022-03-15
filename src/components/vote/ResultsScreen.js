@@ -61,6 +61,7 @@ const dataset = {
 };
 
 let listasJson = [];
+let ListasJsonBarras = [];
 //const seconds = 120
 export const ResultsScreen = () => {
 
@@ -86,6 +87,7 @@ export const ResultsScreen = () => {
   //iniciar blockchain
   useEffect(() => {
     listasJson = []
+    ListasJsonBarras = []
     init();
     getStatsF()
     // setInterval(() => {
@@ -103,6 +105,14 @@ export const ResultsScreen = () => {
           let voteCount = tx[i].voteCount;
 
           listasJson.push({ name: name, voteCount: voteCount });
+
+        }
+        // for inverso para el grafico de barras
+        for (let i = tx.length - 1; i >= 0; i--) {
+          let name = tx[i].name;
+          let voteCount = tx[i].voteCount;
+
+          ListasJsonBarras.push({ name: name, voteCount: voteCount });
 
         }
         const labels = tx.map(vote => vote[0])
@@ -262,7 +272,7 @@ export const ResultsScreen = () => {
             <Chart
               id="chart"
               palette="Soft"
-              dataSource={listasJson}>
+              dataSource={ListasJsonBarras}>
               <CommonSeriesSettings
                 argumentField="name"
                 valueField="voteCount"
@@ -288,7 +298,7 @@ export const ResultsScreen = () => {
                 id="chart"
                 palette="Soft"
                 rotated={true}
-                dataSource={listasJson}>
+                dataSource={ListasJsonBarras}>
                 <CommonSeriesSettings
                   argumentField="name"
                   valueField="voteCount"

@@ -16,6 +16,7 @@ import { userStartLoading, userStartUpdate } from '../../actions/users';
 //   'Proposal 1', 'Proposal 2', 'Proposal 3'
 // ]
 let tamaño = 0;
+let direccionTrx;
 export const VoteScreen = () => {
 
 
@@ -163,8 +164,9 @@ export const VoteScreen = () => {
               Swal.close();
               buscarUsuario();
               //Swal.fire("Enviado", "Voto generado con exito!", "success");
-              let url = `https://testnet.bscscan.com/tx/ ${tx.transactionHash}`;
-              //console.log(tx)
+              let url = `https://mumbai.polygonscan.com/tx/ ${tx.transactionHash}`;
+              direccionTrx= url;
+              console.log(tx)
               Swal.fire({
                 icon: 'success',
                 title: 'Voto generado con exito!',
@@ -250,7 +252,7 @@ export const VoteScreen = () => {
   return (
     <div className="container py-3">
 
-      
+
 
       {(fechaActual.isSameOrAfter(start) && fechaActual < end) ? <div>
 
@@ -307,6 +309,10 @@ export const VoteScreen = () => {
                 })}
             </tbody>
           </Table>
+
+          {/* <div className="containerPage">
+            <iframe className="responsive-iframe" src="http://geekbucket.com.mx/blog/2018/10/15/google-marcara-como-no-seguros-a-los-sitios-web-sin-https/"></iframe>
+          </div> */}
         </div>
       </div>
         :
