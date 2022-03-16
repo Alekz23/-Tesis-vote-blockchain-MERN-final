@@ -151,7 +151,7 @@ export const ResultsScreen = () => {
     let cont = 0;
     for (let i = 0; i < users.length; i++) {
 
-      if (users[i].rol === "USER_ROLE") {
+      if (users[i].rol === "Elector") {
         cont++;
       }
     }
@@ -357,7 +357,7 @@ export const ResultsScreen = () => {
             totalVotes && totalVotantes() &&
             <>
               <p>Votos: {totalVotes}/{totalVotantes()}</p>
-              <div className="progress my-2" style={{ height: 30 }}>
+              <div className="progress my-2" style={{ height: 25 }}>
                 <div className="progress-bar" role="progressbar" style={{ width: percent() }} aria-valuenow={totalVotes} aria-valuemin="0" aria-valuemax={totalVotantes()}>{percent()}</div>
               </div>
             </>

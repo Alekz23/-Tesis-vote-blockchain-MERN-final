@@ -56,7 +56,7 @@ export const startChecking = () => {
 
 export const startRegister=(cedula, nombre, correo, password) => {
     return async(dispatch)=>{
-        const resp= await fetchSinToken('auth/new', {cedula, nombre, correo, password, rol:"ADMIN_ROLE"}, 'POST');
+        const resp= await fetchSinToken('auth/new', {cedula, nombre, correo, password, rol:"Administrador"}, 'POST');
         const body= await resp.json();
        // console.log(body)
         if( body.ok ) {

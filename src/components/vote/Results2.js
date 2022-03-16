@@ -187,7 +187,7 @@ export const ResultsScreen = () => {
     let cont = 0;
     for (let i = 0; i < users.length; i++) {
 
-      if (users[i].rol === "USER_ROLE") {
+      if (users[i].rol === "Elector") {
         cont++;
       }
     }

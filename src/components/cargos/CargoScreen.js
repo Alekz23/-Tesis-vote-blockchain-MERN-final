@@ -75,7 +75,7 @@ export const CargoScreen = () => {
         Agregar cargos
       </button>
       <div className="form-screen ">
-        <table className="table table-hover">
+        <table className="table table-hover table-sm">
           <thead>
             <tr>
               <th>Nombre</th>

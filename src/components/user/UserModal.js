@@ -76,7 +76,7 @@ export const UserModal = () => {
   const handleSubmitForm = (e) => {
 
     const nuevo= {...formValues, rol: formValues.rol===''?
-        "USER_ROLE"
+        "Elector"
        :formValues.rol}
     
     e.preventDefault();
@@ -220,8 +220,8 @@ export const UserModal = () => {
             name="rol"
             value={rol}
             onChange={handleInputChange}>
-            <option value="USER_ROLE">Elector</option>
-            <option value="ADMIN_ROLE">Administrador</option>
+            <option value="Elector">Elector</option>
+            <option value="Administrador">Administrador</option>
           </select>
           <small id="emailHelp" className="form-text text-muted">Rol de Usuario</small>
         </div>

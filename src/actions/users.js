@@ -73,6 +73,7 @@ export const userStartUpdate = (user) => {
         try {
             const resp = await fetchConToken(`auth/${user._id}`, user, 'PUT');
             const body = await resp.json();
+            console.log(body, 'update');
 
             if (body.ok) {
                 dispatch(userUpdated(user));

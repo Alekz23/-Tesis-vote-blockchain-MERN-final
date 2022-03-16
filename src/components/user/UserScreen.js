@@ -12,10 +12,10 @@ import { UserModal } from './UserModal';
 import * as XLSX from 'xlsx';
 import { getStats, init } from '../../helpers/getWeb3Vote';
 
-let cont=0;
+let cont = 0;
 let file;
-let $ = require( "jquery" );
-$.DataTable= require('datatables.net')
+let $ = require("jquery");
+$.DataTable = require('datatables.net')
 
 
 export const UserScreen = () => {
@@ -30,35 +30,36 @@ export const UserScreen = () => {
   useEffect(() => {
 
     dispatch(userStartLoading());
-  //   $(document).ready(function() {
-  //     $('#example').DataTable();
-  // } );
-   
+    //   $(document).ready(function() {
+    //     $('#example').DataTable();
+    // } );
+
   }, [dispatch])
 
 
 
   const openModal = () => {
     dispatch(uiOpenModal());
-    
+
   }
 
   const onSelectUser = (e) => {
-    dispatch(userSetActive(e));
+    console.log({...e, password: ""});
+    dispatch(userSetActive({...e, password: ""}));
     dispatch(uiOpenModal());
     //console.log(e)
   }
 
 
   useEffect(() => {
-   
-   
+
+
     init();
     obtenerListas();
   }, [])
 
-  
-  
+
+
   const obtenerListas = () => {
 
 
@@ -68,10 +69,10 @@ export const UserScreen = () => {
 
         console.log(tx);
         let tamaño = tx.length;
-        
-          setStats(tamaño);
-        
-        
+
+        setStats(tamaño);
+
+
         console.log('es lo q va ', tx.length);
 
         //en caso de error al no desplegar la blockchain , borrar este if y metdoo
@@ -83,10 +84,10 @@ export const UserScreen = () => {
       .catch(err => console.log(err))
   }
 
- 
+
 
   const resetStatusVote = () => {
-  
+
     console.log('ingresa a cambiar ststaus', users.length);
     for (let i = 0; i < users.length; i++) {
       //console.log(users.length)
@@ -106,7 +107,7 @@ export const UserScreen = () => {
     dispatch(userStartLoading());
   }
 
- 
+
 
 
   const onDeletUser = (e) => {
@@ -151,53 +152,53 @@ export const UserScreen = () => {
 
   const saveSwal = async () => {
 
-      const { value: file } = await Swal.fire({
-        title: 'Seleccione un archivo excel con usuarios',
-        input: 'file',
-        inputAttributes: {
-          'accept': '.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel',
-          'aria-label': 'Upload your profile picture'
-        }
-      })
-
-      if (file) {
-        let reader = new FileReader();
-        reader.readAsArrayBuffer(file)
-        reader.onloadend = (e) => {
-          var data = new Uint8Array(e.target.result);
-          var workbook = XLSX.read(data, { type: 'array' });
-          workbook.SheetNames.forEach(function (sheetName) {
-
-            XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-
-          })
-
-          setTimeout(() => {
-            for (let i = 0; i < XL_row_object.length; i++) {
-              dispatch(userStartAddNew(XL_row_object[i]))
-            }
-          }, (2000));
-      
-          dispatch(userStartLoading())
-        }
+    const { value: file } = await Swal.fire({
+      title: 'Seleccione un archivo excel con usuarios',
+      input: 'file',
+      inputAttributes: {
+        'accept': '.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel',
+        'aria-label': 'Upload your profile picture'
       }
+    })
+
+    if (file) {
+      let reader = new FileReader();
+      reader.readAsArrayBuffer(file)
+      reader.onloadend = (e) => {
+        var data = new Uint8Array(e.target.result);
+        var workbook = XLSX.read(data, { type: 'array' });
+        workbook.SheetNames.forEach(function (sheetName) {
+
+          XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+
+        })
+
+        setTimeout(() => {
+          for (let i = 0; i < XL_row_object.length; i++) {
+            dispatch(userStartAddNew(XL_row_object[i]))
+          }
+        }, (2000));
+
+        dispatch(userStartLoading())
+      }
+    }
 
   }
 
 
   //console.log(stats, 'stas cargado 1');
 
-  if (users.length===0) return <div className="padre">
+  if (users.length === 0) return <div className="padre">
 
-  <div className="spinner">
-    <span>Loading users...</span>
-    <div className="half-spinner"></div>
+    <div className="spinner">
+      <span>Loading users...</span>
+      <div className="half-spinner"></div>
+    </div>
   </div>
-</div>
 
 
 
-  if (stats===undefined ) return <div className="padre">
+  if (stats === undefined) return <div className="padre">
 
     <div className="spinner">
       <span>Loading...</span>
@@ -206,28 +207,28 @@ export const UserScreen = () => {
   </div>
   //console.log(stats, 'stas cargado');
 
-  if (stats === 0 && cont===0) {
+  if (stats === 0 && cont === 0) {
     resetStatusVote()
     //console.log('cuantas veces entra', cont);
-    cont=1;
+    cont = 1;
   }
 
-//   $(document).ready(function() {
-//     $('#example').DataTable();
-// } );
+  //   $(document).ready(function() {
+  //     $('#example').DataTable();
+  // } );
 
   return (
 
 
 
     <div className="container py-3">
-     
+
       <h3 className="titulos">Usuarios</h3>
 
-      <br/>
+      <br />
       <div className="container">
         <div className="row">
-          
+
           <div className="col">
             <button
               className="btn btn-dark userListEdit" onClick={saveSwal}>
@@ -246,7 +247,7 @@ export const UserScreen = () => {
 
       </button>
 
-      <br/>
+      <br />
       <ToastContainer></ToastContainer>
       <div className="table-responsive-sm" >
         <table className="titulos table table-hover table-borderless table-sm " id="example">
@@ -272,13 +273,13 @@ export const UserScreen = () => {
                     <td>{usuario.correo}</td>
                     <td>{usuario.rol}</td>
                     <td>{
-                      usuario.vote === true && usuario.rol !== 'ADMIN_ROLE' ?
+                      usuario.vote === true && usuario.rol !== 'Administrador' ?
                         <button
                           className="btn btn-success userListStatus"
                         >
                           <i className="fa-solid fa-check"></i>
                         </button>
-                        : usuario.vote === false && usuario.rol !== 'ADMIN_ROLE' ?
+                        : usuario.vote === false && usuario.rol !== 'Administrador' ?
                           <button
                             className="btn btn-dark userListStatus">
                             <i className="fa-brands fa-mixer"></i>
@@ -295,7 +296,6 @@ export const UserScreen = () => {
                       >
                         <i className="fas fa-edit "></i>
                       </button>
-                      {"   "}
                       <button
                         className="btn btn-danger userListEdit"
                         onClick={() => onDeletUser(usuario)}
@@ -308,16 +308,16 @@ export const UserScreen = () => {
               })}
           </tbody>
         </table>
- <script src='https://code.jquery.com/jquery-3.5.1.js'></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-   
+        <script src='https://code.jquery.com/jquery-3.5.1.js'></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
 
       </div>
-      <UserModal/>
+      <UserModal />
 
-     
-     
+
+
 
 
     </div>

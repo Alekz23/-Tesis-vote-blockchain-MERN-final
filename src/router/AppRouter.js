@@ -48,7 +48,7 @@ export const AppRouter = () => {
                 />
                 <Route path="/*" element={
                     <PrivateRoute>
-                        {(auth?.rol === "ADMIN_ROLE") ?
+                        {(auth?.rol === "Administrador") ?
                             <DashboardRoutes />
                             : <DashboardUser />
                         }

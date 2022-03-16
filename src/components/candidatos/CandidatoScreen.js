@@ -182,7 +182,7 @@ export const CandidatoScreen = () => {
           <div className="table-responsive-sm col-md-8">
             <br />
             <br />
-            <table className="titulos table table-hover">
+            <table className="titulos table table-hover ">
               <thead>
                 <tr>
                   <th>Candidato</th>
