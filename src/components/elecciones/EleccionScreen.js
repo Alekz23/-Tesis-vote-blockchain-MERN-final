@@ -9,7 +9,7 @@ import { EleccionModal } from './EleccionModal';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Table  from 'react-bootstrap/Table';
+//import Table  from 'react-bootstrap/Table';
 
 
 
@@ -118,7 +118,7 @@ export const EleccionScreen = () => {
       <ToastContainer></ToastContainer>
       <div className="table-responsive-sm">
         
-        <Table className="titulos table table-hover">
+        <table className="titulos table table-hover">
           <thead>
             <tr>
               <th>Nombre</th>
@@ -157,7 +157,7 @@ export const EleccionScreen = () => {
                 );
               })}
           </tbody>
-        </Table>
+        </table>
       </div>
 
       <EleccionModal />

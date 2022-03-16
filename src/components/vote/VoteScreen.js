@@ -8,7 +8,7 @@ import { getStats, init, vote } from '../../helpers/getWeb3Vote';
 import Swal from 'sweetalert2';
 import { electionStartLoading } from '../../actions/elections';
 import moment from 'moment';
-import { Table } from 'react-bootstrap';
+//import { Table } from 'react-bootstrap';
 import { userStartLoading, userStartUpdate } from '../../actions/users';
 
 
@@ -259,7 +259,7 @@ export const VoteScreen = () => {
         <h2 className="titulos">{nameElection}</h2>
         <br />
         <div className="table-responsive-sm">
-          <Table className="titulos table table-hover table-sm ">
+          <table className="titulos table table-hover table-sm ">
             <thead>
               <tr>
                 <th scope="col">Nombre</th>
@@ -308,7 +308,7 @@ export const VoteScreen = () => {
                   );
                 })}
             </tbody>
-          </Table>
+          </table>
 
           {/* <div className="containerPage">
             <iframe className="responsive-iframe" src="http://geekbucket.com.mx/blog/2018/10/15/google-marcara-como-no-seguros-a-los-sitios-web-sin-https/"></iframe>

@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CargoScreen } from '../cargos/CargoScreen';
-import { Table } from 'react-bootstrap';
+//import { Table } from 'react-bootstrap';
 
 
 export const CandidatoScreen = () => {
@@ -182,7 +182,7 @@ export const CandidatoScreen = () => {
           <div className="table-responsive-sm col-md-8">
             <br />
             <br />
-            <Table className="titulos table table-hover">
+            <table className="titulos table table-hover">
               <thead>
                 <tr>
                   <th>Candidato</th>
@@ -233,7 +233,7 @@ export const CandidatoScreen = () => {
                     );
                   })}
               </tbody>
-            </Table>
+            </table>
           </div>
         </div>
       </div>

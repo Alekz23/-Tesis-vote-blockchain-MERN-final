@@ -10,7 +10,7 @@ import { electionStartLoading } from '../../actions/elections';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Table } from 'react-bootstrap';
+//import { Table } from 'react-bootstrap';
 
 import * as XLSX from 'xlsx';
 
@@ -480,7 +480,7 @@ export const ListaScreen = () => {
 
         <div className="col-md-8">
           <br /><br />
-          <Table className="titulos table table-hover">
+          <table className="titulos table table-hover">
             <thead>
               <tr>
 
@@ -538,7 +538,7 @@ export const ListaScreen = () => {
                   );
                 })}
             </tbody>
-          </Table>
+          </table>
         </div>
       </div>
 
