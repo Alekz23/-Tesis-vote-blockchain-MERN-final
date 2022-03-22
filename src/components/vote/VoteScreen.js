@@ -164,16 +164,18 @@ export const VoteScreen = () => {
               Swal.close();
               buscarUsuario();
               //Swal.fire("Enviado", "Voto generado con exito!", "success");
+              //let url = `https://polygonscan.com/tx/ ${tx.transactionHash}`;
               let url = `https://mumbai.polygonscan.com/tx/ ${tx.transactionHash}`;
               direccionTrx= url;
               console.log(tx)
               Swal.fire({
                 icon: 'success',
                 title: 'Voto generado con exito!',
-                footer: '<a id="enlace" href="">Url del voto</a>'
+                footer: '<a id="enlace"  className="" href="">Url del voto(Transacción)</a>'
               })
               var elemento = document.getElementById("enlace");
               elemento.href = url
+              elemento.className = 'urlVote'
               elemento.target = "_blank"
               setState(initialState)
 
@@ -256,7 +258,7 @@ export const VoteScreen = () => {
 
       {(fechaActual.isSameOrAfter(start) && fechaActual < end) ? <div>
 
-        <h2 className="titulos">{nameElection}</h2>
+        <h2 className="titulos voteLetra">{nameElection}</h2>
         <br />
         <div className="table-responsive-sm">
           <table className="titulos table table-hover table-sm ">
@@ -275,8 +277,8 @@ export const VoteScreen = () => {
                   return (
                     <tr key={lista.id} >
 
-                      <td data-label="Nombre" className='tabla_letra'>{lista.nombre.toUpperCase()}</td>
-                      <td data-label="Descripción">{lista.descripcion}</td>
+                      <td data-label="Nombre" className='test voteTables'>{lista.nombre.toUpperCase()}</td>
+                      <td data-label="Descripción" >{lista.descripcion}</td>
 
                       <td data-label="Imagen">
                         {
@@ -296,13 +298,15 @@ export const VoteScreen = () => {
                         return <p key={candidate.id}> {lista.id?.search(candidate.lista?._id) ? '' : `${candidate.nombre} ${candidate.apellido}: ${candidate.cargo} `} </p>
                       })}</td>
 
-                      <td>
+                      <td >
+                    
                         <button
                           className="btn btn-primary"
                           onClick={() => onSelectElection(index)}
                         >
                           <i className="fas fa-vote-yea fa-lg"></i>
                         </button>
+                     
                       </td>
                     </tr>
                   );

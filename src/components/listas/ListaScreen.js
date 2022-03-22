@@ -417,12 +417,20 @@ export const ListaScreen = () => {
     </div>
   </div>
 
-  //console.log(stats, 'esto seria blockchain');
+  const testear=()=>{
+    
+    let matic="https://mumbai.polygonscan.com/address/"+ addressContract;
+    //let xDai="https://blockscout.com/poa/sokol/address/"+ addressContract;
+    console.log(matic);
+    //window.open(xDai, '_blank', 'height=600,width=550,scrollbars=yes') 
+    window.open(matic, '_blank') 
+  }
+
 
   return (
     <div className="container py-3">
 
-    <h3 className="titulos">Listas</h3>
+      <h3 className="titulos">Listas</h3>
       <ToastContainer></ToastContainer>
       <form className="container" onSubmit={handleSubmitForm}>
         <div className="form-group">
@@ -443,16 +451,20 @@ export const ListaScreen = () => {
 
       <div className="container">
         <div className="row">
-          
+
           <div className="col">
             <button
               className="btn btn-dark userListEdit" onClick={saveSwal}>
               <i className="fa-solid fa-file-csv"> </i>
               <span> Cargar listas</span>
             </button>
+            <a className=''
+              href="https://res.cloudinary.com/universidad-tecnica-del-norte/raw/upload/v1647468458/formato%20Excel%20datos/Listas_ydawkm.xlsx"
+              download="Listas">
+              {/* <button type="button">Descargar Formato</button>  */}
+              Descargar formato
+            </a>
           </div>
-
-
         </div>
       </div>
 
@@ -467,11 +479,18 @@ export const ListaScreen = () => {
 
           <div className="card card-body bg-light rounded-3 mb-4">
             <div className="d-flex align-items-center">
-              <span className="material-icons">
+              <span className="material-icons tarjeta">
                 <i className="fa-solid fa-wallet"></i>
-                Contract BSC: </span>
+                {" "} Polygon Chain Explorer: </span>
             </div>
-            <span id="account">{addressContract}</span>
+            <span id="account" className="contract"
+             
+              onClick={testear} >
+             {addressContract}
+           
+            </span>
+            {/* <span onClick={testear}>{addressContract}</span> */}
+
           </div>
 
         </div>
@@ -486,7 +505,7 @@ export const ListaScreen = () => {
 
                 <th>Lista</th>
                 <th>Nombre</th>
-                <th>Descripcion</th>
+                <th>Descripción</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -525,7 +544,7 @@ export const ListaScreen = () => {
                             >
                               <i className="fas fa-edit"></i>
                             </button>
-                   
+
                             <button
                               className="btn btn-danger userListEdit"
                               onClick={() => onDeletElection(lista)}
@@ -548,6 +567,7 @@ export const ListaScreen = () => {
         <span> Agregar a blockchain</span>
       </button>
 
+     
       <ListaModal idEleccion={idEleccion} />
 
 

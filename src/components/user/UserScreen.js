@@ -11,9 +11,10 @@ import { UserModal } from './UserModal';
 //import { Table } from 'react-bootstrap';
 import * as XLSX from 'xlsx';
 import { getStats, init } from '../../helpers/getWeb3Vote';
+import 'animate.css';
 
 let cont = 0;
-let file;
+
 let $ = require("jquery");
 $.DataTable = require('datatables.net')
 
@@ -99,7 +100,7 @@ export const UserScreen = () => {
         rol: users[i].rol,
         vote: false //true
       }
-      console.log('esto pasa maldita', data);
+      //console.log('esto pasa maldita', data);
       dispatch(userStartUpdate(data));
     }
 
@@ -185,6 +186,20 @@ export const UserScreen = () => {
 
   }
 
+  const showInstructions =()=>{
+    Swal.fire({
+      title: 'Importante!',
+      text: 'En los campos de cédula y contraseña, agregar una comilla simple al inicio del texto (no encerrar el texto entre comillas, solo al inicio), tal y como se encuentra en el formato descargado',
+      showClass: {
+        popup: 'animate__animated animate__fadeInDown'
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOutUp'
+      }
+    })
+
+  }
+
 
   //console.log(stats, 'stas cargado 1');
 
@@ -235,6 +250,12 @@ export const UserScreen = () => {
               <i className="fa-solid fa-file-csv"> </i>
               <span> Cargar usuarios</span>
             </button>
+            <a  className='' onClick={showInstructions}
+            href="https://res.cloudinary.com/universidad-tecnica-del-norte/raw/upload/v1647485329/formato%20Excel%20datos/Usuarios_xhgd66_2_lzww9s.xlsx"
+            download="Usuarios">
+         {/* <button type="button">Descargar Formato</button>  */}
+         Descargar formato
+         </a>
           </div>
 
 
@@ -258,7 +279,7 @@ export const UserScreen = () => {
               <th>Cédula</th>
               <th>Correo</th>
               <th>Rol</th>
-              <th>Vote</th>
+              <th>Estado</th>
               <th>Acciones</th>
             </tr>
           </thead>

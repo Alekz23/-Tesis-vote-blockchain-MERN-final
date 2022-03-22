@@ -79,7 +79,7 @@ export const CargoScreen = () => {
           <thead>
             <tr>
               <th>Nombre</th>
-              <th>Accion</th>
+              <th>Acción</th>
             </tr>
           </thead>
           <tbody>

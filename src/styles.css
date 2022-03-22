@@ -1,314 +1,290 @@
-
 .calendar-screen {
-    display: flex;
-    flex-flow: column;
-    height: 100vh;
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
 }
 
 .form-screen {
-    display: flex;
-    flex-flow: column;
-   text-align: center;
-    padding: 20px;
+  display: flex;
+  flex-flow: column;
+  text-align: center;
+  padding: 20px;
 }
 
-.btn-compact{
-    display: block;
-    display: flex;
-    position: absolute;
-    left: 80%;
-    
+.btn-compact {
+  display: block;
+  display: flex;
+  position: absolute;
+  left: 80%;
 }
 
-.titulos{
-    text-align: center;
+.titulos {
+  text-align: center;
 }
 
 .rbc-calendar {
-    height: 100%;
+  height: 100%;
 }
 
 /* Modal */
-.ReactModalPortal > div{
-    opacity: 0;
+.ReactModalPortal > div {
+  opacity: 0;
 }
 
 .ReactModalPortal .ReactModal__Overlay {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    transition: opacity .2s ease-in-out;
-    z-index: 999;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 999;
 }
 
 .modal-fondo {
-    background-color: rgba(0, 0, 0, 0.3);
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: 0;
-    position: fixed;
+  background-color: rgba(0, 0, 0, 0.3);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  position: fixed;
 }
 
 .ReactModalPortal .ReactModal__Overlay--after-open {
-    opacity: 1;
+  opacity: 1;
 }
 
 .ReactModalPortal .ReactModal__Overlay--before-close {
-    opacity: 0;
+  opacity: 0;
 }
 
 .modal {
-    background: white;
-    border-radius: 5px;
-    color: rgb(51, 51, 51);
-    display: inline;
-    max-height: 620px;
-    max-width: 500px;
-    outline: none;
-    padding: 10px;
+  background: white;
+  border-radius: 5px;
+  color: rgb(51, 51, 51);
+  display: inline;
+  max-height: 620px;
+  max-width: 500px;
+  outline: none;
+  padding: 10px;
 }
-
 
 /* Datepicker */
 .react-datetime-picker input:focus {
-    outline: none;
+  outline: none;
 }
 
 .react-datetime-picker__wrapper {
-    border: 0px solid gray !important;
+  border: 0px solid gray !important;
 }
 
 /* FABS */
 .fab {
-    border-radius: 100%;
-    bottom: 25px;
-    font-size: 30px;
-    padding: 25px;
-    position: fixed;
-    right: 25px;
+  border-radius: 100%;
+  bottom: 25px;
+  font-size: 30px;
+  padding: 25px;
+  position: fixed;
+  right: 25px;
 }
 
 .fab-danger {
-    bottom: 25px;
-    padding: 10px;
-    position: fixed;
-    left: 25px;
+  bottom: 25px;
+  padding: 10px;
+  position: fixed;
+  left: 25px;
 }
 
 .App-header {
-    background-color: #282c34;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
-  }
-  
-  .App-link {
-    color: #61dafb;
-  }
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
 
+.App-link {
+  color: #61dafb;
+}
 
-  .notes__image img {
-    box-shadow: 5px 5px darkgray;
-    height: 150px;
- 
+.notes__image img {
+  box-shadow: 5px 5px darkgray;
+  height: 150px;
 }
 
 .votes__image img {
-    width: 100px;
-        height: 100px;
-        object-fit: cover;
-        border-radius: 50%;
-       
-      
-       
- 
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
-.imgCentrar{
-    display:block;
-    margin:auto;
-    
-    }
+.imgCentrar {
+  display: block;
+  margin: auto;
+}
 
+.categoriesDiv {
+  display: block;
+  margin: auto;
+  width: 65% !important;
+  height: 65% !important;
+}
 
-    .categoriesDiv {
-        display:block;
-        margin:auto;
-        width:65% !important;
-        height: 65% !important;
-    }
-    
-    
-    
-    .userList {
-        flex: 3.5;
-      }
-      
-      .userListUser {
-        display: flex;
-        align-items: center;
-      }
-      
-      .userListImg {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        object-fit: cover;
-        margin-right: 10px;
-      }
-      
-      .userListEdit{
-          border: none;
-          border-radius: 10px;
-          padding: 5px 8px;
-          /* background-color: #3bb077; */
-          color: white;
-          cursor: pointer;
-          margin-right: 7px;
-      }
+.userList {
+  flex: 3.5;
+}
 
-      .userListStatus{
-        border: none;
-        border-radius: 50px;
-        padding: 4px 8px;
-       
-        /* background-color: #3bb077; */
-        color: white;
-        cursor: pointer;
-        margin-right: 7px;
-    }
-    
-      
-      .userListDelete{
-          color: red;
-          cursor: pointer;
-      }
+.userListUser {
+  display: flex;
+  align-items: center;
+}
 
-      .userListUpdate{
-        color: blue;
-        cursor: pointer;
-    }
+.userListImg {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
 
-    .cargosListDelete{
-        color: black;
-        cursor: pointer;
-    }
+.userListEdit {
+  border: none;
+  border-radius: 10px;
+  padding: 5px 8px;
+  /* background-color: #3bb077; */
+  color: white;
+  cursor: pointer;
+  margin-right: 7px;
+}
 
-    
-      .encabezado{
-          text-align: center;
-      }
-    
-      th{
-          text-align: center;
-      }
+.userListStatus {
+  border: none;
+  border-radius: 50px;
+  padding: 4px 8px;
 
-   /* css para agregar el stilo al input file de imagnes/css  ----------------------------------------------*/
+  /* background-color: #3bb077; */
+  color: white;
+  cursor: pointer;
+  margin-right: 7px;
+}
 
-      ::-webkit-file-upload-button {
-       
-        border: none;
-          border-radius: 10px;
-          padding: 4px 8px;
-          background-color: rgb(54, 49, 49); 
-          color: white;
-          cursor: pointer;
-          margin-right: 7px;
-      }
+.userListDelete {
+  color: red;
+  cursor: pointer;
+}
 
+.userListUpdate {
+  color: blue;
+  cursor: pointer;
+}
 
-      /* css para agregar el spinner  ----------------------------------------------*/
+.cargosListDelete {
+  color: black;
+  cursor: pointer;
+}
 
-      .spinner {
-        width: 300px;
-        height: 300px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: transparent;
-        margin: 0 auto;
-      }
+.encabezado {
+  text-align: center;
+}
 
-      .padre {
-        
-        position: relative;
-      }
-      
-      
-      .spinner span {
-        font-size: 2rem;
-        animation: fade 1s linear 0s infinite;
-        padding-right: 1rem;
-      }
-      
-      .half-spinner {
-        width: 50px;
-        height: 50px;
-        border: 5px solid #3399FF ;
-        border-top: 3px solid transparent;
-        border-radius: 50%;
-        animation: spin 0.5s linear 0s infinite;
-      }
-      
-      .completed {
-        font-size: 2rem;
-        color: #03fc4e;
-      
-        animation: bigger 1s linear;
-      }
-      
-      @keyframes bigger {
-        from {
-          transform: scale(0);
-        }
-        to {
-          transform: scale(2);
-        }
-      }
-      
-      @keyframes spin {
-        from {
-          transform: rotate(0);
-        }
-        to {
-          transform: rotate(360deg);
-        }
-      }
-      
-      @keyframes fade {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-      
+th {
+  text-align: center;
+}
 
-      /* // fondo login- */
+/* css para agregar el stilo al input file de imagnes/css  ----------------------------------------------*/
 
-      .fondo-login{
-        background-image:url(voteFondo.jpg);
-        }
+::-webkit-file-upload-button {
+  border: none;
+  border-radius: 10px;
+  padding: 4px 8px;
+  background-color: rgb(54, 49, 49);
+  color: white;
+  cursor: pointer;
+  margin-right: 7px;
+}
 
-        .tabla_letra{
-         
-          font-weight: bold;
-          vertical-align: middle;
-      
-          
-          
-        }
+/* css para agregar el spinner  ----------------------------------------------*/
 
-        .tabla-votacion{
-          vertical-align: middle;
-        }
-        /*------------------------responsive  tables----------------------------------------------*/
+.spinner {
+  width: 300px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  margin: 0 auto;
+}
+
+.padre {
+  position: relative;
+}
+
+.spinner span {
+  font-size: 2rem;
+  animation: fade 1s linear 0s infinite;
+  padding-right: 1rem;
+}
+
+.half-spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #3399ff;
+  border-top: 3px solid transparent;
+  border-radius: 50%;
+  animation: spin 0.5s linear 0s infinite;
+}
+
+.completed {
+  font-size: 2rem;
+  color: #03fc4e;
+
+  animation: bigger 1s linear;
+}
+
+@keyframes bigger {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(2);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* // fondo login- */
+
+.fondo-login {
+  background-image: url(voteFondo.jpg);
+}
+
+.tabla_letra {
+  font-weight: bold;
+  vertical-align: middle;
+}
+
+.tabla-votacion {
+  vertical-align: middle;
+}
+/*------------------------responsive  tables----------------------------------------------*/
 
 /* @media(max-width: 500px){
 	.table thead{
@@ -340,7 +316,6 @@
 	}
 } */
 
-
 /*  para agregar una pagina iframe */
 
 .containerPage {
@@ -359,4 +334,49 @@
   right: 0;
   width: 100%;
   height: 100%;
+}
+
+.a-letra {
+  color: black;
+}
+
+.vertical-vote {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  /* font-weight: bold; */
+  vertical-align: middle;
+  line-height: 200px;
+}
+
+.test {
+  font-weight: bold;
+}
+
+.contract:hover {
+  text-decoration: underline;
+  color: #179fcd
+}
+
+.tarjeta{
+  font-weight: bold;
+
+}
+
+td,h3,select, h1, h3{
+  font-family: georgia
+}
+
+.voteLetra{
+  font-family: georgia
+}
+
+.voteTables{
+  font-family: serif
+}
+
+.urlVote{
+  font-weight: bold;
+  font-size: 16px;
+  
 }

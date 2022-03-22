@@ -80,12 +80,12 @@ export const NavAdmin = () => {
                         >
                             Resultados
                         </NavLink> */}
-                        <span className="nav-item nav-link text-info">
+                        <span className="nav-item nav-link text-info voteLetra">
                             {name}
                         </span>
 
                         <button
-                            className="btn btn-outline-danger"
+                            className="btn btn-outline-danger voteLetra"
                             onClick={handleLogout}
                         >
                             <i className="fas fa-sign-out-alt"></i>

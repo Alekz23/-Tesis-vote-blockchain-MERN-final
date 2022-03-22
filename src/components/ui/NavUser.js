@@ -38,15 +38,15 @@ export const NavUser = () => {
 
                 <ul className="navbar-nav ml-auto ">
 
-                <span className="nav-item nav-link text-info">
+                <span className="nav-item nav-link text-info voteLetra">
                         {name}
                     </span>
                 
                         <button
-                            className="btn btn-outline-danger "
+                            className="btn btn-outline-danger voteLetra "
                             onClick={handleLogout}
                         >
-                            <i className="fas fa-sign-out-alt"></i>
+                            <i className="fas fa-sign-out-alt "></i>
                             <span> Salir</span>
                         </button>
             

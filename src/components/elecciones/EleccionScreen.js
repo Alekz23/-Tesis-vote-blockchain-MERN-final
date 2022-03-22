@@ -122,7 +122,7 @@ export const EleccionScreen = () => {
           <thead>
             <tr>
               <th>Nombre</th>
-              <th>Descripcion</th>
+              <th>Descripción</th>
               <th>Fecha Inicio</th>
               <th>Fecha Fin</th>
               <th>Acciones</th>
