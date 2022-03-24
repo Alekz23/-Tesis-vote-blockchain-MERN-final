@@ -9403,13 +9403,12 @@
     "80001": {
       "events": {},
       "links": {},
-      "address": "0xab5E484C41aaBb8E6783A95F5247AbD33D361BaE",
-      "transactionHash": "0x60d7638f3c951617168b90db7f9e5732a8c493532664237f8b96abd64ffcda49"
+      "address": "0x0dadeC04e4146c932A419D5959F73A1cAd031F6F",
+      "transactionHash": "0x3ecfc9554ccbd01b03cfb42b96aaa4a0b5ee91897103a72df040884a0f7c27ed"
     }
   },
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-03-22T00:26:37.925Z",
-  "networkType": "ethereum",
+  "updatedAt": "2022-03-24T19:42:08.564Z",
   "devdoc": {
     "methods": {
       "getStats()": {
