@@ -162,7 +162,7 @@ export const UserModal = () => {
       <hr />
       <form className="container" onSubmit={handleSubmitForm}>
         <div className="form-group">
-          <label>Nombre</label>
+          <label>Nombre completo</label>
           <input
             type="text"
             className={`form-control ${!titleValid && 'is-invalid'} `}

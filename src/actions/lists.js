@@ -14,7 +14,7 @@ export const listaStartAddNew = (lista) => {
             const resp = await fetchConToken('listas', lista, 'POST');
             const body = await resp.json();
 
-            console.log(body, 'lo q viene del formulario')
+            //console.log(body, 'lo q viene del formulario')
 
             if (body.ok) {
                 lista.id = body.lista.id; //id de la eleccion una vez en la bdd
@@ -22,7 +22,7 @@ export const listaStartAddNew = (lista) => {
                     _id: uid,
                     name: name
                 }
-                console.log(lista, 'lo q se guarda en la bdd');
+                //console.log(lista, 'lo q se guarda en la bdd');
                 dispatch(listaAddNew(lista));
             } else {
 
@@ -77,11 +77,11 @@ export const listaStartUpdated = (lista) => {
             const resp = await fetchConToken(`listas/${lista.id}`, lista, 'PUT');
             const body = await resp.json();
 
-            console.log(lista)
+            //console.log(body, 'body')
 
             if (body.ok) {
                 dispatch(listaUpdated(lista));
-                console.log('sie entra al update')
+                //console.log('sie entra al update add B/N', lista)
             } else {
                 Swal.fire('Error', body.msg, 'error')
 
@@ -107,7 +107,7 @@ export const listaStartLoading = () => {
 
             const resp = await fetchConToken('listas');
             const body = await resp.json();
-            console.log(body)
+            //console.log(body)
             //const listas = prepareElections( body.lista );
             dispatch(listaLoaded(body.listas));
 
@@ -127,14 +127,14 @@ export const listaStartDelete = () => {
     return async (dispatch, getState) => {
 
         const { id } = getState().lista.activeLista;
-        console.log(id)
+        //console.log(id)
         try {
             const resp = await fetchConToken(`listas/${id}`, {}, 'DELETE');
             const body = await resp.json();
 
             if (body.ok) {
                 dispatch(listaDeleted());
-                console.log('entra a eliminar')
+                //console.log('entra a eliminar')
             } else {
                 Swal.fire('Error', body.msg, 'error');
             }
@@ -158,7 +158,7 @@ export const startUploading = (file) => {
     return async () => {
 
 
-        console.log(file);
+        //console.log(file);
         //console.log(activeLista);
 
 
@@ -172,7 +172,7 @@ export const startUploading = (file) => {
         });
 
         const fileUrl = await fileUpload(file);
-        console.log(fileUrl)
+        //console.log(fileUrl)
         Swal.close();
 
         return fileUrl;

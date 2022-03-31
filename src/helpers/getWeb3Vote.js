@@ -26,6 +26,8 @@ export const init = async () => {
   //const provider = new Provider(privateKey, 'https://sokol.poa.network');
   //mainnet Polygon
   //const provider = new Provider(privateKey, 'https://polygon-mainnet.infura.io/v3/908be0642b3f43148b3b16102c2f7222');
+//test con avax
+//const provider = new Provider(privateKey, 'https://api.avax-test.network/ext/bc/C/rpc');
 
   const web3 = new Web3(provider);
   const networkId = await web3.eth.net.getId()
@@ -48,9 +50,9 @@ const apiGasPolygon = async () => {
   try {
     const resp = await fetch(url)
     if (!resp.ok) throw 'no se puedo realizar la consulta';
-    const { standard } = await resp.json();
+    const { fast } = await resp.json();
 
-    return standard;
+    return fast;
 
   } catch (error) {
     throw error;
@@ -62,7 +64,7 @@ export const vote = async ({ proposal, ci }) => {
 
   const resp = await apiGasPolygon();
 
-  let feeStandard = resp * (Math.pow(10, 9));
+  let feeStandard = 50000000000;
 
   return myContract
     .methods
@@ -80,7 +82,8 @@ export const AddListas = async (proposals) => {
   if (!isInit) await init()
 
   const resp = await apiGasPolygon();
-  let feeStandard = resp * (Math.pow(10, 9));
+  //let feeStandard = resp * (Math.pow(10, 9));
+  let feeStandard = 50000000000;
 
 
   return myContract

@@ -13,7 +13,7 @@ export const candidatoStartAddNew = ( candidato ) => {
             const resp = await fetchConToken('candidatos', candidato, 'POST');
             const body = await resp.json();
 
-            console.log(body)
+            //console.log(body)
 
             if ( body.ok ) {
                 candidato.id = body.candidato.id;
@@ -21,7 +21,7 @@ export const candidatoStartAddNew = ( candidato ) => {
                     _id: uid,
                     name: name
                 }
-                console.log( candidato );
+                //console.log( candidato );
                 dispatch( candidatoAddNew( candidato ) );
             }
 

@@ -2,6 +2,7 @@ import Swal from 'sweetalert2';
 
 import { fetchConToken } from '../helpers/fetch';
 import { types } from '../types/types';
+import { toast } from 'react-toastify';
 
 
 export const cargoStartAddNew = ( cargo ) => {
@@ -13,7 +14,7 @@ export const cargoStartAddNew = ( cargo ) => {
             const resp = await fetchConToken('cargos', cargo, 'POST');
             const body = await resp.json();
 
-            console.log(body)
+            //console.log(body)
 
             if ( body.ok ) {
                 cargo.id = body.cargo.id;
@@ -21,8 +22,18 @@ export const cargoStartAddNew = ( cargo ) => {
                     _id: uid,
                     name: name
                 }
-                console.log( cargo );
+                //console.log( cargo );
                 dispatch( cargoAddNew( cargo ) );
+            }else{
+                toast.error( body.msg, {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                  });
             }
 
 

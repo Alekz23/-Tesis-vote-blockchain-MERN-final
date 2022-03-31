@@ -69,7 +69,7 @@ export const CandidatoModal = ({ idLista }) => {
 
     const closeModal = (e) => {
         dispatch(uiCloseModal());
-        dispatch(candidatoClearActiveCandidato);
+        dispatch(candidatoClearActiveCandidato());
         setFormValues(initEvent); //se cierra el modal y los valores se borran
     }
 

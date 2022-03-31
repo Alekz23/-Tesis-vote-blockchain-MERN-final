@@ -201,27 +201,27 @@ export const ListaModal = ({ idEleccion }) => {
           <input
             type="text"
             className={`form-control ${!titleValid && 'is-invalid'} `}
-            placeholder="Nombre de la lista"
+            placeholder="ej. Lista 1"
             name="nombre"
             autoComplete="off"
             value={nombre}
             onChange={handleInputChange}
           />
-          <small id="emailHelp" className="form-text text-muted">Una descripción corta</small>
+          
         </div>
 
 
         <div className="form-group">
+        <label>Descripción corta (nombre que representa la lista)</label>
           <textarea
             type="text"
             className="form-control"
-            placeholder="Descripcion"
+            placeholder="ej. Unidad popular"
             rows="3"
             name="descripcion"
             value={descripcion}
             onChange={handleInputChange}
           ></textarea>
-          <small id="emailHelp" className="form-text text-muted">Descripcion adicional</small>
         </div>
 
         <button

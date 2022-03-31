@@ -82,6 +82,19 @@ module.exports = {
     
     },
 
+    avax: {
+      //provider: () => new HDWalletProvider(mnemonic, `https://polygon-mumbai.infura.io/v3/908be0642b3f43148b3b16102c2f7222`),
+      //nodo matic funcionando
+      //https://rpc.maticvigil.com/
+      provider: () => new HDWalletProvider(mnemonic, `https://api.avax-test.network/ext/bc/C/rpc`),
+      //provider: () => new HDWalletProvider(mnemonic, `https://rpc-mumbai.maticvigil.com`),
+      network_id: 43113,
+      confirmations: 2,
+      skipDryRun: true,
+      gasPrice: 45000000000,
+     
+    
+    },
     maticMainnet: {
       //provider: () => new HDWalletProvider(mnemonic, `https://rpc-mumbai.maticvigil.com/v1/8d9378fdfa5c3bb88018bb2e1e9d958578dc98a8`),
        //provider: () => new HDWalletProvider(mnemonic, `https://matic-mainnet-full-rpc.bwarelabs.com`),

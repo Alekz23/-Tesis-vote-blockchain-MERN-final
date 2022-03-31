@@ -45,7 +45,7 @@ export const UserScreen = () => {
   }
 
   const onSelectUser = (e) => {
-    console.log({...e, password: ""});
+   // console.log({...e, password: ""});
     dispatch(userSetActive({...e, password: ""}));
     dispatch(uiOpenModal());
     //console.log(e)
@@ -68,13 +68,13 @@ export const UserScreen = () => {
       .then(tx => {
 
 
-        console.log(tx);
+        //console.log(tx);
         let tamaño = tx.length;
 
         setStats(tamaño);
 
 
-        console.log('es lo q va ', tx.length);
+        //console.log('es lo q va ', tx.length);
 
         //en caso de error al no desplegar la blockchain , borrar este if y metdoo
         // if (tamaño === 0) {
@@ -89,7 +89,7 @@ export const UserScreen = () => {
 
   const resetStatusVote = () => {
 
-    console.log('ingresa a cambiar ststaus', users.length);
+    //console.log('ingresa a cambiar ststaus', users.length);
     for (let i = 0; i < users.length; i++) {
       //console.log(users.length)
       const data = {
@@ -275,7 +275,7 @@ export const UserScreen = () => {
           <thead>
             <tr>
 
-              <th>Nombre</th>
+              <th>Nombre completo</th>
               <th>Cédula</th>
               <th>Correo</th>
               <th>Rol</th>

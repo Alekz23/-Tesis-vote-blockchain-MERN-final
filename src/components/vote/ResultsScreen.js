@@ -188,11 +188,22 @@ export const ResultsScreen = () => {
 
 
   if (totalVotantes() === 0) return <span>No hay votantes</span>
-  if (elections.length === 0) return <span>Loading</span>
-  const end = moment(elections[0].end);
-  const nameElection = (elections[0].nombre);
+  if (elections.length === 0) return <span >Sin elecciones...</span>
+
+
+  let end = '';
+  let nameElection = '';
   const now = moment().seconds(0).add(0, 'hours'); // 3:00:00
   const fechaActual = now;
+
+
+  for (let i = 0; i < elections.length; i++) {
+    
+    if(elections[i].lists[0]?.agregado=== true){
+      end = moment(elections[i].end);
+      nameElection= (elections[i].nombre);
+    }
+  }
 
   if (users.length === 0) return <span>Loading</span>
   if (!stats) return <div className="padre">
@@ -210,13 +221,13 @@ export const ResultsScreen = () => {
    for (let i = 0; i < listasJson.length; i++) {
      
      if(listasJson[i].voteCount !=='0'){
-      console.log(listasJson[i].voteCount);
+      //console.log(listasJson[i].voteCount);
       cont=1;
 
      }
    }
 
-   if (cont===0) return <span className="titulos">Sin datos de la Elección</span>
+   if (cont===0) return <span className="titulos">Aún no inicia el sufragio...</span>
   
    
  }

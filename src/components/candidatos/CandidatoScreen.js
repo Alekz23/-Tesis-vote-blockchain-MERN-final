@@ -134,7 +134,7 @@ export const CandidatoScreen = () => {
   }
 
   //if (candidatos.length === 0) return <h1>Loading</h1>
-  if (lists.length === 0) return <h1>Loading</h1>
+  if (lists.length === 0) return  <span>Loading...</span>
   if (idLista === '') {
     setIdLista(lists[0].id)
   }

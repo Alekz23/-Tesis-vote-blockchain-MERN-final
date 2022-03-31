@@ -73,7 +73,7 @@ export const  electionStartUpdated=(election)=>{
             const resp = await fetchConToken(`elecciones/${election.id}`, election, 'PUT');
             const body = await resp.json();
 
-            console.log(election)
+            //console.log(election)
 
             if ( body.ok ) {
                 dispatch(electionUpdated(election));
@@ -104,7 +104,7 @@ export const electionStartLoading = () => {
             
             const resp = await fetchConToken( 'elecciones' );
             const body = await resp.json();
-            console.log(body)
+            //console.log(body)
             const elections = prepareElections( body.elecciones );
             dispatch( electionLoaded( elections ) );
 
@@ -124,14 +124,14 @@ export const electionStartDelete = () => {
     return async ( dispatch, getState ) => {
 
         const { id } = getState().eleccion.activeElection;
-        console.log(id)
+        //console.log(id)
         try {
             const resp = await fetchConToken(`elecciones/${ id }`, {}, 'DELETE' );
             const body = await resp.json();
 
             if ( body.ok ) {
                 dispatch( electionDeleted() );
-                console.log('entra a eliminar')
+               // console.log('entra a eliminar')
             } else {
                 Swal.fire('Error', body.msg, 'error');
             }

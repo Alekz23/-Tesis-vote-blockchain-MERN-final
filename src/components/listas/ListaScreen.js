@@ -184,16 +184,18 @@ export const ListaScreen = () => {
       .catch(err => console.log(err))
   }
 
+//metodo para saber si estan add los votos nulos 
+const test = (estado) => {
 
-  const test = (estado) => {
-
-    const data = {
-      ...lists[0],
-      voteBN: estado //true
-    }
-    dispatch(listaStartUpdated(data));
-    dispatch(listaStartLoading());
+  const data = {
+    ...lists[0],
+    voteBN: estado //true
   }
+  dispatch(listaStartUpdated(data));
+  dispatch(listaStartLoading());
+  //console.log('activado bn', data);
+}
+
 
   const limpiarListas = () => {
     for (let i = listasBlockchain.length; i > 0; i--) {
@@ -203,16 +205,67 @@ export const ListaScreen = () => {
   }
 
 
+
+  const updateAddBDD = () => {
+   
+    
+    let idLista = ''
+    for (let i = 0; i < lists.length; i++) {
+      if (lists[i].eleccion._id === idEleccion || lists[i].eleccion === idEleccion) {
+      
+        idLista = lists[i].id;
+        const data = {
+          ...lists[i],
+          id: idLista,
+          agregado: true
+        }
+        dispatch(listaStartUpdated(data));
+        dispatch(listaStartLoading());
+        //console.log(data, 'updated');
+      }
+    }
+   // console.log('entra--');
+  }
+
+
+ 
+
+  const updateAllFalse = () => {
+
+    let idLista = ''
+    for (let i = 0; i < lists.length; i++) {
+     
+        idLista = lists[i].id;
+        const data = {
+          ...lists[i],
+          id: idLista,
+          voteBN: false,
+          agregado: false
+        }
+        dispatch(listaStartUpdated(data));
+        dispatch(listaStartLoading());
+        //console.log(data, 'actilizado');
+      
+    }
+  }
+
   const agregarListas = () => {
     limpiarListas()
-
     obtenerListas();
+ 
+    
+
     if (lists.length > 0) {
       for (let index = 0; index < lists.length; index++) {
+        if (lists[index].eleccion._id === idEleccion || lists[index].eleccion  === idEleccion) {
         listasBlockchain.push((lists[index].nombre));
+        
+        }
+   
       }
+      //console.log(listasBlockchain, 'esas listas add');
       if (tamaño === 0) {
-        test(false);
+        updateAllFalse();
 
       }
 
@@ -266,12 +319,12 @@ export const ListaScreen = () => {
               confirmButtonText: 'Si, agregar voto N/B',
               cancelButtonText: 'No, solo listas',
 
+
             }).then((result) => {
               if (result.isConfirmed) {
 
                 listasBlockchain.push("Voto Blanco");
                 listasBlockchain.push("Voto Nulo");
-                //console.log(listasBlockchain, 'esto es lo con votos bn')
 
                 Swal.fire({
                   title: 'Agregando a blockchain...',
@@ -284,12 +337,21 @@ export const ListaScreen = () => {
 
                 AddListas(listasBlockchain)
                   .then(tx => {
-                    test(true);
+                    
+                    setTimeout(() => {
+                      updateAddBDD();
+                   }, (1500));
                     Swal.close();
-                    //console.log(tx, 'addd a block');
+
                     tamaño = 4;
-                    //console.log('cuando se agrega a block con N/B', tamaño);
+                    
                     Swal.fire('Guardado!', 'Se encuentra habilitado los votos nulos y blancos en el proceso electoral', 'success')
+                    
+                    setTimeout(() => {
+                      test(true);
+                   }, (3000));
+                   
+                    
                   })
                   .catch(err => {
                     console.log(err);
@@ -312,12 +374,21 @@ export const ListaScreen = () => {
 
                 AddListas(listasBlockchain)
                   .then(tx => {
+                    setTimeout(() => {
+                      updateAddBDD();
+                   }, (1500));
                     Swal.close();
                     //console.log(tx, 'addd a block');
                     tamaño = 4;
                     //console.log('cuando se agrega a block sin N/B', tamaño);
                     swalWithBootstrapButtons.fire(
                       'Guardado!', 'Inhabilitado los votos nulos y blancos para el proceso electoral', 'info')
+                      setTimeout(() => {
+                        test(false);
+                     }, (3000));
+                     
+                      
+                      
                   })
                   .catch(err => {
                     console.log(err);
@@ -401,7 +472,7 @@ export const ListaScreen = () => {
 
 
 
-  if (elections.length === 0) return <span>Loading</span>
+  if (elections.length === 0) return <span>Loading...</span>
 
   if (idEleccion === '') {
     setIdEleccion(elections[0].id)
@@ -417,13 +488,15 @@ export const ListaScreen = () => {
     </div>
   </div>
 
-  const testear=()=>{
-    
-    let matic="https://mumbai.polygonscan.com/address/"+ addressContract;
+  const testear = () => {
+
+    let matic = "https://mumbai.polygonscan.com/address/" + addressContract;
     //let xDai="https://blockscout.com/poa/sokol/address/"+ addressContract;
-    console.log(matic);
+    //let matic = "https://testnet.snowtrace.io/address/" + addressContract;
+
+    //console.log(matic);
     //window.open(xDai, '_blank', 'height=600,width=550,scrollbars=yes') 
-    window.open(matic, '_blank') 
+    window.open(matic, '_blank')
   }
 
 
@@ -484,10 +557,10 @@ export const ListaScreen = () => {
                 {" "} Polygon Chain Explorer: </span>
             </div>
             <span id="account" className="contract"
-             
+
               onClick={testear} >
-             {addressContract}
-           
+              {addressContract}
+
             </span>
             {/* <span onClick={testear}>{addressContract}</span> */}
 
@@ -567,7 +640,7 @@ export const ListaScreen = () => {
         <span> Agregar a blockchain</span>
       </button>
 
-     
+
       <ListaModal idEleccion={idEleccion} />
 
 

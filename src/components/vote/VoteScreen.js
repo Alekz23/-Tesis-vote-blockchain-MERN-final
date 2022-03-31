@@ -72,7 +72,8 @@ export const VoteScreen = () => {
   const listasEleccion = () => {
     // solo las listas de la eleccion 1 por el mometo
     for (let i = 0; i < lists.length; i++) {
-      if (lists[i].eleccion._id === (elections[0].id)) {
+      //if (lists[i].eleccion._id === (elections[0].id)) {
+      if (lists[i].agregado === true) {
         nuevo.push(lists[i])
       }
 
@@ -165,9 +166,12 @@ export const VoteScreen = () => {
               buscarUsuario();
               //Swal.fire("Enviado", "Voto generado con exito!", "success");
               //let url = `https://polygonscan.com/tx/ ${tx.transactionHash}`;
-              let url = `https://mumbai.polygonscan.com/tx/ ${tx.transactionHash}`;
-              direccionTrx= url;
-              console.log(tx)
+              
+              let url = "https://mumbai.polygonscan.com/tx/"+tx.transactionHash;
+              //let url = "https://testnet.snowtrace.io//tx/"+tx.transactionHash;
+              
+              direccionTrx = url;
+              //console.log(tx)
               Swal.fire({
                 icon: 'success',
                 title: 'Voto generado con exito!',
@@ -224,10 +228,9 @@ export const VoteScreen = () => {
 
   if (elections.length === 0) return <span>No hay elecciones disponibles</span>
 
-  const start = moment(elections[0].start);
-  const end = moment(elections[0].end);
-  const now = moment().seconds(0).add(0, 'hours'); // 3:00:00
-  const fechaActual = now;
+  //console.log(elections[0])
+
+
 
   if (elections.length > 0 && lists.length > 0) {
     listasEleccion();
@@ -249,7 +252,25 @@ export const VoteScreen = () => {
     </div>
   </div>
 
-  const nameElection = (elections[0].nombre);
+  let start = '';
+  let end = '';
+  const now = moment().seconds(0).add(0, 'hours'); // 3:00:00
+  let nameElection = '';
+  const fechaActual = now;
+
+  for (let i = 0; i < elections.length; i++) {
+    //console.log('si entra aqui', elections.length);
+    if (elections[i].lists[0]?.agregado === true) {
+      start = moment(elections[i].start);
+      end = moment(elections[i].end);
+      nameElection = (elections[i].nombre);
+    
+    }
+  }
+
+  //console.log(start, end, nameElection, 'no llega aqui');
+
+
 
   return (
     <div className="container py-3">
@@ -299,14 +320,14 @@ export const VoteScreen = () => {
                       })}</td>
 
                       <td >
-                    
+
                         <button
                           className="btn btn-primary"
                           onClick={() => onSelectElection(index)}
                         >
                           <i className="fas fa-vote-yea fa-lg"></i>
                         </button>
-                     
+
                       </td>
                     </tr>
                   );

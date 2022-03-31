@@ -47,8 +47,8 @@ export const CargoScreen = () => {
     const { value: text } = await Swal.fire({
       input: 'text',
       title: 'Ingrese un cargo',
-      inputLabel: 'para los candidatos',
-      inputPlaceholder: 'cargo'
+      inputLabel: 'para los candidatos (ej. Presidente)',
+      inputPlaceholder: 'ej. Presidente'
     })
 
     if (text) {
