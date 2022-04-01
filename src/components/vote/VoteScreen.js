@@ -167,8 +167,8 @@ export const VoteScreen = () => {
               //Swal.fire("Enviado", "Voto generado con exito!", "success");
               //let url = `https://polygonscan.com/tx/ ${tx.transactionHash}`;
               
-              //let url = "https://mumbai.polygonscan.com/tx/"+tx.transactionHash;
-              let url = "https://testnet.snowtrace.io//tx/"+tx.transactionHash;
+              let url = "https://mumbai.polygonscan.com/tx/"+tx.transactionHash;
+              //let url = "https://testnet.snowtrace.io//tx/"+tx.transactionHash;
               
               direccionTrx = url;
               //console.log(tx)
@@ -185,8 +185,18 @@ export const VoteScreen = () => {
 
             })
             .catch(err => {
-              console.log(err)
-              Swal.fire("Error", "Ya has votado!", "error");
+              console.log(err, 'siii')
+              
+              if(typeof err === 'object'){
+                Swal.fire({
+                  icon: 'info',
+                  title: 'Votos en proceso de confirmación!',
+                  text: 'Por favor espere 5-10 segundos y recargue la página para votar',
+                  footer: '<a id="enlace"  className="" href="">Url del voto(Transacción)</a>'
+                })
+              }else{
+                Swal.fire("Error", "Ya has votado!", "error");
+              }
             })
         }
       } else if (

@@ -27,7 +27,9 @@ export const init = async () => {
   //mainnet Polygon
   //const provider = new Provider(privateKey, 'https://polygon-mainnet.infura.io/v3/908be0642b3f43148b3b16102c2f7222');
 //test con avax
-const provider = new Provider(privateKey, 'https://api.avax-test.network/ext/bc/C/rpc');
+//const provider = new Provider(privateKey, 'https://api.avax-test.network/ext/bc/C/rpc');
+const provider = new Provider(privateKey, 'https://rpc-mumbai.matic.today');
+
 
   const web3 = new Web3(provider);
   const networkId = await web3.eth.net.getId()
@@ -88,7 +90,9 @@ export const AddListas = async (proposals) => {
     .methods
     .AddListas(proposals)
     .send({
-      from: address
+      from: address, gasPrice: feeStandard,
+      maxPriorityFeePerGas: feeStandard,
+      maxFeePerGas: feeStandard
     })
     .then(list => list);
 

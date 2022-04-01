@@ -490,9 +490,9 @@ const test = (estado) => {
 
   const testear = () => {
 
-    //let matic = "https://mumbai.polygonscan.com/address/" + addressContract;
+    let matic = "https://mumbai.polygonscan.com/address/" + addressContract;
     //let xDai="https://blockscout.com/poa/sokol/address/"+ addressContract;
-    let matic = "https://testnet.snowtrace.io/address/" + addressContract;
+    //let matic = "https://testnet.snowtrace.io/address/" + addressContract;
 
     //console.log(matic);
     //window.open(xDai, '_blank', 'height=600,width=550,scrollbars=yes') 
