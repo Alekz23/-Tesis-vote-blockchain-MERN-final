@@ -21,14 +21,14 @@ export const init = async () => {
   //test con BSC
   //const provider = new Provider(privateKey, 'https://data-seed-prebsc-1-s1.binance.org:8545');
   // test con Polygon
-  //const provider = new Provider(privateKey, 'https://rpc-mumbai.maticvigil.com/v1/8d9378fdfa5c3bb88018bb2e1e9d958578dc98a8');
+  const provider = new Provider(privateKey, 'https://rpc-mumbai.maticvigil.com/v1/8d9378fdfa5c3bb88018bb2e1e9d958578dc98a8');
   //test con la red xDai
   //const provider = new Provider(privateKey, 'https://sokol.poa.network');
   //mainnet Polygon
   //const provider = new Provider(privateKey, 'https://polygon-mainnet.infura.io/v3/908be0642b3f43148b3b16102c2f7222');
 //test con avax
 //const provider = new Provider(privateKey, 'https://api.avax-test.network/ext/bc/C/rpc');
-const provider = new Provider(privateKey, 'https://rpc-mumbai.matic.today');
+//const provider = new Provider(privateKey, 'https://rpc-mumbai.matic.today');
 
 
   const web3 = new Web3(provider);
@@ -72,7 +72,9 @@ export const vote = async ({ proposal, ci }) => {
     .methods
     .vote(Number(proposal), Number(ci))
     .send({
-      from: address
+      from: address, gasPrice: feeStandard,
+      maxPriorityFeePerGas: feeStandard,
+      maxFeePerGas: feeStandard
     })
     .then(vote => vote);
 

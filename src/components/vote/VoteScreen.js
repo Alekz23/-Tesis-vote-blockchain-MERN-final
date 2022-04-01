@@ -186,13 +186,15 @@ export const VoteScreen = () => {
             })
             .catch(err => {
               console.log(err, 'siii')
-              
-              if(typeof err === 'object'){
+              //let ver= err.slice(0,10)
+          
+              if(err.code !== undefined){
+                console.log(err.code, 'sale');
                 Swal.fire({
                   icon: 'info',
                   title: 'Votos en proceso de confirmación!',
-                  text: 'Por favor espere 5-10 segundos y recargue la página para votar',
-                  footer: '<a id="enlace"  className="" href="">Url del voto(Transacción)</a>'
+                  text: 'Por favor espere 5-10 segundos y recargue(f5) nuevamente la página para votar',
+                  
                 })
               }else{
                 Swal.fire("Error", "Ya has votado!", "error");

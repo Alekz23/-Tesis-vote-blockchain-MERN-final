@@ -26,8 +26,7 @@ var validator = require("email-validator");
 export const LoginScreen = () => {
 
 	const [valuesLogin, handleInputChangeLogin] = useForm({
-		"correo": "alekz@gmail.com",
-		"password": "123456"
+		
 
 	})
 	const { correo, password } = valuesLogin;

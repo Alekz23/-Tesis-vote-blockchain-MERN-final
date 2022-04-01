@@ -266,6 +266,7 @@ const test = (estado) => {
       //console.log(listasBlockchain, 'esas listas add');
       if (tamaño === 0) {
         updateAllFalse();
+        //test(false);
 
       }
 
@@ -349,7 +350,7 @@ const test = (estado) => {
                     
                     setTimeout(() => {
                       test(true);
-                   }, (3000));
+                   }, (3500));
                    
                     
                   })
@@ -383,9 +384,7 @@ const test = (estado) => {
                     //console.log('cuando se agrega a block sin N/B', tamaño);
                     swalWithBootstrapButtons.fire(
                       'Guardado!', 'Inhabilitado los votos nulos y blancos para el proceso electoral', 'info')
-                      setTimeout(() => {
-                        test(false);
-                     }, (3000));
+                     
                      
                       
                       
