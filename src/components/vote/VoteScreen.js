@@ -167,8 +167,8 @@ export const VoteScreen = () => {
               //Swal.fire("Enviado", "Voto generado con exito!", "success");
               //let url = `https://polygonscan.com/tx/ ${tx.transactionHash}`;
               
-              let url = "https://mumbai.polygonscan.com/tx/"+tx.transactionHash;
-              //let url = "https://testnet.snowtrace.io//tx/"+tx.transactionHash;
+              //let url = "https://mumbai.polygonscan.com/tx/"+tx.transactionHash;
+              let url = "https://testnet.snowtrace.io//tx/"+tx.transactionHash;
               
               direccionTrx = url;
               //console.log(tx)
