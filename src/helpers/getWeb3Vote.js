@@ -20,14 +20,14 @@ export const init = async () => {
   //const provider = new Provider(privateKey, 'https://rinkeby.infura.io/v3/02e6ba60363b49b7922a4f9ad1a87b4c');
   //test con BSC
   //const provider = new Provider(privateKey, 'https://data-seed-prebsc-1-s1.binance.org:8545');
-  // test con Polygon
-  const provider = new Provider(privateKey, 'https://rpc-mumbai.maticvigil.com/v1/8d9378fdfa5c3bb88018bb2e1e9d958578dc98a8');
+  // test con Polygon funciona !!!!
+  //const provider = new Provider(privateKey, 'https://rpc-mumbai.maticvigil.com/v1/8d9378fdfa5c3bb88018bb2e1e9d958578dc98a8');
   //test con la red xDai
   //const provider = new Provider(privateKey, 'https://sokol.poa.network');
   //mainnet Polygon
   //const provider = new Provider(privateKey, 'https://polygon-mainnet.infura.io/v3/908be0642b3f43148b3b16102c2f7222');
 //test con avax
-//const provider = new Provider(privateKey, 'https://api.avax-test.network/ext/bc/C/rpc');
+const provider = new Provider(privateKey, 'https://api.avax-test.network/ext/bc/C/rpc');
 //const provider = new Provider(privateKey, 'https://rpc-mumbai.matic.today');
 
 
@@ -72,9 +72,7 @@ export const vote = async ({ proposal, ci }) => {
     .methods
     .vote(Number(proposal), Number(ci))
     .send({
-      from: address, gasPrice: feeStandard,
-      maxPriorityFeePerGas: feeStandard,
-      maxFeePerGas: feeStandard
+      from: address
     })
     .then(vote => vote);
 
@@ -92,9 +90,7 @@ export const AddListas = async (proposals) => {
     .methods
     .AddListas(proposals)
     .send({
-      from: address, gasPrice: feeStandard,
-      maxPriorityFeePerGas: feeStandard,
-      maxFeePerGas: feeStandard
+      from: address
     })
     .then(list => list);
 
