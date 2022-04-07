@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { getStats, getWinner, init } from '../../helpers/getWeb3Vote';
+import { getNameList, getStats, getWinner, init } from '../../helpers/getWeb3Vote';
 import { ToastContainer } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { electionStartLoading } from '../../actions/elections';
@@ -26,6 +26,8 @@ import PieChart, {
 import {
   Chart, SeriesTemplate, CommonSeriesSettings, Title,
 } from 'devextreme-react/chart'
+import { listaStartLoading } from '../../actions/lists';
+import { candidatoStartLoading } from '../../actions/candidates';
 
 
 const dataset = {
@@ -61,15 +63,26 @@ const dataset = {
 };
 
 let listasJson = [];
+
 let ListasJsonBarras = [];
 //const seconds = 120
 export const ResultsScreen = () => {
 
-
+  let final=[];
   const [winner, setWinner] = useState('')
+  const [nameList, setNameList] = useState('')
   const [stats, setStats] = useState()
   const [totalVotes, setTotalVotes] = useState(0)
   const [tipoGrafico, setTipoGrafico] = useState(1);
+
+  //add
+
+  const [lists] = useSelector(state => [state.lista.lista]);
+  const [candidatosList] = useSelector(state => [state.candidato.candidatos]);
+  const [candidatos, setCandidatos] = useState('')
+  const [ver, setVer]= useState()
+ 
+  //fin
 
   const [elections] = useSelector(state => [state.eleccion.election]);
   const [users] = useSelector(state => [state.user.usuarios]);
@@ -83,6 +96,16 @@ export const ResultsScreen = () => {
     dispatch(electionStartLoading());
   }, [dispatch])
 
+
+  useEffect(() => {
+    dispatch(listaStartLoading());
+
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(candidatoStartLoading());
+
+  }, [dispatch])
 
   //iniciar blockchain
   useEffect(() => {
@@ -144,7 +167,18 @@ export const ResultsScreen = () => {
         setWinner(tx)
       })
       .catch(err => console.log(err))
+
+
+    getNameList()
+      .then(tx => {
+        setNameList(tx)
+      })
+      .catch(err => console.log(err))
+
+     
   };
+
+
 
   const totalVotantes = () => {
 
@@ -168,6 +202,89 @@ export const ResultsScreen = () => {
     setTipoGrafico(target.value)
   }
 
+  // const candidatosGanadores = () => {
+
+  //   try {
+
+
+  //     for (let i = 0; i < lists.length; i++) {
+
+  //       if(nameList!== ''){
+  //         if (lists[i].nombre === nameList) {
+
+  //         if (lists[i].candidates?.length > 0) {
+
+  //           for (let j = 0; j < lists[i].candidates.length; j++) {
+
+  //             let cadena = "";
+
+  //             cadena += lists[i].candidates?.nombre + " " +
+  //               lists[i].candidates?.apellido + " " +
+  //               lists[i].candidates?.cargo + "\n";
+
+  //               console.log(cadena, 'los candidates');
+  //             setCandidatos(cadena)
+
+  //           }
+  //         }
+
+  //       }
+  //       }
+        
+  //     }
+
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  
+  const candidatosGanadores = () => {
+
+    try {
+
+  
+
+      for (let i = 0; i < lists.length; i++) {
+
+        if(nameList!== ''){
+          if (lists[i].nombre === nameList) {
+
+            console.log(lists[i]);
+          if (lists[i].candidates?.length > 0) {
+
+            console.log(lists[i].candidates.length);
+            console.log(lists[i].candidates);
+            for (let j = 0; j < lists[i].candidates.length; j++) {
+
+              // cadena = lists[i].candidates[j].nombre + " " +
+              //   lists[i].candidates[j].apellido + " " +
+              //   lists[i].candidates[j].cargo + "\n";
+
+                let nuevo= {
+                  nombre: lists[i].candidates[j].nombre +" "+  lists[i].candidates[j].apellido,
+                  cargo: lists[i].candidates[j].cargo 
+
+                }
+                console.log(nuevo, 'los candidates');
+              //setCandidatos(nuevo)
+              final.push(nuevo)
+              setVer(...ver, nuevo)
+
+            }
+          }
+
+        }
+        }
+        
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+
+    console.log('full', final);
+  }
 
   //console.log(stats, 'final data')
 
@@ -198,14 +315,15 @@ export const ResultsScreen = () => {
 
 
   for (let i = 0; i < elections.length; i++) {
-    
-    if(elections[i].lists[0]?.agregado=== true){
+
+    if (elections[i].lists[0]?.agregado === true) {
       end = moment(elections[i].end);
-      nameElection= (elections[i].nombre);
+      nameElection = (elections[i].nombre);
     }
   }
 
   if (users.length === 0) return <span>Loading</span>
+  if (lists.length === 0) return <span>Loading</span>
   if (!stats) return <div className="padre">
 
     <div className="spinner">
@@ -213,24 +331,24 @@ export const ResultsScreen = () => {
       <div className="half-spinner"></div>
     </div>
   </div>
- 
- if (listasJson.length===0) return <span>Sin datos de la Elección</span>
 
- let cont=0;
- if (listasJson.length>0){
-   for (let i = 0; i < listasJson.length; i++) {
-     
-     if(listasJson[i].voteCount !=='0'){
-      //console.log(listasJson[i].voteCount);
-      cont=1;
+  if (listasJson.length === 0) return <span>Sin datos de la Elección</span>
 
-     }
-   }
+  let cont = 0;
+  if (listasJson.length > 0) {
+    for (let i = 0; i < listasJson.length; i++) {
 
-   if (cont===0) return <span className="titulos">Aún no inicia el sufragio...</span>
-  
-   
- }
+      if (listasJson[i].voteCount !== '0') {
+        //console.log(listasJson[i].voteCount);
+        cont = 1;
+
+      }
+    }
+
+    if (cont === 0) return <span className="titulos">Aún no inicia el sufragio...</span>
+
+
+  }
 
 
   return <div className='container  py-2'>
@@ -384,10 +502,27 @@ export const ResultsScreen = () => {
         <div className='d-flex justify-content-between my-2'>
           <button type="button" name="vote" id="vote" className="btn btn-primary" onClick={getWinnerF}>Obtener ganador</button>
         </div>
+
+        {/* <div className='d-flex justify-content-between my-2'>
+          <button type="button" name="vote" id="vote" className="btn btn-primary" onClick={candidatosGanadores}>Mostrar Candidatos</button>
+        </div>
+
+     {
+       ver&&
+        ver.map(election => (
+            <li key={election.id}>
+            {election.nombre} 
+          </li>
+        ))
+      
+      
+     } */}
+    
+
       </div>
       :
       <div className="titulos">
-        <br/>
+        <br />
         <h1>Eleccion en proceso...</h1>
         <h3>Fecha de resultados: {moment(end).format('YYYY-MM-DD HH:mm:ss')}</h3>
       </div>

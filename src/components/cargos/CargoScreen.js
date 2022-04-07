@@ -71,7 +71,7 @@ export const CargoScreen = () => {
   return (
     <div >
       <button
-        className="btn btn-dark userListEdit" onClick={addCargos}>
+        className="btn btn-dark userListEdit fade-in" onClick={addCargos}>
         Agregar cargos
       </button>
       <div className="form-screen ">

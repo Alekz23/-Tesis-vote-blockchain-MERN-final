@@ -271,7 +271,8 @@ export const VoteScreen = () => {
   const fechaActual = now;
 
   for (let i = 0; i < elections.length; i++) {
-    //console.log('si entra aqui', elections.length);
+    console.log('si entra aqui', elections.length);
+    console.log(elections[i]);
     if (elections[i].lists[0]?.agregado === true) {
       start = moment(elections[i].start);
       end = moment(elections[i].end);
@@ -292,7 +293,7 @@ export const VoteScreen = () => {
       {(fechaActual.isSameOrAfter(start) && fechaActual < end) ? <div>
 
         <h2 className="titulos voteLetra">{nameElection}</h2>
-        <br />
+        <br />  <br />
         <div className="table-responsive-sm">
           <table className="titulos table table-hover table-sm ">
             <thead>
@@ -311,7 +312,12 @@ export const VoteScreen = () => {
                     <tr key={lista.id} >
 
                       <td data-label="Nombre" className='test voteTables'>{lista.nombre.toUpperCase()}</td>
-                      <td data-label="Descripción" >{lista.descripcion}</td>
+                      <td data-label="Descripción" className='padre'  >{
+                      
+                      <div >
+                        { lista.descripcion}
+                      </div>
+                     }</td>
 
                       <td data-label="Imagen">
                         {
@@ -332,12 +338,16 @@ export const VoteScreen = () => {
                       })}</td>
 
                       <td >
-
-                        <button
-                          className="btn btn-primary"
+               
+                        <button className='padre'
+                          
                           onClick={() => onSelectElection(index)}
                         >
-                          <i className="fas fa-vote-yea fa-lg"></i>
+                          {/* <i className="fas fa-vote-yea fa-lg"></i> */}
+                          <img 
+                          height ="55" width="55" 
+                          className= "imgVote"
+                          src='https://cdn-icons-png.flaticon.com/512/1533/1533890.png' alt='' ></img>
                         </button>
 
                       </td>

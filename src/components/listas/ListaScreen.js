@@ -189,7 +189,8 @@ const test = (estado) => {
 
   const data = {
     ...lists[0],
-    voteBN: estado //true
+    voteBN: estado,//true
+    agregado: true
   }
   dispatch(listaStartUpdated(data));
   dispatch(listaStartLoading());
@@ -206,7 +207,7 @@ const test = (estado) => {
 
 
 
-  const updateAddBDD = () => {
+  const updateAddBDD = (estado) => {
    
     
     let idLista = ''
@@ -217,6 +218,7 @@ const test = (estado) => {
         const data = {
           ...lists[i],
           id: idLista,
+          voteBN: estado,
           agregado: true
         }
         dispatch(listaStartUpdated(data));
@@ -226,6 +228,10 @@ const test = (estado) => {
     }
    // console.log('entra--');
   }
+
+
+
+  
 
 
  
@@ -340,7 +346,7 @@ const test = (estado) => {
                   .then(tx => {
                     
                     setTimeout(() => {
-                      updateAddBDD();
+                      updateAddBDD(true);
                    }, (1500));
                     Swal.close();
 
@@ -348,9 +354,9 @@ const test = (estado) => {
                     
                     Swal.fire('Guardado!', 'Se encuentra habilitado los votos nulos y blancos en el proceso electoral', 'success')
                     
-                    setTimeout(() => {
-                      test(true);
-                   }, (3500));
+                  //   setTimeout(() => {
+                  //     test(true);
+                  //  }, (3000));
                    
                     
                   })
@@ -376,7 +382,7 @@ const test = (estado) => {
                 AddListas(listasBlockchain)
                   .then(tx => {
                     setTimeout(() => {
-                      updateAddBDD();
+                      updateAddBDD(false);
                    }, (1500));
                     Swal.close();
                     //console.log(tx, 'addd a block');
@@ -526,7 +532,7 @@ const test = (estado) => {
 
           <div className="col">
             <button
-              className="btn btn-dark userListEdit" onClick={saveSwal}>
+              className="btn btn-dark userListEdit fade-in" onClick={saveSwal}>
               <i className="fa-solid fa-file-csv"> </i>
               <span> Cargar listas</span>
             </button>

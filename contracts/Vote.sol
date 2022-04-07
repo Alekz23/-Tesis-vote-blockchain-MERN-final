@@ -33,12 +33,12 @@ contract Vote {
     /** 
      * @dev Store the person who vote. And compute the count in proposals
      */
-    function vote(uint _proposal, uint _ci) public {
+    function vote(uint _indexSession, uint _ci) public {
         Voter storage sender = voters[_ci];
         require(!sender.voted, "Already voted.");
         sender.ci = _ci;
         sender.voted = true;
-        proposals[_proposal].voteCount += 1;
+        proposals[_indexSession].voteCount += 1;
     }
 
 
@@ -102,6 +102,19 @@ contract Vote {
         }else{
             winnerName_ =string(abi.encodePacked(proposals[winningProposal()].name, "  ","  Total de votos: ", 
                     uint2str(proposals[winningProposal()].voteCount)));
+        }
+        
+    }
+
+
+     function nameList() public view returns (string memory winnerName_)
+    {
+
+        if(winningProposal()==99){
+            winnerName_=empateLists();
+        }else{
+            winnerName_ =proposals[winningProposal()].name;
+                    
         }
         
     }

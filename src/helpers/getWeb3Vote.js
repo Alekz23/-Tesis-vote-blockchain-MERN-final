@@ -110,6 +110,15 @@ export const getWinner = async () => {
     .call()
 }
 
+export const getNameList = async () => {
+  if (!isInit) await init()
+
+  return myContract
+    .methods
+    .nameList()
+    .call()
+}
+
 export const getStats = async () => {
   if (!isInit) await init()
 

@@ -18,12 +18,14 @@ let cont = 0;
 let $ = require("jquery");
 $.DataTable = require('datatables.net')
 
+let totalUsers = 0;
 
 export const UserScreen = () => {
 
   let XL_row_object = [];
 
   const [users] = useSelector(state => [state.user.usuarios]);
+
   const [stats, setStats] = useState()
   const dispatch = useDispatch();
 
@@ -45,8 +47,8 @@ export const UserScreen = () => {
   }
 
   const onSelectUser = (e) => {
-   // console.log({...e, password: ""});
-    dispatch(userSetActive({...e, password: ""}));
+    // console.log({...e, password: ""});
+    dispatch(userSetActive({ ...e, password: "" }));
     dispatch(uiOpenModal());
     //console.log(e)
   }
@@ -186,7 +188,7 @@ export const UserScreen = () => {
 
   }
 
-  const showInstructions =()=>{
+  const showInstructions = () => {
     Swal.fire({
       title: 'Importante!',
       text: 'En los campos de cédula y contraseña, agregar una comilla simple al inicio del texto (no encerrar el texto entre comillas, solo al inicio), tal y como se encuentra en el formato descargado',
@@ -228,6 +230,20 @@ export const UserScreen = () => {
     cont = 1;
   }
 
+  const totalUsuarios = () => {
+    let cont = 0;
+    for (let i = 0; i < users.length; i++) {
+
+      if (users[i].rol === 'Elector') {
+        cont++;
+      }
+    }
+    totalUsers = cont;
+    console.log('electores: ', cont);
+  }
+
+  totalUsuarios();
+
   //   $(document).ready(function() {
   //     $('#example').DataTable();
   // } );
@@ -244,23 +260,31 @@ export const UserScreen = () => {
       <div className="container">
         <div className="row">
 
-          <div className="col">
+          <div className="col-10">
             <button
-              className="btn btn-dark userListEdit" onClick={saveSwal}>
+              className="btn btn-dark userListEdit fade-in" onClick={saveSwal}>
               <i className="fa-solid fa-file-csv"> </i>
               <span> Cargar usuarios</span>
             </button>
-            <a  className='' onClick={showInstructions}
-            href="https://res.cloudinary.com/universidad-tecnica-del-norte/raw/upload/v1647485329/formato%20Excel%20datos/Usuarios_xhgd66_2_lzww9s.xlsx"
-            download="Usuarios">
-         {/* <button type="button">Descargar Formato</button>  */}
-         Descargar formato
-         </a>
+            <a className='' onClick={showInstructions}
+              href="https://res.cloudinary.com/universidad-tecnica-del-norte/raw/upload/v1647485329/formato%20Excel%20datos/Usuarios_xhgd66_2_lzww9s.xlsx"
+              download="Usuarios">
+              {/* <button type="button">Descargar Formato</button>  */}
+              Descargar formato
+            </a>
           </div>
-
+    
+      
+        
+         
+          <div className='col-2'>
+            <p>Total electores: {totalUsers}</p>
+          </div>
 
         </div>
       </div>
+
+
 
       <button
         className="btn btn-success fab " onClick={openModal}>
@@ -270,11 +294,11 @@ export const UserScreen = () => {
 
       <br />
       <ToastContainer></ToastContainer>
-      <div className="table-responsive-sm" >
+      <div className="table-responsive-md" >
         <table className="titulos table table-hover table-borderless table-sm " id="example">
           <thead>
             <tr>
-
+            <th>N°</th>
               <th>Nombre completo</th>
               <th>Cédula</th>
               <th>Correo</th>
@@ -285,10 +309,12 @@ export const UserScreen = () => {
           </thead>
           <tbody>
             {
-              users.map((usuario) => {
+              users.map((usuario, cont=0) => {
+                 cont++;
                 return (
                   <tr key={usuario._id}>
-
+                    
+                    <td>{cont}</td>
                     <td>{usuario.nombre}</td>
                     <td>{usuario.cedula}</td>
                     <td>{usuario.correo}</td>
@@ -326,6 +352,7 @@ export const UserScreen = () => {
                     </td>
                   </tr>
                 );
+             
               })}
           </tbody>
         </table>
