@@ -239,7 +239,7 @@ export const UserScreen = () => {
       }
     }
     totalUsers = cont;
-    console.log('electores: ', cont);
+    //console.log('electores: ', cont);
   }
 
   totalUsuarios();

@@ -63,12 +63,12 @@ const dataset = {
 };
 
 let listasJson = [];
-
+let final = [];
 let ListasJsonBarras = [];
 //const seconds = 120
 export const ResultsScreen = () => {
 
-  let final=[];
+
   const [winner, setWinner] = useState('')
   const [nameList, setNameList] = useState('')
   const [stats, setStats] = useState()
@@ -80,8 +80,8 @@ export const ResultsScreen = () => {
   const [lists] = useSelector(state => [state.lista.lista]);
   const [candidatosList] = useSelector(state => [state.candidato.candidatos]);
   const [candidatos, setCandidatos] = useState('')
-  const [ver, setVer]= useState()
- 
+  const [ver, setVer] = useState()
+
   //fin
 
   const [elections] = useSelector(state => [state.eleccion.election]);
@@ -111,6 +111,7 @@ export const ResultsScreen = () => {
   useEffect(() => {
     listasJson = []
     ListasJsonBarras = []
+    final = []
     init();
     getStatsF()
     // setInterval(() => {
@@ -175,7 +176,7 @@ export const ResultsScreen = () => {
       })
       .catch(err => console.log(err))
 
-     
+    
   };
 
 
@@ -230,7 +231,7 @@ export const ResultsScreen = () => {
 
   //       }
   //       }
-        
+
   //     }
 
   //   } catch (error) {
@@ -238,52 +239,57 @@ export const ResultsScreen = () => {
   //   }
   // }
 
-  
+
   const candidatosGanadores = () => {
 
+
+    final = [];
     try {
 
-  
+
 
       for (let i = 0; i < lists.length; i++) {
 
-        if(nameList!== ''){
-          if (lists[i].nombre === nameList) {
+        if (nameList !== '') {
+          //console.log(lists[i].nombre.toUpperCase(), ' ', nameList.toUpperCase());
 
-            console.log(lists[i]);
-          if (lists[i].candidates?.length > 0) {
+          if (lists[i].nombre.toUpperCase() === nameList.toUpperCase()) {
 
-            console.log(lists[i].candidates.length);
-            console.log(lists[i].candidates);
-            for (let j = 0; j < lists[i].candidates.length; j++) {
+            //console.log(lists[i]);
+            if (lists[i].candidates?.length > 0) {
 
-              // cadena = lists[i].candidates[j].nombre + " " +
-              //   lists[i].candidates[j].apellido + " " +
-              //   lists[i].candidates[j].cargo + "\n";
+              //console.log(lists[i].candidates.length);
+              //console.log(lists[i].candidates);
+              for (let j = 0; j < lists[i].candidates.length; j++) {
 
-                let nuevo= {
-                  nombre: lists[i].candidates[j].nombre +" "+  lists[i].candidates[j].apellido,
-                  cargo: lists[i].candidates[j].cargo 
+                // cadena = lists[i].candidates[j].nombre + " " +
+                //   lists[i].candidates[j].apellido + " " +
+                //   lists[i].candidates[j].cargo + "\n";
+
+                let nuevo = {
+                  id: j,
+                  nombre: lists[i].candidates[j].nombre + " " + lists[i].candidates[j].apellido,
+                  cargo: lists[i].candidates[j].cargo
 
                 }
-                console.log(nuevo, 'los candidates');
-              //setCandidatos(nuevo)
-              final.push(nuevo)
-              setVer(...ver, nuevo)
+                //console.log(nuevo, 'los candidates');
+                ///setCandidatos(nuevo)
+                final.push(nuevo)
+                setVer({ ...ver, nuevo })
 
+              }
             }
-          }
 
+          }
         }
-        }
-        
+
       }
 
     } catch (error) {
       console.log(error);
     }
 
-    console.log('full', final);
+
   }
 
   //console.log(stats, 'final data')
@@ -495,29 +501,33 @@ export const ResultsScreen = () => {
             winner &&
             <h5 className='my-2 titulos'>Actual ganador: {winner}</h5>
           }
+         
+          {
+            final.length > 0 ?
+              final.map(election => (
+                <li key={election.id} className='titulos'>
+                  {`${election.nombre} : ${election.cargo}`}
+                </li>
+              ))
 
+              : ' '
+          }
 
         </div>
 
-        <div className='d-flex justify-content-between my-2'>
-          <button type="button" name="vote" id="vote" className="btn btn-primary" onClick={getWinnerF}>Obtener ganador</button>
+        <div className='container'>
+          <div className='row'>
+            <div className='col-10'>
+              <button type="button" name="vote" id="vote" className="btn btn-primary" onClick={getWinnerF}>Obtener ganador</button>
+            </div>
+            <div className='col-2'>
+              <button type="button" name="vote" id="vote" className="btn btn-primary" onClick={candidatosGanadores}>Mostrar Candidatos</button>
+            </div>
+          </div>
+
         </div>
 
-        {/* <div className='d-flex justify-content-between my-2'>
-          <button type="button" name="vote" id="vote" className="btn btn-primary" onClick={candidatosGanadores}>Mostrar Candidatos</button>
-        </div>
 
-     {
-       ver&&
-        ver.map(election => (
-            <li key={election.id}>
-            {election.nombre} 
-          </li>
-        ))
-      
-      
-     } */}
-    
 
       </div>
       :
